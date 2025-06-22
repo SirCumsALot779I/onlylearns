@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Timer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="menu">
+    <div class="hamburger" onclick="toggleMenu()">
+        <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
+    </div>
+    <ul id="dropdown" class="">
+        <li><a href="index.html">⌂ Home</a></li>
+        <li><a href="chat.html">💬 Chat</a></li>
+        <li><a href="report.html">📄 Report</a></li>
+        <li><a href="settings.html">⚙️ Einstellungen</a></li>
+    </ul>
+</nav>
+
+
+<div id="stopwatch-container">
+    <h1>Stoppuhr</h1>
+
+    <label for="kategorie">Kategorie:</label>
+    <select id="kategorie">
+        <option value="arbeit">Arbeit</option>
+        <option value="pause">Pause</option>
+        <option value="lernen">Lernen</option>
+    </select>
+
+    <div id="uhr">00:00:00</div>
+    <button id="startPauseButton" onclick="startPauseTimer()">Start</button> <button id="endButton" onclick="endTimer()" style="display:none;">Beenden</button> </div>
+
+
+<div id="savedTimesContainer">
+    <h2>Gespeicherte Zeiten</h2>
+    <ul id="timeEntriesList">
+        <li>Lade Daten...</li>
+    </ul>
+</div>
+
+
+<script src="script.js"></script>
+</body>
+</html>
