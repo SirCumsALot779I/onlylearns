@@ -10,19 +10,21 @@ function toggleMenu() {
     }
 }
 
-
 // Timer-Mechanik
 let timer;
 let seconds = 0;
 let isRunning = false;
 let isPaused = false;
 
-// DOM-Elemente abrufen (Einmalige Deklaration)
+// DOM-Elemente abrufen
 const startPauseButton = document.getElementById('startPauseButton');
 const endButton = document.getElementById('endButton');
 const uhrDisplay = document.getElementById('uhr');
 const kategorieSelect = document.getElementById('kategorie');
-const timeEntriesList = document.getElementById('timeEntriesList'); // Nur hier deklarieren
+const timeEntriesList = document.getElementById('timeEntriesList');
+
+// NEU: Referenz zum Filter-Dropdown
+const timeFilterSelect = document.getElementById('timeFilter'); // <--- HIER HINZUGEFÜGT
 
 // Funktion zum Formatieren der Zeit
 function formatTime(s) {
@@ -40,12 +42,12 @@ function updateTime() {
 
 // Funktion zum Starten oder Pausieren des Timers
 function startPauseTimer() {
-    if (isRunning) { // Timer läuft -> Pausieren
+    if (isRunning) {
         clearInterval(timer);
         isRunning = false;
         isPaused = true;
         startPauseButton.innerText = "Fortfahren";
-    } else { // Timer läuft nicht (entweder gestartet oder pausiert) -> Starten/Fortfahren
+    } else {
         timer = setInterval(updateTime, 1000);
         isRunning = true;
         isPaused = false;
@@ -62,7 +64,7 @@ async function endTimer() {
 
     const selectedCategory = kategorieSelect.value;
     const timeSpentSeconds = seconds;
-    const formattedTime = formatTime(seconds); // Für Anzeige/Protokollierung
+    const formattedTime = formatTime(seconds);
 
     console.log(`Timer beendet!`);
     console.log(`Kategorie: ${selectedCategory}`);
@@ -85,7 +87,8 @@ async function endTimer() {
             const data = await response.json();
             console.log('Daten erfolgreich gespeichert:', data);
             alert('Herlichen Glückwunsch, FWEITER SO DU FAULE RATTE!');
-            loadTimeEntries(); // Daten nach dem Speichern neu laden
+            // NEU: Daten nach dem Speichern mit dem aktuell ausgewählten Filter neu laden
+            loadTimeEntries(timeFilterSelect.value); // <--- HIER HINZUGEFÜGT
         } else {
             const errorText = await response.text();
             console.error('Fehler beim Speichern der Daten:', response.status, errorText);
@@ -105,17 +108,19 @@ async function endTimer() {
     kategorieSelect.value = "arbeit";
 }
 
-// Funktion: Daten aus dem Backend laden und anzeigen
-async function loadTimeEntries() {
+// NEUE FUNKTION: Daten aus dem Backend laden und anzeigen - mit Filterparameter
+async function loadTimeEntries(filter = 'all') { // <--- filter-Parameter hinzugefügt, 'all' ist Standard
     timeEntriesList.innerHTML = '<li>Lade Daten...</li>';
     try {
-        const response = await fetch('/api/get-time-entries');
+        // Füge den Filter als Query-Parameter zur URL hinzu
+        const url = `/api/get-time-entries?filter=${filter}`; // <--- HIER HINZUGEFÜGT
+        const response = await fetch(url);
         if (response.ok) {
             const entries = await response.json();
             timeEntriesList.innerHTML = ''; // Vorherige Einträge löschen
 
             if (entries.length === 0) {
-                timeEntriesList.innerHTML = '<li>Noch keine Einträge vorhanden.</li>';
+                timeEntriesList.innerHTML = '<li>Noch keine Einträge vorhanden, oder keine für diesen Filter.</li>';
                 return;
             }
 
@@ -145,5 +150,13 @@ async function loadTimeEntries() {
     }
 }
 
-// Beim Laden der Seite die gespeicherten Zeiten anzeigen
-document.addEventListener('DOMContentLoaded', loadTimeEntries);
+// NEU: Event-Listener für das Filter-Dropdown
+timeFilterSelect.addEventListener('change', () => { // <--- HIER HINZUGEFÜGT
+    loadTimeEntries(timeFilterSelect.value); // Lade Daten basierend auf der Auswahl
+});
+
+
+// Beim Laden der Seite die gespeicherten Zeiten anzeigen (Initialaufruf mit Standardfilter 'all')
+document.addEventListener('DOMContentLoaded', () => { // <--- HIER HINZUGEFÜGT
+    loadTimeEntries('all'); // Ruft loadTimeEntries beim Laden der Seite auf, initial 'Alle'
+});
