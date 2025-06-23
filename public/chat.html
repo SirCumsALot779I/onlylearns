@@ -2,28 +2,36 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Mainpage</title>
+    <title>Timer</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // CLIENT-SEITIGE PRÜFUNG DER AUTHENTIFIZIERUNG
+        // !!! WICHTIG: Ersetze diese Platzhalter durch deine tatsächlichen Supabase URL und ANON KEY !!!
+        const SUPABASE_URL = 'DEINE_TATSÄCHLICHE_SUPABASE_URL_HIER_EINFÜGEN';
+        const SUPABASE_ANON_KEY = 'DEIN_TATSÄCHLICHER_SUPABASE_ANON_KEY_HIER_EINFÜGEN';
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Asynchrone Funktion, um den Benutzerstatus zu prüfen
+        async function checkUserAuth() {
+            const { data: { user }, error } = await supabaseClient.auth.getUser();
+
+            if (error || !user) {
+                // Benutzer ist nicht angemeldet oder Sitzung ist abgelaufen
+                console.warn('Benutzer nicht angemeldet oder Sitzung abgelaufen. Leite zu auth.html um.');
+                window.location.href = '/auth.html'; // Leite zur Anmeldeseite um
+            } else {
+                // Benutzer ist angemeldet
+                console.log('Benutzer ist angemeldet:', user.email);
+                // Hier könnte man den Benutzernamen auf der Seite anzeigen oder andere UI-Updates machen
+            }
+        }
+
+        // Führe die Prüfung sofort aus
+        checkUserAuth();
+    </script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<nav class="menu">
-    <div class="hamburger" onclick="toggleMenu()">
-        <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
-    </div>
-    <ul id="dropdown" class="">
-        <li><a href="timer.html">⏱ Timer</a></li>
-        <li><a href="chat.html">💬 Chat</a></li>
-        <li><a href="report.html">📄 Report</a></li>
-        <li><a href="settings.html">⚙️ Einstellungen</a></li>
-    </ul>
-</nav>
-
-<div class="center-text">Willkommen, fauler sack</div>
-
-<script
-        src="script.js">
-</script>
-
-
+<script src="script.js"></script>
 </body>
 </html>
