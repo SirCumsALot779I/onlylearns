@@ -4,6 +4,13 @@
     {
       "src": "api/*.js",
       "use": "@vercel/node"
+    },
+    {
+      "src": "public/**/*", // WICHTIG: Das hier ist der korrekte src für statische Assets
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "public" // Und hier gibst du das Output Directory für diesen Build an
+      }
     }
   ],
   "routes": [
@@ -13,7 +20,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/public/$1"
+      "dest": "/public/$1" // Dies routet alle anderen Anfragen zu deinem public-Ordner
     }
   ]
 }
