@@ -7,9 +7,20 @@
     "start": "node api/index.js"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.x.x", // Neueste Version verwenden
-    "dotenv": "^16.x.x", // Für Umgebungsvariablen
-    "cors": "^2.8.5", // Falls du CORS in den Funktionen brauchst, aber Vercel proxyed
-    "express": "^4.18.2" // Falls du Express-Features in der API nutzt
-  }
+    "@supabase/supabase-js": "^2.50.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SirCumsALot779I/onlylearns.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SirCumsALot779I/onlylearns/issues"
+  },
+  "homepage": "https://github.com/SirCumsALot779I/onlylearns#readme"
 }
