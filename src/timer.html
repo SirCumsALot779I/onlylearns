@@ -35,6 +35,16 @@
 
 <div id="savedTimesContainer">
     <h2>Gespeicherte Zeiten</h2>
+
+    <div class="filter-controls">
+        <label for="timeFilter">Anzeigen:</label>
+        <select id="timeFilter">
+            <option value="all">Alle</option>
+            <option value="today">Heute</option>
+            <option value="yesterday">Gestern</option>
+            <option value="last_7_days">Letzte 7 Tage</option>
+        </select>
+    </div>
     <ul id="timeEntriesList">
         <li>Lade Daten...</li>
     </ul>
