@@ -70,7 +70,7 @@ async function endTimer() {
     console.log(`Verbrachte Zeit (formatiert): ${formattedTime}`);
 
     try {
-        const response = await fetch('http://localhost:3000/save-time', {
+        const response = await fetch('/api/save-time', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ async function endTimer() {
 async function loadTimeEntries() {
     timeEntriesList.innerHTML = '<li>Lade Daten...</li>';
     try {
-        const response = await fetch('http://localhost:3000/get-time-entries');
+        const response = await fetch('/api/get-time-entries');
         if (response.ok) {
             const entries = await response.json();
             timeEntriesList.innerHTML = ''; // Vorherige Einträge löschen
