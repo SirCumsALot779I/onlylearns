@@ -3,8 +3,8 @@
 // Diese sollten in einer realen Anwendung nicht direkt im Code stehen,
 // sondern z.B. über Umgebungsvariablen eines Build-Tools eingefügt werden.
 // Für dieses Beispiel verwenden wir sie direkt.
-const SUPABASE_URL = process.env.SUPABASE_URL; // Beispiel: 'https://abcde12345.supabase.co'
-const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY; // Beispiel: 'eyJhbGciOiJIUzI1Ni...'
+const SUPABASE_URL = 'https://ibwojujxyymvalwannza.supabase.co'; // Beispiel: 'https://abcde12345.supabase.co'
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlid29qdWp4eXltdmFsd2FubnphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2MzIxODYsImV4cCI6MjA2NjIwODE4Nn0.THsCEW7MwyTf25wi2NzSR7zLaplf6fNN_fATmcj5C2A'; // Beispiel: 'eyJhbGciOiJIUzI1Ni...'
 
 const { createClient } = supabase; // Nutzt die globale Supabase-Bibliothek, die über CDN geladen wird
 
