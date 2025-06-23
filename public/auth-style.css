@@ -1,0 +1,225 @@
+/* Import Google font - Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+/* Allgemeine Basis-Stile - Mischung aus beiden, Seite 2 dominiert */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000; /* Schwarzer Hintergrund, wie in deinem Timer-Projekt */
+  background-image: url('https://images.unsplash.com/photo-1549880338-65ddcdfd017b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'); /* Beispiel-Hintergrundbild für Glassmorphism */
+  background-size: cover;
+  background-position: center;
+  overflow: hidden; /* Verhindert Scrollbalken durch Wrapper-Effekte */
+  position: relative;
+}
+
+/* Hintergrund-Overlay für Glassmorphism-Effekt */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(10px); /* Glassmorphism-Effekt */
+  -webkit-backdrop-filter: blur(10px); /* Für Safari */
+  z-index: -1;
+}
+
+/* Wrapper-Stil - Seite 2 Basis */
+.wrapper {
+  position: relative;
+  width: 400px; /* Angepasst für eine angenehme Größe */
+  height: 440px; /* Muss angepasst werden, wenn Signup sichtbar wird */
+  background: rgba(255, 255, 255, 0.1); /* Halbdurchsichtiger Hintergrund */
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5); /* Tieferer Schatten */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: height .2s ease; /* Übergang für Höhenänderung beim Wechsel */
+}
+
+/* Umschaltlogik von Seite 1, angepasst an Seite 2 Struktur */
+.wrapper .form-wrapper {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 40px;
+  /* Standardmäßig ist die Signup-Form versteckt und die Login-Form sichtbar */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100%); /* Startet außerhalb des Wrappers */
+}
+
+.wrapper .form-wrapper.login {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.wrapper .hidden-checkbox:checked ~ .form-wrapper.login {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-100%); /* Login-Form geht nach links raus */
+}
+
+.wrapper .hidden-checkbox:checked ~ .form-wrapper.signup {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0); /* Signup-Form kommt von rechts rein */
+}
+
+/* Anpassung der Wrapper-Höhe beim Wechsel */
+.wrapper .hidden-checkbox:checked ~ .form-wrapper.signup {
+  height: 480px; /* Beispielhöhe für Signup-Formular */
+}
+
+/* Form-Stil - Seite 2 Basis */
+.form-wrapper h2 {
+  font-size: 2em;
+  color: #fff;
+  text-align: center;
+}
+
+.input-field {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  margin: 30px 0;
+  border-bottom: 2px solid #fff;
+}
+
+.input-field input {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 1em;
+  color: #fff;
+  padding: 0 35px 0 5px;
+}
+
+.input-field label {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 1em;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.input-field input:focus~label,
+.input-field input:valid~label {
+  top: -5px;
+}
+
+.forget {
+  margin: -15px 0 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.forget label {
+  color: #fff;
+}
+
+.forget label input {
+  margin-right: 3px;
+}
+
+.forget a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.forget a:hover {
+  text-decoration: underline;
+}
+
+/* Button-Stil - Seite 2 Basis */
+button {
+  width: 100%;
+  height: 40px;
+  background: #fff;
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 1em;
+  color: #000;
+  font-weight: 500;
+  transition: transform 0.3s ease; /* Füge Übergang hinzu für Hover-Effekt */
+}
+
+button:hover {
+  transform: scale(1.05); /* Leichte Vergrößerung beim Hover */
+  background: rgba(255, 255, 255, 0.8); /* Leichter Transparenz-Effekt beim Hover */
+}
+
+/* Register/Signup Link - Seite 2 Basis */
+.register {
+  font-size: .9em;
+  color: #fff;
+  text-align: center;
+  margin: 25px 0 10px;
+}
+
+.register p a {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+}
+
+.register p a:hover {
+  text-decoration: underline;
+}
+
+/* Spezifische Anpassungen für die Umschaltung von Seite 1 auf Seite 2 Design */
+.hidden-checkbox {
+  display: none; /* Checkbox ist unsichtbar */
+}
+
+/* Stile für die Register/Login Labels */
+.register p label {
+  cursor: pointer;
+  text-decoration: underline; /* Unterstreichung, um Klickbarkeit zu zeigen */
+}
+
+/* Anpassung der Höhe des Wrappers, wenn das Registrierungsformular aktiv ist */
+.wrapper {
+  transition: height 0.3s ease, width 0.3s ease; /* Übergang für Höhe und Breite */
+}
+
+.hidden-checkbox:checked ~ .form-wrapper.signup {
+  /* Wenn die Registrierungsform aktiv ist, passen wir die Höhe des Wrappers an */
+  /* Die Höhe muss manuell angepasst werden basierend auf dem Inhalt des Signup-Formulars */
+  /* Dies ist eine Schätzung, muss eventuell feinjustiert werden */
+  height: auto; /* Erlaube die Höhe, sich an den Inhalt anzupassen */
+  min-height: 480px; /* Eine Mindesthöhe für das Signup-Formular */
+}
+
+.hidden-checkbox:checked ~ .form-wrapper.login {
+  height: auto; /* Die Login-Formular-Höhe beibehalten, wenn die Checkbox NICHT gechecked ist */
+  min-height: 440px;
+}
+
+/* Zusätzlicher Style für den Hintergrund, wenn du ein Bild verwenden möchtest */
+body {
+  background-image: url('public/img/winkel.png'); /* Ersetze dies mit deinem Bildpfad */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
