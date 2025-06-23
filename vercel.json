@@ -6,10 +6,10 @@
       "use": "@vercel/node"
     },
     {
-      "src": "public/**/*", // WICHTIG: Das hier ist der korrekte src für statische Assets
+      "src": "public/**/*",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "public" // Und hier gibst du das Output Directory für diesen Build an
+        "distDir": "public"
       }
     }
   ],
@@ -20,7 +20,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/public/$1" // Dies routet alle anderen Anfragen zu deinem public-Ordner
+      "dest": "/public/$1"
     }
   ]
 }
