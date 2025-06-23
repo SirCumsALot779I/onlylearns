@@ -54,7 +54,7 @@ if (loginForm) {
                 console.log('Login erfolgreich:', data);
                 showMessage('Login erfolgreich!', 'success');
                 // Weiterleitung zur Hauptanwendung oder Dashboard
-                window.location.href = '/timer.html'; // Oder '/' wenn index.html der Standard ist
+                window.location.href = '/'; // Oder '/' wenn index.html der Standard ist
             }
         } catch (err) {
             console.error('Netzwerkfehler beim Login:', err);

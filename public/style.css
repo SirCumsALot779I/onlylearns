@@ -282,3 +282,21 @@ button:active {
     color: #bbb;
     text-align: right;
 }
+
+
+#logoutButton {
+    background: none;
+    border: none;
+    color: #fff; /* Passend zu deinem Text im Menü */
+    cursor: pointer;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    /* Optional: Hover-Effekt wie bei den Links */
+    transition: background-color 0.3s ease;
+}
+
+#logoutButton:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Leichter Hintergrund beim Hover */
+}

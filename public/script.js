@@ -1,3 +1,13 @@
+// public/script.js
+
+// Supabase Client Initialisierung
+// !!! WICHTIG: Ersetze diese Platzhalter durch deine tatsächlichen Supabase URL und ANON KEY !!!
+// Diese Werte müssen exakt denen in auth.js und den Head-Skripten deiner geschützten Seiten entsprechen.
+const SUPABASE_URL = 'https://ibwojujxyymvalwannza.supabase.co'; // Beispiel: 'https://abcde12345.supabase.co'
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlid29qdWp4eXltdmFsd2FubnphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2MzIxODYsImV4cCI6MjA2NjIwODE4Nn0.THsCEW7MwyTf25wi2NzSR7zLaplf6fNN_fATmcj5C2A'; // Beispiel: 'eyJhbGciOiJIUzI1Ni...'
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+
 // Hamburgermenü-Logik
 function toggleMenu() {
     const dropdown = document.getElementById('dropdown');
@@ -24,7 +34,7 @@ const kategorieSelect = document.getElementById('kategorie');
 const timeEntriesList = document.getElementById('timeEntriesList');
 
 // NEU: Referenz zum Filter-Dropdown
-const timeFilterSelect = document.getElementById('timeFilter'); // <--- HIER HINZUGEFÜGT
+const timeFilterSelect = document.getElementById('timeFilter');
 
 // Funktion zum Formatieren der Zeit
 function formatTime(s) {
@@ -72,11 +82,20 @@ async function endTimer() {
     console.log(`Verbrachte Zeit (formatiert): ${formattedTime}`);
 
     try {
+        // Option A: Füge hier das Supabase JWT zum Header hinzu,
+        // wenn du möchtest, dass deine /api/save-time Funktion den angemeldeten Benutzer kennt.
+        // Das ist der empfohlene Weg für Backend-Zugriffskontrolle basierend auf dem Benutzer.
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        let headers = {
+            'Content-Type': 'application/json',
+        };
+        if (session) {
+            headers['Authorization'] = `Bearer ${session.access_token}`;
+        }
+
         const response = await fetch('/api/save-time', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: headers, // Verwende die aktualisierten Header
             body: JSON.stringify({
                 category: selectedCategory,
                 durationSeconds: timeSpentSeconds,
@@ -87,8 +106,7 @@ async function endTimer() {
             const data = await response.json();
             console.log('Daten erfolgreich gespeichert:', data);
             alert('Herlichen Glückwunsch, FWEITER SO DU FAULE RATTE!');
-            // NEU: Daten nach dem Speichern mit dem aktuell ausgewählten Filter neu laden
-            loadTimeEntries(timeFilterSelect.value); // <--- HIER HINZUGEFÜGT
+            loadTimeEntries(timeFilterSelect.value);
         } else {
             const errorText = await response.text();
             console.error('Fehler beim Speichern der Daten:', response.status, errorText);
@@ -109,15 +127,25 @@ async function endTimer() {
 }
 
 // NEUE FUNKTION: Daten aus dem Backend laden und anzeigen - mit Filterparameter
-async function loadTimeEntries(filter = 'all') { // <--- filter-Parameter hinzugefügt, 'all' ist Standard
+async function loadTimeEntries(filter = 'all') {
     timeEntriesList.innerHTML = '<li>Lade Daten...</li>';
     try {
-        // Füge den Filter als Query-Parameter zur URL hinzu
-        const url = `/api/get-time-entries?filter=${filter}`; // <--- HIER HINZUGEFÜGT
-        const response = await fetch(url);
+        // Option B: Füge hier das Supabase JWT zum Header hinzu,
+        // wenn du möchtest, dass deine /api/get-time-entries Funktion den angemeldeten Benutzer kennt.
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        let headers = {};
+        if (session) {
+            headers['Authorization'] = `Bearer ${session.access_token}`;
+        }
+
+        const url = `/api/get-time-entries?filter=${filter}`;
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: headers, // Verwende die aktualisierten Header
+        });
         if (response.ok) {
             const entries = await response.json();
-            timeEntriesList.innerHTML = ''; // Vorherige Einträge löschen
+            timeEntriesList.innerHTML = '';
 
             if (entries.length === 0) {
                 timeEntriesList.innerHTML = '<li>Noch keine Einträge vorhanden, oder keine für diesen Filter.</li>';
@@ -151,12 +179,30 @@ async function loadTimeEntries(filter = 'all') { // <--- filter-Parameter hinzug
 }
 
 // NEU: Event-Listener für das Filter-Dropdown
-timeFilterSelect.addEventListener('change', () => { // <--- HIER HINZUGEFÜGT
-    loadTimeEntries(timeFilterSelect.value); // Lade Daten basierend auf der Auswahl
+timeFilterSelect.addEventListener('change', () => {
+    loadTimeEntries(timeFilterSelect.value);
 });
 
 
 // Beim Laden der Seite die gespeicherten Zeiten anzeigen (Initialaufruf mit Standardfilter 'all')
-document.addEventListener('DOMContentLoaded', () => { // <--- HIER HINZUGEFÜGT
+document.addEventListener('DOMContentLoaded', () => {
     loadTimeEntries('all'); // Ruft loadTimeEntries beim Laden der Seite auf, initial 'Alle'
+
+    // NEU: Logout-Button Event-Listener
+    const logoutButton = document.getElementById('logoutButton');
+    if (logoutButton) {
+        logoutButton.addEventListener('click', async () => {
+            const { error } = await supabaseClient.auth.signOut();
+
+            if (error) {
+                console.error('Logout Error:', error);
+                alert('Fehler beim Abmelden: ' + error.message);
+            } else {
+                console.log('Erfolgreich abgemeldet.');
+                alert('Du wurdest abgemeldet!');
+                // Nach erfolgreichem Logout zur Anmeldeseite weiterleiten
+                window.location.href = '/auth.html';
+            }
+        });
+    }
 });
