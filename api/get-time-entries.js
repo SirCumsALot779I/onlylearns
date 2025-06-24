@@ -2,9 +2,11 @@
 const { createClient } = require('@supabase/supabase-js');
 
 // Supabase-Konfiguration aus Umgebungsvariablen
+// Für RLS-Filterung muss der Client pro Anfrage mit dem Benutzer-Token initialisiert werden.
+// Daher wird der globale 'supabase' Client hier nur für den Fall verwendet, dass keine Auth vorliegt
+// oder für Operationen, die keinen Benutzerkontext benötigen (aber hier irrelevant).
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY; // Wir brauchen den Anon Key, um den Client mit User-Token zu initialisieren
 
 module.exports = async (req, res) => {
     // Nur GET-Anfragen zulassen
@@ -15,7 +17,7 @@ module.exports = async (req, res) => {
     // CORS für lokale Entwicklung oder spezifische Domains (Vercel handhabt das oft automatisch)
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization'); // Authorization-Header hinzufügen!
 
     if (req.method === 'OPTIONS') {
         return res.status(200).end();
@@ -23,8 +25,35 @@ module.exports = async (req, res) => {
 
     try {
         const filter = req.query.filter || 'all'; // Filter aus Query-Parametern lesen
+        const authHeader = req.headers.authorization;
 
-        let query = supabase.from('time_entries').select('*');
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            // Wenn kein Token vorhanden ist, keine Daten zurückgeben oder Fehler melden
+            return res.status(401).json({ error: 'Autorisierungstoken fehlt oder ist ungültig.' });
+        }
+
+        const accessToken = authHeader.split(' ')[1];
+
+        // Neuen Supabase-Client mit dem Benutzer-Access-Token initialisieren
+        // Dieser Client respektiert die Row Level Security (RLS) Regeln basierend auf dem Token.
+        const userSupabase = createClient(supabaseUrl, supabaseAnonKey, {
+            auth: {
+                persistSession: false // Wichtig für Serverless Functions
+            },
+            global: {
+                headers: { 'Authorization': `Bearer ${accessToken}` }
+            }
+        });
+
+        // Überprüfen, ob der Token gültig ist und einen Benutzer hat
+        const { data: { user }, error: userError } = await userSupabase.auth.getUser();
+
+        if (userError || !user) {
+            console.error('Fehler beim Abrufen des Benutzers aus dem Token (get-time-entries):', userError?.message);
+            return res.status(401).json({ error: 'Ungültiger oder abgelaufener Autorisierungstoken.' });
+        }
+
+        let query = userSupabase.from('time_entries').select('*'); // RLS filtert automatisch nach user_id
 
         const now = new Date();
         now.setHours(0, 0, 0, 0); // Setze auf den Anfang des heutigen Tages
@@ -36,25 +65,28 @@ module.exports = async (req, res) => {
             case 'today':
                 startDate = now.toISOString();
                 // Add 24 hours to 'now' to get the end of today (exclusive) or 23:59:59.999 for inclusive
-                endDate = new Date(now.getTime() + 24 * 60 * 60 * 1000 - 1).toISOString();
+                // Wichtig: Enddatum sollte präzise sein, um nur den aktuellen Tag zu erwischen
+                endDate = new Date(now.getTime() + 24 * 60 * 60 * 1000 - 1).toISOString(); // Ende des heutigen Tages
                 query = query.gte('timestamp', startDate).lte('timestamp', endDate);
                 break;
             case 'yesterday':
                 startDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
                 startDate.setHours(0, 0, 0, 0);
-                endDate = new Date(now.getTime() - 1);
+                endDate = new Date(now.getTime() - 1); // Ende des gestrigen Tages
                 endDate.setHours(23, 59, 59, 999);
                 query = query.gte('timestamp', startDate.toISOString()).lte('timestamp', endDate.toISOString());
                 break;
             case 'last_7_days':
-                startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                // Beginn vor 7 Tagen (einschließlich heute)
+                startDate = new Date(now.getTime() - 6 * 24 * 60 * 60 * 1000); // 6 Tage zurück + der heutige Tag = 7 Tage
                 startDate.setHours(0, 0, 0, 0);
-                endDate = new Date(now.getTime() + 24 * 60 * 60 * 1000 - 1); // Bis Ende heute
+                // Ende des heutigen Tages
+                endDate = new Date(now.getTime() + 24 * 60 * 60 * 1000 - 1);
                 query = query.gte('timestamp', startDate.toISOString()).lte('timestamp', endDate.toISOString());
                 break;
             case 'all':
             default:
-                // Keine Filterung
+                // Keine Filterung außer RLS
                 break;
         }
 
@@ -63,14 +95,14 @@ module.exports = async (req, res) => {
         const { data, error } = await query;
 
         if (error) {
-            console.error('Supabase Select Error:', error);
+            console.error('Supabase Select Error (get-time-entries):', error);
             return res.status(500).json({ error: 'Fehler beim Abrufen der Daten von Supabase.', details: error.message });
         }
 
         res.status(200).json(data);
 
     } catch (error) {
-        console.error('API Error:', error);
+        console.error('API Error (get-time-entries):', error);
         res.status(500).json({ error: 'Interner Serverfehler.', details: error.message });
     }
 };
