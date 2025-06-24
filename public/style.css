@@ -3,12 +3,12 @@ body {
     background-color: #000;
     color: white;
     font-family: Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 20px;
-    box-sizing: border-box;
+    min-height: 100vh; /* Stellt sicher, dass der Body mindestens die Höhe des Viewports hat */
+    display: flex; /* Aktiviere Flexbox */
+    flex-direction: column; /* Ordne Kinder vertikal an */
+    align-items: center; /* Zentriere Kinder horizontal */
+    padding-top: 20px; /* Optional: Etwas Abstand vom oberen Rand */
+    box-sizing: border-box; /* Sicherstellen, dass padding nicht zur Gesamtgröße beiträgt */
 }
 
 .center-text {
@@ -44,92 +44,57 @@ body {
     user-select: none;
 }
 
-/* --- Dropdown-Menü Container (#dropdown) --- */
+ul li {
+    padding: 10px 15px;
+    border-bottom: 1px solid #222;
+}
+
+/* Nur auf das Dropdown-Menü mit der ID 'dropdown' anwenden */
 #dropdown {
     position: absolute;
     top: 50px;
     left: 10px;
-    background-color: #111; /* Hintergrundfarbe des gesamten Dropdowns */
+    background-color: #111;
     z-index: 1000;
     width: 180px;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
     max-height: 0;
     opacity: 0;
-    overflow: hidden; /* Wichtig für die Animation und um Inhalt zu verstecken */
+    overflow: hidden;
     transition: max-height 0.8s ease, opacity 1.0s ease;
-    padding: 0; /* Wichtig: Entfernt das Standard-Padding der UL */
-    margin: 0; /* Wichtig: Entfernt den Standard-Margin der UL */
-    list-style: none; /* Entfernt die Standard-Listensymbole */
 }
+
 
 /* Sichtbares Menü */
 #dropdown.visible {
-    max-height: 500px; /* Genug Höhe für alle Elemente */
+    max-height: 500px;
     opacity: 1;
 }
 
-/* --- Stil für die Listenelemente im Dropdown-Menü --- */
-/* Diese Regel dient hauptsächlich dazu, die Trennlinie zu setzen */
-#dropdown li {
-    padding: 0; /* Kein Padding hier, da es im Button selbst ist */
-    margin: 0; /* Kein Margin hier */
-    /* Die border-bottom wird hier gesetzt, damit sie über die gesamte Breite geht */
+
+ul li {
+    padding: 15px 20px;
     border-bottom: 1px solid #222;
 }
 
-#dropdown li:last-child {
-    border-bottom: none; /* Keine Trennlinie am letzten Element */
+ul li:last-child {
+    border-bottom: none;
 }
 
-/* --- NEUE REGELN FÜR DIE DROPDOWN-BUTTONS (a und button) --- */
-.dropdown-nav-button {
-    display: block; /* Macht den Link/Button zu einem Block-Element */
-    width: 100%; /* Nimmt die volle Breite des Elternelements ein */
-    padding: 15px 20px; /* Innenabstand, der den Button groß macht */
-    background-color: transparent; /* Wichtig: Startet transparent, damit #dropdown's Hintergrund sichtbar ist */
-    color: white; /* Textfarbe */
-    text-decoration: none; /* Entfernt die Unterstreichung von Links */
-    font-size: 1.1em; /* Schriftgröße */
-    text-align: left; /* Text linksbündig */
-    border: none; /* Keine Ränder */
-    cursor: pointer; /* Zeigt den Zeiger an */
-    /* Runde Kanten nur für den Container, nicht für einzelne Buttons, es sei denn, du willst es */
-    border-radius: 0; /* Standardmäßig keine individuellen Ecken für die Buttons */
-    transition: background-color 0.2s ease, color 0.2s ease; /* Sanfter Übergang beim Hover */
-    box-sizing: border-box; /* Stellt sicher, dass Padding nicht zur Breite beiträgt */
-}
-
-/* Hover-Effekt für alle Dropdown-Buttons */
-.dropdown-nav-button:hover {
-    background-color: #333; /* Dunklerer Hintergrund beim Hover */
-}
-
-/* --- Spezifische Styles für den Logout-Button --- */
-/* Diese Regel wird nur auf den Logout-Button angewendet */
-.logout-button {
-    background-color: #dc3545; /* Roter Hintergrund für Logout */
+ul li a {
     color: white;
-    /* Da dieser Button der letzte im Dropdown ist, geben wir ihm hier die untere Rundung */
-    border-bottom-left-radius: 12px; /* Entspricht dem border-radius der #dropdown */
-    border-bottom-right-radius: 12px; /* Entspricht dem border-radius der #dropdown */
+    text-decoration: none;
+    font-size: 1.1em;
+    display: block;
 }
-
-.logout-button:hover {
-    background-color: #c82333; /* Dunkleres Rot beim Hover für Logout */
-}
-
-/* Anpassung für den obersten Button, damit er die oberen Rundungen des #dropdown erbt */
-#dropdown li:first-child .dropdown-nav-button {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-}
-
-
-/* --- Allgemeine und andere Stile (Rest deines CSS) --- */
 
 .hamburger:hover span {
     background-color: #aaa;
+}
+
+ul li:hover {
+    background-color: #333;
 }
 
 .hidden {
@@ -141,20 +106,48 @@ text-align: center;
 }
 
 #stopwatch-container {
-    width: 300px;
+    /* Breite des Containers festlegen */
+    width: 300px; /* Beispielbreite, passe sie nach Bedarf an */
+
+    /* Zentrierung */
     margin-left: auto;
     margin-right: auto;
+    /* oder shorthand: margin: 0 auto; (0 für oben/unten, auto für links/rechts) */
+
+    /* Optional: Abstand nach oben für vertikale Zentrierung */
+    margin-top: 100px; /* Oder flexbox/grid für perfekte vertikale Zentrierung */
+
+    /* Optional: Hintergrund, Polsterung, Rand für bessere Sichtbarkeit */
+
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    text-align: center; /* Zentriert den Inhalt innerhalb des Containers */
 }
 
+
+
+
+
+
+
+
+
+/* Stil für das gesamte Select-Element (das "Arbeit"-Feld, das immer sichtbar ist) */
 #kategorie {
-    background-color: grey;
-    color: white;
-    border: 1px solid #ccc;
+    /* Hintergrundfarbe des Select-Feldes */
+    background-color: grey; /* Oder einen spezifischeren Grauton, z.B. #888 oder #555 */
+
+    /* Textfarbe im Select-Feld */
+    color: white; /* Weiße Schrift */
+
+    /* Optional: Rahmen anpassen, falls er nicht zur Grauschrift passt */
+    border: 1px solid #ccc; /* Behalte den Rahmen oder mach ihn auch grau */
+
+    /* Optional: Schatten entfernen oder anpassen, falls vorhanden */
     box-shadow: none;
+
+    /* Weitere Anpassungen von vorhin beibehalten oder hinzufügen */
     width: 80%;
     padding: 10px;
     margin-bottom: 25px;
@@ -162,21 +155,43 @@ text-align: center;
     font-size: 1em;
 }
 
+/* Stil für die einzelnen Optionen im Dropdown-Menü, wenn es geöffnet ist */
 #kategorie option {
-    background-color: grey;
+    /* Hintergrundfarbe der Optionen */
+    background-color: grey; /* Oder einen spezifischeren Grauton */
+
+    /* Textfarbe der Optionen */
+    color: white; /* Weiße Schrift */
+
+
+}
+
+/* Optional: Stil für die ausgewählte Option, wenn man sie ausgewählt hat (ist oft das gleiche wie #kategorie) */
+#kategorie option:checked {
+    background-color: darkgrey; /* Vielleicht ein etwas dunkleres Grau für die ausgewählte Option */
     color: white;
 }
 
-#kategorie option:checked {
-    background-color: darkgrey;
-    color: white;
-}
+
+
+
+
 
 button {
-    background-color: grey;
-    color: white;
-    border: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Hintergrundfarbe des Buttons */
+    background-color: grey; /* Oder einen spezifischeren Grauton, z.B. #555 oder #777 */
+
+    /* Textfarbe des Buttons */
+    color: white; /* Weiße Schrift */
+
+    /* Optional: Rahmen anpassen, falls er noch blau ist oder nicht passt */
+    border: none; /* Entfernt den Standardrahmen, falls er stört */
+    /* Oder: border: 1px solid #666; für einen grauen Rahmen */
+
+    /* Optional: Schatten anpassen, damit er auch zum Grauton passt */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Kann beibehalten oder angepasst werden */
+
+    /* Weitere Anpassungen von vorhin beibehalten */
     padding: 12px 25px;
     font-size: 1.1em;
     margin: 0 10px;
@@ -185,17 +200,21 @@ button {
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
+/* Stil für den Hover-Effekt (wenn die Maus über den Button fährt) */
 button:hover {
-    background-color: darkgrey;
+    background-color: darkgrey; /* Ein etwas dunkleres Grau beim Hover */
     transform: translateY(-2px);
 }
 
+/* Stil für den Active-Effekt (wenn der Button geklickt wird) */
 button:active {
     transform: translateY(0);
 }
 
+
 #uhr {
-    font-size: 3em;
+    font-size: 3em; /* Beispiel: Macht die Zahlen noch größer. Experimentiere mit dem Wert! */
+    /* Oder auch 5em, 5.5em, 7em - je nachdem, wie groß du es haben möchtest. */
     font-weight: bold;
     margin-bottom: 30px;
     color: #2c3e50;
@@ -203,37 +222,40 @@ button:active {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
+
+/zeiten anzeige
+
 #savedTimesContainer {
-    width: 600px;
-    margin: 50px auto 20px auto;
-    background-color: #333;
+    width: 600px; /* Oder 80% */
+    margin: 50px auto 20px auto; /* Zentrieren und Abstand von oben */
+    background-color: #333; /* Dunklerer Hintergrund */
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     color: white;
-    text-align: left;
+    text-align: left; /* Text linksbündig im Container */
 }
 
 #savedTimesContainer h2 {
     text-align: center;
-    color:  #f6f6e8;
+    color: 	#f6f6e8; /* Eine Akzentfarbe */
     margin-bottom: 25px;
     font-size: 1.8em;
 }
 
 #timeEntriesList {
-    list-style: none;
+    list-style: none; /* Entfernt die Standard-Aufzählungspunkte */
     padding: 0;
     margin: 0;
 }
 
 #timeEntriesList li {
-    background-color: #444;
+    background-color: #444; /* Etwas hellerer Hintergrund für Listeneinträge */
     margin-bottom: 7px;
     padding: 10px;
     border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
+    display: flex; /* Für Layout von Kategorie, Zeit und Datum */
+    justify-content: space-between; /* Elemente auseinander ziehen */
     align-items: center;
     font-size: 1.1em;
 }
@@ -248,15 +270,48 @@ button:active {
 
 #timeEntriesList li .category {
     font-weight: bold;
-    color: #ffd700;
+    color: #ffd700; /* Goldgelb für die Kategorie */
 }
 
 #timeEntriesList li .duration {
-    color: #00BFFF;
+    color: #00BFFF; /* Hellblau für die Dauer */
 }
 
 #timeEntriesList li .timestamp {
     font-size: 0.9em;
     color: #bbb;
     text-align: right;
+}
+
+#dropdown-nav-button{
+    background: none;
+    border: none;
+    color: #fff; /* Passend zu deinem Text im Menü */
+    cursor: pointer;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    /* Optional: Hover-Effekt wie bei den Links */
+    transition: background-color 0.3s ease;
+}
+
+#dropdown-nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Leichter Hintergrund beim Hover */
+}
+#logoutButton {
+    background: none;
+    border: none;
+    color: #fff; /* Passend zu deinem Text im Menü */
+    cursor: pointer;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    /* Optional: Hover-Effekt wie bei den Links */
+    transition: background-color 0.3s ease;
+}
+
+#logoutButton:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Leichter Hintergrund beim Hover */
 }
