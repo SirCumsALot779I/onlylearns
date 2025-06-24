@@ -218,8 +218,18 @@ button:hover {
 
 /* Zusätzlicher Style für den Hintergrund, wenn du ein Bild verwenden möchtest */
 body {
-  background-image: url('/img/winkel.png'); /* Ersetze dies mit deinem Bildpfad */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* HINTERGRUND-STILE HIER ZENTRALISIEREN */
+  background-image: url('/img/winkel.png'); /* Ihr Bild als Hintergrund */
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
+  background-attachment: fixed; /* Optional, aber gut für statische Hintergründe */
+  background-color: #000; /* Fallback-Farbe, falls das Bild nicht lädt */
+
+  overflow: hidden; /* Verhindert Scrollbalken durch Wrapper-Effekte */
+  position: relative;
 }
