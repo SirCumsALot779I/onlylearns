@@ -344,31 +344,7 @@ button:active {
     background-color: rgba(255, 255, 255, 0.1); /* Leichter Hintergrund beim Hover */
 }
 
-/* Spezifische Styles für den Logout-Button (überschreibt .dropdown-nav-button nur dort, wo anders) */
-/* Dieser Selektor ist korrekt, da #logoutButton eine ID ist und .logout-button eine Klasse */
-#logoutButton.logout-button { /* Noch spezifischer, um sicherzustellen, dass es angewendet wird */
-    background-color: #dc3545; /* Roter Hintergrund für Logout */
-    color: white; /* Weißer Text */
-    /* Da der Logout-Button der letzte ist, bekommt er die unteren Rundungen des Dropdown-Containers */
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
-}
 
-#logoutButton.logout-button:hover { /* Hover für den Logout-Button */
-    background-color: #c82333; /* Dunkleres Rot beim Hover */
-}
-
-/* Anpassung für den obersten Button, damit er die oberen Rundungen des #dropdown erbt */
-#dropdown li:first-child .dropdown-nav-button {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-}
-
-/* Dein restliches CSS folgt hier, wie z.B. für #uhr, #kategorie, #savedTimesContainer etc. */
-/* Stelle sicher, dass du die alten, überflüssigen #logoutButton Regeln und ul li a Regeln entfernst! */
-
-/* Beispiel einer alten, jetzt überflüssigen Regel, die entfernt werden sollte: */
-/*
 #logoutButton {
     background: none;
     border: none;
@@ -383,4 +359,3 @@ button:active {
 #logoutButton:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
-*/
