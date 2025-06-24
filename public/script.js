@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
         logoutButton.addEventListener('click', async () => {
             const { error } = await supabaseClient.auth.signOut();
             if (error) return alert('Logout fehlgeschlagen: ' + error.message);
-            window.location.href = '/auth.html';
+            window.location.href = '/index.html';
         });
     }
 
