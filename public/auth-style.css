@@ -218,7 +218,7 @@ button:hover {
 
 /* Zusätzlicher Style für den Hintergrund, wenn du ein Bild verwenden möchtest */
 body {
-  background-image: url('public/img/winkel.png'); /* Ersetze dies mit deinem Bildpfad */
+  background-image: url('/img/winkel.png'); /* Ersetze dies mit deinem Bildpfad */
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
