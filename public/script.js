@@ -3,38 +3,25 @@
 // Supabase Client Initialisierung
 // !!! WICHTIG: Ersetze diese Platzhalter durch deine tatsächlichen Supabase URL und ANON KEY !!!
 // Diese Werte müssen exakt denen in auth.js und den Head-Skripten deiner geschützten Seiten entsprechen.
-const SUPABASE_URL = 'https://ibwojujxyymvalwannza.supabase.co'; // Beispiel: 'https://abcde12345.supabase.co'
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlid29qdWp4eXltdmFsd2FubnphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2MzIxODYsImV4cCI6MjA2NjIwODE4Nn0.THsCEW7MwyTf25wi2NzSR7zLaplf6fNN_fATmcj5C2A'; // Beispiel: 'eyJhbGciOiJIUzI1Ni...'
+const SUPABASE_URL = 'https://ibwojujxyymvalwannza.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlid29qdWp4eXltdmFsd2FubnphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2MzIxODYsImV4cCI6MjA2NjIwODE4Nn0.THsCEW7MwyTf25wi2NzSR7zLaplf6fNN_fATmcj5C2A';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-
-// Hamburgermenü-Logik
+// Hamburger-Menü-Logik (wird via onclick="toggleMenu()" in HTML getriggert)
 function toggleMenu() {
     const dropdown = document.getElementById('dropdown');
+    if (!dropdown) return;
     dropdown.classList.toggle('visible');
-
-    if (dropdown.classList.contains('visible')) {
-        dropdown.style.maxHeight = dropdown.scrollHeight + 'px';
-    } else {
-        dropdown.style.maxHeight = '0';
-    }
+    dropdown.style.maxHeight = dropdown.classList.contains('visible')
+        ? dropdown.scrollHeight + 'px'
+        : '0';
 }
 
-// Timer-Mechanik
+// Timer-Variablen
 let timer;
 let seconds = 0;
 let isRunning = false;
 let isPaused = false;
-
-// DOM-Elemente abrufen
-const startPauseButton = document.getElementById('startPauseButton');
-const endButton = document.getElementById('endButton');
-const uhrDisplay = document.getElementById('uhr');
-const kategorieSelect = document.getElementById('kategorie');
-const timeEntriesList = document.getElementById('timeEntriesList');
-
-// NEU: Referenz zum Filter-Dropdown
-const timeFilterSelect = document.getElementById('timeFilter');
 
 // Funktion zum Formatieren der Zeit
 function formatTime(s) {
@@ -44,165 +31,109 @@ function formatTime(s) {
     return `${h}:${m}:${sec}`;
 }
 
-// Funktion zum Aktualisieren der Zeitanzeige
+// Aktualisiert die Anzeige jede Sekunde
 function updateTime() {
     seconds++;
-    uhrDisplay.innerText = formatTime(seconds);
+    const uhrDisplay = document.getElementById('uhr');
+    if (uhrDisplay) uhrDisplay.innerText = formatTime(seconds);
 }
 
-// Funktion zum Starten oder Pausieren des Timers
+// Start/Pause-Logik
 function startPauseTimer() {
+    const startPauseButton = document.getElementById('startPauseButton');
+    const endButton = document.getElementById('endButton');
     if (isRunning) {
         clearInterval(timer);
         isRunning = false;
         isPaused = true;
-        startPauseButton.innerText = "Fortfahren";
+        if (startPauseButton) startPauseButton.innerText = 'Fortfahren';
     } else {
         timer = setInterval(updateTime, 1000);
         isRunning = true;
         isPaused = false;
-        startPauseButton.innerText = "Pause";
-        endButton.style.display = 'inline-block';
+        if (startPauseButton) startPauseButton.innerText = 'Pause';
+        if (endButton) endButton.style.display = 'inline-block';
     }
 }
 
-// Funktion zum Beenden des Timers und Vorbereiten der Speicherung
+// Timer beenden und speichern
 async function endTimer() {
     clearInterval(timer);
     isRunning = false;
     isPaused = false;
-
-    const selectedCategory = kategorieSelect.value;
+    const kategorieSelect = document.getElementById('kategorie');
+    const selectedCategory = kategorieSelect?.value || 'arbeit';
     const timeSpentSeconds = seconds;
-    const formattedTime = formatTime(seconds);
-
-    console.log(`Timer beendet!`);
-    console.log(`Kategorie: ${selectedCategory}`);
-    console.log(`Verbrachte Zeit (Sekunden): ${timeSpentSeconds}`);
-    console.log(`Verbrachte Zeit (formatiert): ${formattedTime}`);
-
     try {
-        // Option A: Füge hier das Supabase JWT zum Header hinzu,
-        // wenn du möchtest, dass deine /api/save-time Funktion den angemeldeten Benutzer kennt.
-        // Das ist der empfohlene Weg für Backend-Zugriffskontrolle basierend auf dem Benutzer.
         const { data: { session } } = await supabaseClient.auth.getSession();
-        let headers = {
-            'Content-Type': 'application/json',
-        };
-        if (session) {
-            headers['Authorization'] = `Bearer ${session.access_token}`;
-        }
-
+        const headers = { 'Content-Type': 'application/json' };
+        if (session) headers.Authorization = `Bearer ${session.access_token}`;
         const response = await fetch('/api/save-time', {
             method: 'POST',
-            headers: headers, // Verwende die aktualisierten Header
-            body: JSON.stringify({
-                category: selectedCategory,
-                durationSeconds: timeSpentSeconds,
-            }),
+            headers,
+            body: JSON.stringify({ category: selectedCategory, durationSeconds: timeSpentSeconds })
         });
-
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Daten erfolgreich gespeichert:', data);
-            alert('Herlichen Glückwunsch, FWEITER SO DU FAULE RATTE!');
-            loadTimeEntries(timeFilterSelect.value);
-        } else {
-            const errorText = await response.text();
-            console.error('Fehler beim Speichern der Daten:', response.status, errorText);
-            alert('Fehler beim Speichern der Zeit.');
-        }
-    } catch (error) {
-        console.error('Netzwerkfehler beim Senden der Daten:', error);
-        alert('Netzwerkfehler beim Speichern der Zeit.');
+        if (!response.ok) throw new Error(await response.text());
+        alert('Zeit erfolgreich gespeichert! 🎉');
+        loadTimeEntries(document.getElementById('timeFilter')?.value || 'all');
+    } catch (err) {
+        console.error('Speicher-Fehler:', err);
+        alert('Fehler beim Speichern der Zeit.');
     }
-
-    // Timer und Buttons in den Ausgangszustand zurücksetzen
+    // Reset
     seconds = 0;
-    uhrDisplay.innerText = "00:00:00";
-    startPauseButton.innerText = "Start";
-    startPauseButton.style.display = 'inline-block';
-    endButton.style.display = 'none';
-    kategorieSelect.value = "arbeit";
+    document.getElementById('uhr').innerText = '00:00:00';
+    const startPauseButton = document.getElementById('startPauseButton');
+    const endButton = document.getElementById('endButton');
+    if (startPauseButton) startPauseButton.innerText = 'Start';
+    if (endButton) endButton.style.display = 'none';
+    if (kategorieSelect) kategorieSelect.value = 'arbeit';
 }
 
-// NEUE FUNKTION: Daten aus dem Backend laden und anzeigen - mit Filterparameter
+// Einträge laden
 async function loadTimeEntries(filter = 'all') {
-    timeEntriesList.innerHTML = '<li>Lade Daten...</li>';
+    const list = document.getElementById('timeEntriesList');
+    if (!list) return;
+    list.innerHTML = '<li>Lade Daten…</li>';
     try {
-        // Option B: Füge hier das Supabase JWT zum Header hinzu,
-        // wenn du möchtest, dass deine /api/get-time-entries Funktion den angemeldeten Benutzer kennt.
         const { data: { session } } = await supabaseClient.auth.getSession();
-        let headers = {};
-        if (session) {
-            headers['Authorization'] = `Bearer ${session.access_token}`;
-        }
-
-        const url = `/api/get-time-entries?filter=${filter}`;
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: headers, // Verwende die aktualisierten Header
-        });
-        if (response.ok) {
-            const entries = await response.json();
-            timeEntriesList.innerHTML = '';
-
-            if (entries.length === 0) {
-                timeEntriesList.innerHTML = '<li>Noch keine Einträge vorhanden, oder keine für diesen Filter.</li>';
-                return;
-            }
-
-            entries.forEach(entry => {
-                const listItem = document.createElement('li');
-                const date = new Date(entry.timestamp);
-                const formattedDate = date.toLocaleDateString('de-DE', {
-                    year: 'numeric', month: '2-digit', day: '2-digit',
-                    hour: '2-digit', minute: '2-digit'
-                });
-
-                listItem.innerHTML = `
-                    <span class="category">${entry.category}</span>
-                    <span class="duration">${formatTime(entry.duration_seconds)}</span>
-                    <span class="timestamp">${formattedDate}</span>
-                `;
-                timeEntriesList.appendChild(listItem);
-            });
-        } else {
-            const errorText = await response.text();
-            timeEntriesList.innerHTML = `<li>Fehler beim Laden der Daten: ${response.status} - ${errorText}</li>`;
-            console.error('Fehler beim Laden der Daten:', response.status, errorText);
-        }
-    } catch (error) {
-        timeEntriesList.innerHTML = `<li>Netzwerkfehler beim Laden der Daten.</li>`;
-        console.error('Netzwerkfehler beim Laden der Daten:', error);
+        const headers = {};
+        if (session) headers.Authorization = `Bearer ${session.access_token}`;
+        const res = await fetch(`/api/get-time-entries?filter=${filter}`, { headers });
+        if (!res.ok) throw new Error(await res.text());
+        const entries = await res.json();
+        list.innerHTML = entries.length
+            ? entries.map(e => {
+                const date = new Date(e.timestamp).toLocaleString('de-DE', { hour:'2-digit', minute:'2-digit', day:'2-digit', month:'2-digit', year:'numeric' });
+                return `<li><span>${e.category}</span> <span>${formatTime(e.duration_seconds)}</span> <span>${date}</span></li>`;
+              }).join('')
+            : '<li>Keine Einträge gefunden.</li>';
+    } catch (err) {
+        console.error('Lade-Fehler:', err);
+        list.innerHTML = `<li>Fehler beim Laden: ${err.message}</li>`;
     }
 }
 
-// NEU: Event-Listener für das Filter-Dropdown
-timeFilterSelect.addEventListener('change', () => {
-    loadTimeEntries(timeFilterSelect.value);
-});
-
-
-// Beim Laden der Seite die gespeicherten Zeiten anzeigen (Initialaufruf mit Standardfilter 'all')
+// Alles, was beim Seiten-Load direkt ausgeführt werden soll
 document.addEventListener('DOMContentLoaded', () => {
-    loadTimeEntries('all'); // Ruft loadTimeEntries beim Laden der Seite auf, initial 'Alle'
-
-    // NEU: Logout-Button Event-Listener
+    // Logout-Button
     const logoutButton = document.getElementById('logoutButton');
     if (logoutButton) {
         logoutButton.addEventListener('click', async () => {
             const { error } = await supabaseClient.auth.signOut();
-
-            if (error) {
-                console.error('Logout Error:', error);
-                alert('Fehler beim Abmelden: ' + error.message);
-            } else {
-                console.log('Erfolgreich abgemeldet.');
-                alert('Du wurdest abgemeldet!');
-                // Nach erfolgreichem Logout zur Anmeldeseite weiterleiten
-                window.location.href = '/auth.html';
-            }
+            if (error) return alert('Logout fehlgeschlagen: ' + error.message);
+            window.location.href = '/auth.html';
         });
+    }
+
+    // Filter-Dropdown
+    const timeFilterSelect = document.getElementById('timeFilter');
+    if (timeFilterSelect) {
+        timeFilterSelect.addEventListener('change', () => loadTimeEntries(timeFilterSelect.value));
+    }
+
+    // Initiales Laden der Einträge, falls Liste existiert
+    if (document.getElementById('timeEntriesList')) {
+        loadTimeEntries(timeFilterSelect?.value || 'all');
     }
 });
