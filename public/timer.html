@@ -4,29 +4,6 @@
     <meta charset="UTF-8">
     <title>Timer</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-    <script>
-        // CLIENT-SEITIGE PRÜFUNG DER AUTHENTIFIZIERUNG
-        // !!! WICHTIG: Ersetze diese Platzhalter durch deine tatsächlichen Supabase URL und ANON KEY !!!
-        const SUPABASE_URL = 'https://ibwojujxyymvalwannza.supabase.co'; // Dein Wert
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlid29qdWp4eXltdmFsd2FubnphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2MzIxODYsImV4cCI6MjA2NjIwODE4Nn0.THsCEW7MwyTf25wi2NzSR7zLaplf6fNN_fATmcj5C2A'; // Dein Wert
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        async function checkUserAuth() {
-            const { data: { user }, error } = await supabaseClient.auth.getUser();
-
-            if (error || !user) {
-                console.warn('Benutzer nicht angemeldet oder Sitzung abgelaufen. Leite zu auth.html um.');
-                window.location.href = '/auth.html';
-            } else {
-                console.log('Benutzer ist angemeldet:', user.email);
-            }
-        }
-
-        checkUserAuth();
-    </script>
-
 </head>
 <body>
 <nav class="menu">
@@ -38,7 +15,6 @@
         <li><a href="chat.html">💬 Chat</a></li>
         <li><a href="report.html">📄 Report</a></li>
         <li><a href="settings.html">⚙️ Einstellungen</a></li>
-        <li><button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">🚪 Logout</button></li>
     </ul>
 </nav>
 
@@ -73,6 +49,7 @@
         <li>Lade Daten...</li>
     </ul>
 </div>
+
 
 <script src="script.js"></script>
 </body>
