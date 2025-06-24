@@ -282,80 +282,36 @@ button:active {
     color: #bbb;
     text-align: right;
 }
-/* Dein vorhandenes CSS-Beginn ... */
 
-/* Nur auf das Dropdown-Menü mit der ID 'dropdown' anwenden */
-#dropdown {
-    position: absolute;
-    top: 50px;
-    left: 10px;
-    background-color: #111; /* Hintergrund des Dropdowns */
-    z-index: 1000;
-    width: 180px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-height 0.8s ease, opacity 1.0s ease;
-    padding: 0; /* Wichtig: Entfernt das Standard-Padding der UL */
-    margin: 0;  /* Wichtig: Entfernt den Standard-Margin der UL */
-    list-style: none; /* Entfernt die Standard-Listensymbole */
-}
-
-/* Sichtbares Menü */
-#dropdown.visible {
-    max-height: 500px;
-    opacity: 1;
-}
-
-/* Stil für die Listenelemente im Dropdown-Menü */
-#dropdown li {
-    padding: 0; /* Kein Padding hier, es kommt in den Buttons selbst */
-    margin: 0; /* Kein Margin hier */
-    border-bottom: 1px solid #222; /* Trennlinie zwischen den Buttons */
-    /* Dies wird den Hintergrund für den Logout-Button nicht behindern, da der Button selbst gefüllt ist */
-}
-
-#dropdown li:last-child {
-    border-bottom: none;
-}
-
-
-/* --- WICHTIG: Korrekter KLASSEN-Selektor (. statt #) für die Dropdown-Buttons --- */
-.dropdown-nav-button { /* HIER: PUNKT STATT RAUTE! */
-    display: block; /* Macht den Link/Button zu einem Block-Element */
-    width: 100%; /* Nimmt die volle Breite des Elternelements ein */
-    padding: 15px 20px; /* Innenabstand für die Button-Größe */
-    background-color: transparent; /* Startet transparent, damit der #dropdown-Hintergrund durchscheint */
-    color: #fff; /* Textfarbe */
-    text-decoration: none; /* Unterstreichung für Links entfernen */
-    font-size: 1.1em; /* Schriftgröße */
-    text-align: left; /* Text linksbündig */
-    border: none; /* Keine Ränder */
-    cursor: pointer; /* Zeiger-Cursor */
-    transition: background-color 0.3s ease; /* Sanfter Übergang beim Hover */
-    box-sizing: border-box; /* Stellt sicher, dass Padding nicht zur Breite beiträgt */
-    /* Keine border-radius hier, da der Container (UL) diese hat, und wir wollen nicht, dass jeder Button Ecken hat */
-}
-
-/* Hover-Effekt für alle Dropdown-Buttons */
-.dropdown-nav-button:hover { /* HIER: PUNKT STATT RAUTE! */
-    background-color: rgba(255, 255, 255, 0.1); /* Leichter Hintergrund beim Hover */
-}
-
-
-#logoutButton {
+#dropdown-nav-button{
     background: none;
     border: none;
-    color: #fff;
+    color: #fff; /* Passend zu deinem Text im Menü */
     cursor: pointer;
     padding: 10px 15px;
     width: 100%;
     text-align: left;
     font-size: 1em;
+    /* Optional: Hover-Effekt wie bei den Links */
     transition: background-color 0.3s ease;
 }
+
+#dropdown-nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.1); /* Leichter Hintergrund beim Hover */
+}
+#logoutButton {
+    background: none;
+    border: none;
+    color: #fff; /* Passend zu deinem Text im Menü */
+    cursor: pointer;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    /* Optional: Hover-Effekt wie bei den Links */
+    transition: background-color 0.3s ease;
+}
+
 #logoutButton:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.1); /* Leichter Hintergrund beim Hover */
 }
