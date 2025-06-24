@@ -44,10 +44,11 @@ body {
     user-select: none;
 }
 
-ul li {
+/* Entferne oder überschreibe diese Regel, da wir spezifischere für die Buttons haben werden */
+/* ul li {
     padding: 10px 15px;
     border-bottom: 1px solid #222;
-}
+} */
 
 /* Nur auf das Dropdown-Menü mit der ID 'dropdown' anwenden */
 #dropdown {
@@ -63,6 +64,8 @@ ul li {
     opacity: 0;
     overflow: hidden;
     transition: max-height 0.8s ease, opacity 1.0s ease;
+    padding: 0; /* Wichtig: Entfernt das Standard-Padding der UL */
+    list-style: none; /* Entfernt die Standard-Listensymbole */
 }
 
 
@@ -73,29 +76,68 @@ ul li {
 }
 
 
-ul li {
-    padding: 15px 20px;
-    border-bottom: 1px solid #222;
+/* Stil für die Listenelemente im Dropdown-Menü */
+#dropdown li {
+    padding: 0; /* Padding wird in den Buttons selbst gesetzt */
+    border-bottom: 1px solid #222; /* Trennlinie zwischen den Buttons */
+    /* background-color: transparent; */ /* Optional, damit der Button seinen eigenen Hintergrund hat */
 }
 
-ul li:last-child {
+#dropdown li:last-child {
     border-bottom: none;
 }
 
-ul li a {
+/* **NEUE REGELN FÜR DIE DROPDOWN-BUTTONS** */
+.dropdown-nav-button {
+    display: block; /* Macht den Link/Button zu einem Block-Element, nimmt volle Breite ein */
+    width: 100%; /* Stellt sicher, dass er die volle Breite des Elternelements einnimmt */
+    padding: 15px 20px; /* Innenabstand, wie bei deinen ursprünglichen li a */
+    background-color: #111; /* Hintergrundfarbe des Buttons (wie Dropdown-Menü) */
+    color: white; /* Textfarbe */
+    text-decoration: none; /* Entfernt die Unterstreichung von Links */
+    font-size: 1.1em; /* Schriftgröße */
+    text-align: left; /* Text linksbündig */
+    border: none; /* Keine Ränder */
+    cursor: pointer; /* Zeigt den Zeiger an */
+    transition: background-color 0.2s ease, color 0.2s ease; /* Sanfter Übergang beim Hover */
+    border-radius: 0; /* Keine abgerundeten Ecken, da die UL das macht */
+    /* Wenn der Logout-Button nicht die gleichen abgerundeten Ecken haben soll wie die UL, dann hier border-radius setzen */
+}
+
+/* Hover-Effekt für alle Dropdown-Buttons */
+.dropdown-nav-button:hover {
+    background-color: #333; /* Dunklerer Hintergrund beim Hover */
+}
+
+/* Spezifische Styles für den Logout-Button */
+.logout-button {
+    background-color: #dc3545; /* Beispiel: Roter Hintergrund für Logout */
+    color: white;
+    /* Optional: Falls du einen anderen Text-Align möchtest, aber left ist meist gut */
+}
+
+.logout-button:hover {
+    background-color: #c82333; /* Dunkleres Rot beim Hover für Logout */
+}
+/* **ENDE NEUE REGELN** */
+
+
+/* Diese Regeln sind nun größtenteils redundant oder müssen überprüft werden */
+/* ul li a {
     color: white;
     text-decoration: none;
     font-size: 1.1em;
     display: block;
-}
+} */
 
 .hamburger:hover span {
     background-color: #aaa;
 }
 
-ul li:hover {
+/* Diese Regel wird jetzt durch .dropdown-nav-button:hover ersetzt */
+/* ul li:hover {
     background-color: #333;
-}
+} */
 
 .hidden {
     display: none;
@@ -223,7 +265,7 @@ button:active {
 }
 
 
-/zeiten anzeige
+/* zeiten anzeige */
 
 #savedTimesContainer {
     width: 600px; /* Oder 80% */
@@ -238,7 +280,7 @@ button:active {
 
 #savedTimesContainer h2 {
     text-align: center;
-    color: 	#f6f6e8; /* Eine Akzentfarbe */
+    color:  #f6f6e8; /* Eine Akzentfarbe */
     margin-bottom: 25px;
     font-size: 1.8em;
 }
@@ -283,20 +325,19 @@ button:active {
     text-align: right;
 }
 
-
-#logoutButton {
+/* Diese Regel wird jetzt durch .dropdown-nav-button und .logout-button überschrieben */
+/* #logoutButton {
     background: none;
     border: none;
-    color: #fff; /* Passend zu deinem Text im Menü */
+    color: #fff;
     cursor: pointer;
     padding: 10px 15px;
     width: 100%;
     text-align: left;
     font-size: 1em;
-    /* Optional: Hover-Effekt wie bei den Links */
     transition: background-color 0.3s ease;
 }
 
 #logoutButton:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* Leichter Hintergrund beim Hover */
-}
+    background-color: rgba(255, 255, 255, 0.1);
+} */
