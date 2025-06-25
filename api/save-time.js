@@ -59,11 +59,10 @@ module.exports = async (req, res) => {
             .from('time_entries') // Ersetze 'time_entries' mit deinem tatsächlichen Tabellennamen
             .insert([
                 {
-                    // <-- Hier die user_id hinzufügen!
+                    user_id: userId, // <-- Hier die user_id hinzufügen!
                     category: category,
                     duration_seconds: durationSeconds,
-                    timestamp: new Date().toISOString(), // Datumsformat für PostgreSQL
-                    user_id: userId
+                    timestamp: new Date().toISOString() // Datumsformat für PostgreSQL
                 }
             ])
             .select(); // Fügt .select() hinzu, um die eingefügten Daten zurückzuerhalten
