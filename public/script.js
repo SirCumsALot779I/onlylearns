@@ -67,20 +67,43 @@ async function endTimer() {
     try {
         const { data: { session } } = await supabaseClient.auth.getSession();
         const headers = { 'Content-Type': 'application/json' };
-        if (session) headers.Authorization = `Bearer ${session.access_token}`;
+        if (session && session.access_token) { // Prüfen, ob Session und Token vorhanden sind
+            headers.Authorization = `Bearer ${session.access_token}`;
+        } else {
+            console.warn("Keine aktive Supabase Session gefunden. Zeit kann nicht mit Benutzer-ID gespeichert werden.");
+            alert('Bitte melden Sie sich an, um Ihre Arbeitszeit zu speichern.');
+            // Optional: Hier könnte man auch zur Login-Seite umleiten
+            // window.location.href = '/index.html';
+            // Reset und return, da wir nicht speichern können
+            seconds = 0;
+            document.getElementById('uhr').innerText = '00:00:00';
+            const startPauseButton = document.getElementById('startPauseButton');
+            const endButton = document.getElementById('endButton');
+            if (startPauseButton) startPauseButton.innerText = 'Start';
+            if (endButton) endButton.style.display = 'none';
+            if (kategorieSelect) kategorieSelect.value = 'arbeit';
+            return; // Beende die Funktion hier
+        }
+
         const response = await fetch('/api/save-time', {
             method: 'POST',
             headers,
             body: JSON.stringify({ category: selectedCategory, durationSeconds: timeSpentSeconds })
         });
-        if (!response.ok) throw new Error(await response.text());
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('Speicher-Fehler Response:', errorText);
+            throw new Error(errorText);
+        }
+
         alert('Zeit erfolgreich gespeichert! 🎉');
         loadTimeEntries(document.getElementById('timeFilter')?.value || 'all');
     } catch (err) {
         console.error('Speicher-Fehler:', err);
-        alert('Fehler beim Speichern der Zeit.');
+        alert('Fehler beim Speichern der Zeit: ' + (err.message || 'Unbekannter Fehler.'));
     }
-    // Reset
+    // Reset (wird nur ausgeführt, wenn keine "return" von oben erfolgte oder Fehler nicht gravierend genug war)
     seconds = 0;
     document.getElementById('uhr').innerText = '00:00:00';
     const startPauseButton = document.getElementById('startPauseButton');
@@ -98,12 +121,24 @@ async function loadTimeEntries(filter = 'all') {
     try {
         const { data: { session } } = await supabaseClient.auth.getSession();
         const headers = {};
-        if (session) headers.Authorization = `Bearer ${session.access_token}`;
+        if (session && session.access_token) { // Prüfen, ob Session und Token vorhanden sind
+            headers.Authorization = `Bearer ${session.access_token}`;
+        } else {
+            console.log('Keine aktive Supabase Session. Laden der Zeiten wird eingeschränkt.');
+            list.innerHTML = '<li>Bitte melden Sie sich an, um Ihre Zeiten zu sehen.</li>';
+            return; // Beende die Funktion, wenn kein Token vorhanden ist
+        }
+
         const res = await fetch(`/api/get-time-entries?filter=${filter}`, { headers });
-        if (!res.ok) throw new Error(await res.text());
+        if (!res.ok) {
+            const errorText = await res.text();
+            console.error('Lade-Fehler Response:', errorText);
+            throw new Error(errorText);
+        }
         const entries = await res.json();
         list.innerHTML = entries.length
             ? entries.map(e => {
+                // `timestamptz` wird von `new Date()` korrekt geparst
                 const date = new Date(e.timestamp).toLocaleString('de-DE', { hour:'2-digit', minute:'2-digit', day:'2-digit', month:'2-digit', year:'numeric' });
                 return `<li><span>${e.category}</span> <span>${formatTime(e.duration_seconds)}</span> <span>${date}</span></li>`;
               }).join('')
