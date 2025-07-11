@@ -128,12 +128,16 @@ async function loadChatPartners() {
     chatPartnersList.innerHTML = '<li>Lade Chatpartner...</li>';
 
     try {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        if (!user) {
+        // *** WICHTIGE ÄNDERUNG HIER: Holen der Session, die den access_token enthält ***
+        const { data: { user, session } } = await supabaseClient.auth.getSession();
+        if (!session || !session.access_token) { // Prüfen, ob Session und Token vorhanden sind
             errorMessage.innerHTML = '<p>Bitte melden Sie sich an, um Chatpartner zu sehen.</p>';
             errorMessage.style.display = 'block';
             loadingMessage.style.display = 'none';
-            return;
+            // Deaktiviere auch die Eingabe, falls der Benutzer nicht angemeldet ist
+            messageInput.disabled = true;
+            sendMessageButton.disabled = true;
+            return; // Hier abbrechen, wenn kein Token verfügbar ist
         }
         currentUserId = user.id;
 
@@ -141,7 +145,7 @@ async function loadChatPartners() {
         // Annahme: Es gibt einen Node.js Endpunkt /api/get-all-profiles
         const res = await fetch('/api/get-all-profiles', {
             headers: {
-                'Authorization': `Bearer ${user.access_token}`
+                'Authorization': `Bearer ${session.access_token}` // HIER wird der Token aus der Session gesendet
             }
         });
         if (!res.ok) {
@@ -285,6 +289,8 @@ function startPolling() {
 // Initialisierung beim Laden der Seite
 document.addEventListener('DOMContentLoaded', async () => {
     // Stellen Sie sicher, dass der Benutzer angemeldet ist
+    // Dies ist eine Redundanzprüfung, die aber schadet nicht, wenn sie hier bleibt.
+    // Der wichtigste Check findet jetzt direkt in loadChatPartners statt.
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) {
         errorMessage.innerHTML = '<p>Bitte melden Sie sich an, um den Chat zu nutzen.</p>';
