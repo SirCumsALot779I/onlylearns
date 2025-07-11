@@ -128,33 +128,62 @@ async function loadChatPartners() {
     chatPartnersList.innerHTML = '<li>Lade Chatpartner...</li>';
 
     try {
-        // *** WICHTIGE ÄNDERUNG HIER: Holen der Session, die den access_token enthält ***
+        // DEBUG START: Temporär entfernt, um sicherzustellen, dass der fetch-Aufruf immer ausgeführt wird
         const { data: { user, session } } = await supabaseClient.auth.getSession();
-        if (!session || !session.access_token) { // Prüfen, ob Session und Token vorhanden sind
-            errorMessage.innerHTML = '<p>Bitte melden Sie sich an, um Chatpartner zu sehen.</p>';
-            errorMessage.style.display = 'block';
-            loadingMessage.style.display = 'none';
-            // Deaktiviere auch die Eingabe, falls der Benutzer nicht angemeldet ist
-            messageInput.disabled = true;
-            sendMessageButton.disabled = true;
-            return; // Hier abbrechen, wenn kein Token verfügbar ist
+
+        // Temporäre user.id Zuweisung für Debug-Zwecke, falls kein User angemeldet ist
+        // Dies sollte nach dem Debugging entfernt werden.
+        if (!user) {
+             console.warn("User not logged in. Using a dummy ID for debugging. Please log in for full functionality.");
+             currentUserId = "dummy-user-id-for-debug-123"; // Ersetze dies mit einer echten UUID, wenn du testen willst
+             // Oder besser: Lass es leer und erwarte den 401 vom Backend, aber der fetch wird trotzdem gemacht
+        } else {
+             currentUserId = user.id;
         }
-        currentUserId = user.id;
+
+        let authToken = session?.access_token;
+        if (!authToken) {
+            console.warn("No access token found. The backend API call will likely fail with 401 Unauthorized.");
+            // Für Debug-Zwecke senden wir trotzdem eine Anfrage, auch wenn der Token fehlt
+            // In der Produktion sollte hier ein 'return' stehen, wie es vorher war
+            authToken = 'debug_no_token'; // Oder eine leere Zeichenkette, je nachdem wie der Backend-Fehler aussehen soll
+        }
+        // DEBUG END
+
 
         // API-Aufruf, um alle Profile außer dem eigenen zu erhalten
         // Annahme: Es gibt einen Node.js Endpunkt /api/get-all-profiles
         const res = await fetch('/api/get-all-profiles', {
             headers: {
-                'Authorization': `Bearer ${session.access_token}` // HIER wird der Token aus der Session gesendet
+                'Authorization': `Bearer ${authToken}` // HIER wird der Token aus der Session gesendet (oder debug_no_token)
             }
         });
+
+        // DEBUG START: Verbessertes Error Handling für den API-Aufruf
         if (!res.ok) {
             const errorText = await res.text();
-            throw new Error(`Fehler beim Laden der Profile: ${errorText}`);
+            console.error(`API response was not OK: Status ${res.status}, Message: ${errorText}`);
+            throw new Error(`Fehler beim Laden der Profile: ${errorText} (Status: ${res.status})`);
         }
+        // DEBUG END
+
         const profiles = await res.json();
 
+        // DEBUG START: Log the received profiles data
+        console.log("Received profiles data:", profiles);
+        // DEBUG END
+
         chatPartnersList.innerHTML = '';
+
+        // DEBUG START: Add a check if profiles is an array before filtering
+        if (!Array.isArray(profiles)) {
+            console.error("Profiles data is not an array:", profiles);
+            errorMessage.innerHTML = `<p>Fehler: Unerwartetes Datenformat vom Server. Konnte Chatpartner nicht laden.</p>`;
+            errorMessage.style.display = 'block';
+            return; // Abbrechen, da Daten ungültig sind
+        }
+        // DEBUG END
+
         const otherProfiles = profiles.filter(p => p.id !== currentUserId);
 
         if (otherProfiles.length === 0) {
@@ -269,62 +298,4 @@ function subscribeToMessages() {
         .subscribe((status) => {
             if (status === 'SUBSCRIBED') {
                 console.log('Realtime-Channel abonniert:', `chat_${currentUserId}_${selectedPartnerId}`);
-            } else if (status === 'CHANNEL_ERROR') {
-                console.error('Realtime-Channel Fehler. Fällt zurück auf Polling.', realtimeChannel.error);
-                // Fallback auf Polling, wenn Realtime fehlschlägt
-                // clearInterval(pollingInterval); // Falls ein Polling-Interval läuft, beenden
-                // pollingInterval = setInterval(loadMessages, 5000); // Neues Polling starten
-            }
-        });
-}
-
-// Fallback: Polling (alle 5 Sekunden aktualisieren)
-let pollingInterval = null;
-function startPolling() {
-    if (pollingInterval) clearInterval(pollingInterval); // Vorhandenes Interval löschen
-    pollingInterval = setInterval(loadMessages, 5000); // Alle 5 Sekunden Nachrichten laden
-}
-// stopPolling(); // Wenn Realtime funktioniert, Polling stoppen
-
-// Initialisierung beim Laden der Seite
-document.addEventListener('DOMContentLoaded', async () => {
-    // Stellen Sie sicher, dass der Benutzer angemeldet ist
-    // Dies ist eine Redundanzprüfung, die aber schadet nicht, wenn sie hier bleibt.
-    // Der wichtigste Check findet jetzt direkt in loadChatPartners statt.
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    if (!user) {
-        errorMessage.innerHTML = '<p>Bitte melden Sie sich an, um den Chat zu nutzen.</p>';
-        errorMessage.style.display = 'block';
-        messageInput.disabled = true;
-        sendMessageButton.disabled = true;
-        return;
-    }
-    currentUserId = user.id;
-
-    // Lade Chatpartner beim Start
-    await loadChatPartners();
-
-    // Wenn Realtime nicht genutzt wird, Polling starten
-    // startPolling(); // Kommentar entfernen, um Polling zu aktivieren
-});
-
-// Bei Seitenwechsel oder Schließen des Tabs Realtime-Kanal aufräumen
-window.addEventListener('beforeunload', () => {
-    if (realtimeChannel) {
-        supabaseClient.removeChannel(realtimeChannel);
-    }
-});
-
-// Status-Nachrichten anzeigen (kopiert von settings.js, kann zentralisiert werden)
-function showStatusMessage(message, isError = false) {
-    const statusMessageElement = document.getElementById('statusMessage'); // Annahme, dass es ein Status-Element gibt
-    if (!statusMessageElement) return;
-
-    statusMessageElement.textContent = message;
-    statusMessageElement.style.display = 'block';
-    statusMessageElement.className = isError ? 'status-message error' : 'status-message success'; // CSS-Klassen für Styling
-
-    setTimeout(() => {
-        statusMessageElement.style.display = 'none';
-    }, 3000);
-}
+            } else if
