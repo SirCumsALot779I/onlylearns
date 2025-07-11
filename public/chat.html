@@ -2,36 +2,11 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Timer</title>
+    <title>Chat - OnlyLearns</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png" />
     <link rel="stylesheet" href="style.css">
-    <script>
-        // CLIENT-SEITIGE PRÜFUNG DER AUTHENTIFIZIERUNG
-        // !!! WICHTIG: Ersetze diese Platzhalter durch deine tatsächlichen Supabase URL und ANON KEY !!!
-        const SUPABASE_URL = 'DEINE_TATSÄCHLICHE_SUPABASE_URL_HIER_EINFÜGEN';
-        const SUPABASE_ANON_KEY = 'DEIN_TATSÄCHLICHER_SUPABASE_ANON_KEY_HIER_EINFÜGEN';
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // Asynchrone Funktion, um den Benutzerstatus zu prüfen
-        async function checkUserAuth() {
-            const { data: { user }, error } = await supabaseClient.auth.getUser();
-
-            if (error || !user) {
-                // Benutzer ist nicht angemeldet oder Sitzung ist abgelaufen
-                console.warn('Benutzer nicht angemeldet oder Sitzung abgelaufen. Leite zu auth.html um.');
-                window.location.href = '/auth.html'; // Leite zur Anmeldeseite um
-            } else {
-                // Benutzer ist angemeldet
-                console.log('Benutzer ist angemeldet:', user.email);
-                // Hier könnte man den Benutzernamen auf der Seite anzeigen oder andere UI-Updates machen
-            }
-        }
-
-        // Führe die Prüfung sofort aus
-        checkUserAuth();
-    </script>
-    <link rel="stylesheet" href="style.css">
-</head>
+    <link rel="stylesheet" href="chat-style.css"> </head>
 <body>
 <nav class="menu">
     <div class="hamburger" onclick="toggleMenu()">
@@ -39,46 +14,49 @@
     </div>
     <ul id="dropdown" class="">
         <li><a href="main.html">⌂ Home</a></li>
+        <li><a href="timer.html">⏱️ Timer</a></li>
+        <li><a href="dashboard.html">📈 Dashboard</a></li>
         <li><a href="chat.html">💬 Chat</a></li>
-        <li><a href="report.html">📄 Report</a></li>
         <li><a href="settings.html">⚙️ Einstellungen</a></li>
+        <li><button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">🚪 Logout</button></li>
     </ul>
 </nav>
 
+<div class="chat-container">
+    <h1>💬 Chat</h1>
 
-<div id="stopwatch-container">
-    <h1>Stoppuhr</h1>
-
-    <label for="kategorie">Kategorie:</label>
-    <select id="kategorie">
-        <option value="arbeit">Arbeit</option>
-        <option value="pause">Pause</option>
-        <option value="lernen">Lernen</option>
-    </select>
-
-    <div id="uhr">00:00:00</div>
-    <button id="startPauseButton" onclick="startPauseTimer()">Start</button> <button id="endButton" onclick="endTimer()" style="display:none;">Beenden</button> </div>
-
-
-<div id="savedTimesContainer">
-    <h2>Gespeicherte Zeiten</h2>
-
-    <div class="filter-controls">
-        <label for="timeFilter">Anzeigen:</label>
-        <select id="timeFilter">
-            <option value="all">Alle</option>
-            <option value="today">Heute</option>
-            <option value="yesterday">Gestern</option>
-            <option value="last_7_days">Letzte 7 Tage</option>
-        </select>
+    <div class="chat-sidebar">
+        <h2>Chatpartner</h2>
+        <ul id="chatPartnersList">
+            <li>Lade Chatpartner...</li>
+        </ul>
+        <p class="sidebar-info">Wählen Sie einen Partner, um den Chat zu starten.</p>
     </div>
-    <ul id="timeEntriesList">
-        <li>Lade Daten...</li>
-    </ul>
+
+    <div class="chat-main">
+        <div id="chatHeader" class="chat-header">
+            Wählen Sie einen Chatpartner aus...
+        </div>
+        <div id="messagesContainer" class="messages-container">
+            <div class="no-messages-placeholder">
+                Wählen Sie einen Chatpartner, um Nachrichten anzuzeigen, oder starten Sie einen neuen Chat.
+            </div>
+        </div>
+        <div class="chat-input-area">
+            <textarea id="messageInput" placeholder="Nachricht eingeben..." rows="3" disabled></textarea>
+            <button id="sendMessageButton" disabled>Senden</button>
+        </div>
+    </div>
+
+    <div id="loadingMessage" class="loading-message" style="display:none;">
+        <p>Chatpartner werden geladen...</p>
+    </div>
+    <div id="errorMessage" class="error-message" style="display:none;">
+        <p>Fehler beim Laden des Chats. Bitte versuchen Sie es später erneut.</p>
+    </div>
 </div>
 
-
 <script src="script.js"></script>
-<script src="script.js"></script>
+<script src="chat.js"></script>
 </body>
 </html>
