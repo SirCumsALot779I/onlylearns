@@ -130,7 +130,6 @@ async function loadChatPartners() {
     try {
         const { data: { user } } = await supabaseClient.auth.getUser();
         if (!user) {
-        if (!session || !session.access_token) { // Prüfe auf Session und Token
             errorMessage.innerHTML = '<p>Bitte melden Sie sich an, um Chatpartner zu sehen.</p>';
             errorMessage.style.display = 'block';
             loadingMessage.style.display = 'none';
