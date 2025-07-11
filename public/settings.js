@@ -30,22 +30,6 @@ async function loadUserSettings() {
         const userNameInput = document.getElementById('userNameInput');
         if (userNameInput) userNameInput.value = user.user_metadata?.username || '';
 
-        // Beispiel: Laden der Spracheinstellung
-        // Wenn Sie eine 'language'-Einstellung in user_metadata hätten
-        const languageSelect = document.getElementById('languageSelect');
-        if (languageSelect) {
-            const savedLang = user.user_metadata?.language || 'de'; // Standard: Deutsch
-            languageSelect.value = savedLang;
-        }
-
-        // Beispiel: Laden der Benachrichtigungseinstellung
-        const notificationsToggle = document.getElementById('notificationsToggle');
-        if (notificationsSelect) {
-            const savedNotifications = user.user_metadata?.notifications || false; // Standard: false
-            notificationsToggle.checked = savedNotifications;
-        }
-
-
     } else {
         // Nicht angemeldet, Felder deaktivieren
         document.querySelectorAll('.settings-container input, .settings-container select, .settings-container button:not(#logoutButton)').forEach(el => {
@@ -70,16 +54,6 @@ async function saveSetting(settingType) {
         let updateData = {};
 
         switch (settingType) {
-            case 'language':
-                const languageSelect = document.getElementById('languageSelect');
-                updateData = { data: { language: languageSelect?.value } }; // Aktualisiert user_metadata
-                message = 'Spracheinstellung gespeichert.';
-                break;
-            case 'notifications':
-                const notificationsToggle = document.getElementById('notificationsToggle');
-                updateData = { data: { notifications: notificationsToggle?.checked } }; // Aktualisiert user_metadata
-                message = 'Benachrichtigungseinstellung gespeichert.';
-                break;
             case 'email':
                 const emailInput = document.getElementById('emailInput');
                 const newEmail = emailInput?.value;
@@ -126,7 +100,6 @@ async function saveSetting(settingType) {
             error = profileError;
         }
 
-
         if (error) {
             throw new Error(error.message);
         }
@@ -141,7 +114,7 @@ async function saveSetting(settingType) {
 }
 
 
-// --- Spezielle Funktion für den Dark/White Mode Button ---
+// --- Spezielle Funktion für den Dark/White Mode Button (bleibt gleich) ---
 function handleDarkModeButton() {
     // Öffne ein Alert-Fenster
     alert("Mehr Weiß gibt's nicht, Pech!");
