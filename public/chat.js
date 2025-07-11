@@ -298,4 +298,61 @@ function subscribeToMessages() {
         .subscribe((status) => {
             if (status === 'SUBSCRIBED') {
                 console.log('Realtime-Channel abonniert:', `chat_${currentUserId}_${selectedPartnerId}`);
-            } else if
+            } else if (status === 'CHANNEL_ERROR') {
+                console.error('Realtime-Channel Fehler. Fällt zurück auf Polling.', realtimeChannel.error);
+                // Fallback auf Polling, wenn Realtime fehlschlägt
+                // clearInterval(pollingInterval); // Falls ein Polling-Interval läuft, beenden
+                // pollingInterval = setInterval(loadMessages, 5000); // Neues Polling starten
+            }
+        });
+}
+
+// Fallback: Polling (alle 5 Sekunden aktualisieren)
+let pollingInterval = null;
+function startPolling() {
+    if (pollingInterval) clearInterval(pollingInterval); // Vorhandenes Interval löschen
+    pollingInterval = setInterval(loadMessages, 5000); // Alle 5 Sekunden Nachrichten laden
+}
+// stopPolling(); // Wenn Realtime funktioniert, Polling stoppen
+
+// Initialisierung beim Laden der Seite
+document.addEventListener('DOMContentLoaded', async () => {
+    // DEBUG START: Temporär entfernt, um sicherzustellen, dass loadChatPartners immer aufgerufen wird
+    // const { data: { user } } = await supabaseClient.auth.getUser();
+    // if (!user) {
+    //     errorMessage.innerHTML = '<p>Bitte melden Sie sich an, um den Chat zu nutzen.</p>';
+    //     errorMessage.style.display = 'block';
+    //     messageInput.disabled = true;
+    //     sendMessageButton.disabled = true;
+    //     return;
+    // }
+    // currentUserId = user.id; // currentUserId wird jetzt in loadChatPartners gesetzt
+
+    // Lade Chatpartner beim Start
+    await loadChatPartners(); // Dieser Aufruf wird jetzt immer gemacht
+    // DEBUG END
+
+    // Wenn Realtime nicht genutzt wird, Polling starten
+    // startPolling(); // Kommentar entfernen, um Polling zu aktivieren
+});
+
+// Bei Seitenwechsel oder Schließen des Tabs Realtime-Kanal aufräumen
+window.addEventListener('beforeunload', () => {
+    if (realtimeChannel) {
+        supabaseClient.removeChannel(realtimeChannel);
+    }
+});
+
+// Status-Nachrichten anzeigen (kopiert von settings.js, kann zentralisiert werden)
+function showStatusMessage(message, isError = false) {
+    const statusMessageElement = document.getElementById('statusMessage'); // Annahme, dass es ein Status-Element gibt
+    if (!statusMessageElement) return;
+
+    statusMessageElement.textContent = message;
+    statusMessageElement.style.display = 'block';
+    statusMessageElement.className = isError ? 'status-message error' : 'status-message success'; // CSS-Klassen für Styling
+
+    setTimeout(() => {
+        statusMessageElement.style.display = 'none';
+    }, 3000);
+}
