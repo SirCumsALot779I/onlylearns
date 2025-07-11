@@ -142,7 +142,7 @@ async function loadChatPartners() {
         // Annahme: Es gibt einen Node.js Endpunkt /api/get-all-profiles
         const res = await fetch('/api/get-all-profiles', {
             headers: {
-                'Authorization': `Bearer ${session.access_token}`
+                'Authorization': `Bearer ${user.access_token}`
             }
         });
         if (!res.ok) {
