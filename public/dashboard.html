@@ -26,6 +26,28 @@
 <div class="dashboard-container">
     <h1>📊 Ihr Produktivitäts-Dashboard</h1>
 
+    <div class="dashboard-section summary-stats">
+        <h2>Übersicht Ihrer Zeiten</h2>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Gesamtzeit (Alle)</h3>
+                <p id="totalTimeAll">Lade...</p>
+            </div>
+            <div class="stat-card">
+                <h3>Zeit Heute</h3>
+                <p id="totalTimeToday">Lade...</p>
+            </div>
+            <div class="stat-card">
+                <h3>Zeit Gestern</h3>
+                <p id="totalTimeYesterday">Lade...</p>
+            </div>
+            <div class="stat-card">
+                <h3>Zeit Letzte 7 Tage</h3>
+                <p id="totalTimeLast7Days">Lade...</p>
+            </div>
+        </div>
+    </div>
+
     <div class="dashboard-section">
         <h2>Produktivität Heute nach Kategorie</h2>
         <div class="chart-container">
@@ -40,6 +62,14 @@
             <canvas id="dailyProductivityChart"></canvas>
         </div>
         <p class="chart-info">Diese Grafik zeigt Ihre täglich verbrachte Zeit in allen Kategorien über die letzten 7 Tage.</p>
+    </div>
+
+    <div class="dashboard-section">
+        <h2>Gesamtzeiten pro Kategorie (Alle Perioden)</h2>
+        <ul id="categoryTotalTimesList">
+            <li>Lade Kategorienzeiten...</li>
+        </ul>
+        <p class="list-info">Eine detaillierte Auflistung der Gesamtzeit pro Kategorie über alle Ihre Aufzeichnungen.</p>
     </div>
 
     <div class="dashboard-section">

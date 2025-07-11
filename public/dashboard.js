@@ -19,17 +19,40 @@ function isToday(someDate) {
            someDate.getFullYear() === today.getFullYear();
 }
 
+// Hilfsfunktion: Prüft, ob ein Datum der gestrige Tag ist
+function isYesterday(someDate) {
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    return someDate.getDate() === yesterday.getDate() &&
+           someDate.getMonth() === yesterday.getMonth() &&
+           yesterday.getFullYear() === someDate.getFullYear();
+}
+
 // Funktion zum Laden der Dashboard-Daten
 async function loadDashboardData() {
     const loadingMessage = document.getElementById('loadingMessage');
     const errorMessage = document.getElementById('errorMessage');
-    const chartContainers = document.querySelectorAll('.chart-container'); // Alle Chart-Container
+    const chartContainers = document.querySelectorAll('.chart-container');
     const topCategoriesList = document.getElementById('topCategoriesList');
+    const categoryTotalTimesList = document.getElementById('categoryTotalTimesList'); // NEU
+    const totalTimeAll = document.getElementById('totalTimeAll'); // NEU
+    const totalTimeToday = document.getElementById('totalTimeToday'); // NEU
+    const totalTimeYesterday = document.getElementById('totalTimeYesterday'); // NEU
+    const totalTimeLast7Days = document.getElementById('totalTimeLast7Days'); // NEU
+
+
+    // Initialisiere Anzeigen auf "Lade..."
+    if (totalTimeAll) totalTimeAll.innerText = 'Lade...';
+    if (totalTimeToday) totalTimeToday.innerText = 'Lade...';
+    if (totalTimeYesterday) totalTimeYesterday.innerText = 'Lade...';
+    if (totalTimeLast7Days) totalTimeLast7Days.innerText = 'Lade...';
+    if (topCategoriesList) topCategoriesList.innerHTML = '<li>Lade Top Kategorien...</li>';
+    if (categoryTotalTimesList) categoryTotalTimesList.innerHTML = '<li>Lade Kategorienzeiten...</li>';
+
 
     loadingMessage.style.display = 'block';
     errorMessage.style.display = 'none';
-    chartContainers.forEach(container => container.style.opacity = '0.5'); // Alle Charts abdunkeln
-    if (topCategoriesList) topCategoriesList.innerHTML = '<li>Lade Top Kategorien...</li>';
+    chartContainers.forEach(container => container.style.opacity = '0.5');
 
     try {
         const { data: { session } } = await supabaseClient.auth.getSession();
@@ -38,6 +61,13 @@ async function loadDashboardData() {
             errorMessage.style.display = 'block';
             loadingMessage.style.display = 'none';
             chartContainers.forEach(container => container.style.opacity = '1');
+            // Setze alle Zahlen auf "Anmeldung erforderlich"
+            if (totalTimeAll) totalTimeAll.innerText = 'N/A';
+            if (totalTimeToday) totalTimeToday.innerText = 'N/A';
+            if (totalTimeYesterday) totalTimeYesterday.innerText = 'N/A';
+            if (totalTimeLast7Days) totalTimeLast7Days.innerText = 'N/A';
+            if (topCategoriesList) topCategoriesList.innerHTML = '<li>Anmeldung erforderlich.</li>';
+            if (categoryTotalTimesList) categoryTotalTimesList.innerHTML = '<li>Anmeldung erforderlich.</li>';
             return;
         }
 
@@ -57,76 +87,128 @@ async function loadDashboardData() {
             errorMessage.innerHTML = '<p>Keine Zeit-Einträge gefunden, um das Dashboard zu erstellen.</p>';
             errorMessage.style.display = 'block';
             chartContainers.forEach(container => container.style.opacity = '1');
+            // Setze alle Zahlen auf "Keine Daten"
+            if (totalTimeAll) totalTimeAll.innerText = formatTime(0);
+            if (totalTimeToday) totalTimeToday.innerText = formatTime(0);
+            if (totalTimeYesterday) totalTimeYesterday.innerText = formatTime(0);
+            if (totalTimeLast7Days) totalTimeLast7Days.innerText = formatTime(0);
+            if (topCategoriesList) topCategoriesList.innerHTML = '<li>Keine Einträge gefunden.</li>';
+            if (categoryTotalTimesList) categoryTotalTimesList.innerHTML = '<li>Keine Einträge gefunden.</li>';
             return;
         }
 
-        // --- Daten für das Balkendiagramm (Produktivität Heute nach Kategorie) ---
-        const todayCategoryData = {};
-        const todayEntries = entries.filter(entry => isToday(new Date(entry.timestamp)));
+        // --- Allgemeine Datumsfilterung und Summenberechnung ---
+        let totalAllSeconds = 0;
+        let totalTodaySeconds = 0;
+        let totalYesterdaySeconds = 0;
+        let totalLast7DaysSeconds = 0;
 
+        const todayDate = new Date();
+        todayDate.setHours(0, 0, 0, 0); // Start des heutigen Tages
+        const yesterdayDate = new Date(todayDate);
+        yesterdayDate.setDate(todayDate.getDate() - 1); // Start des gestrigen Tages
+        const sevenDaysAgo = new Date(todayDate);
+        sevenDaysAgo.setDate(todayDate.getDate() - 6); // Start des Tages vor 6 Tagen (ergibt 7 Tage inkl. heute)
+
+        const todayEntries = [];
+        const yesterdayEntries = [];
+        const last7DaysEntries = [];
+        const allCategoryTotals = {}; // Für Gesamtzeiten pro Kategorie (neu)
+
+
+        entries.forEach(entry => {
+            const entryDate = new Date(entry.timestamp);
+            const duration = entry.duration_seconds;
+
+            totalAllSeconds += duration; // Gesamtzeit über alles
+
+            // Summen nach Datum
+            const entryDateOnly = new Date(entryDate.getFullYear(), entryDate.getMonth(), entryDate.getDate());
+
+            if (isToday(entryDate)) {
+                totalTodaySeconds += duration;
+                todayEntries.push(entry); // Für Tagesdiagramm
+            }
+            if (isYesterday(entryDate)) {
+                totalYesterdaySeconds += duration;
+                yesterdayEntries.push(entry);
+            }
+            // Für die letzten 7 Tage: Überprüfe, ob der Eintrag innerhalb des 7-Tages-Fensters liegt
+            if (entryDateOnly >= sevenDaysAgo && entryDateOnly <= todayDate) {
+                 totalLast7DaysSeconds += duration;
+                 last7DaysEntries.push(entry); // Für 7-Tages-Diagramm
+            }
+
+            // Summen pro Kategorie (über alle Zeiten)
+            const category = entry.category || 'Unbekannt';
+            allCategoryTotals[category] = (allCategoryTotals[category] || 0) + duration;
+        });
+
+        // --- Aktualisiere die neuen Statistik-Felder ---
+        if (totalTimeAll) totalTimeAll.innerText = formatTime(totalAllSeconds);
+        if (totalTimeToday) totalTimeToday.innerText = formatTime(totalTodaySeconds);
+        if (totalTimeYesterday) totalTimeYesterday.innerText = formatTime(totalYesterdaySeconds);
+        if (totalTimeLast7Days) totalTimeLast7Days.innerText = formatTime(totalLast7DaysSeconds);
+
+
+        // --- Daten für das Balkendiagramm (Produktivität Heute nach Kategorie) ---
         if (todayEntries.length === 0) {
-            // Keine Daten für heute, Chart entsprechend anzeigen
             renderTodayCategoryChart([], [], true); // Render mit leeren Daten und Flag für keine Daten
         } else {
+            const todayCategoryData = {};
             todayEntries.forEach(entry => {
                 const category = entry.category || 'Unbekannt';
                 todayCategoryData[category] = (todayCategoryData[category] || 0) + entry.duration_seconds;
             });
-
             const todayLabels = Object.keys(todayCategoryData);
             const todayData = Object.values(todayCategoryData).map(seconds => seconds / 3600); // In Stunden
-
             renderTodayCategoryChart(todayLabels, todayData);
         }
 
         // --- Daten für das Balkendiagramm (Letzte 7 Tage) ---
         const dailyProductivityData = {};
-        const todayDate = new Date();
-        todayDate.setHours(0, 0, 0, 0); // Setze auf Anfang des heutigen Tages
-
-        // Erzeuge Labels für die letzten 7 Tage, beginnend mit heute rückwärts
         const chartLabels = [];
         const chartData = [];
-        const dateStringsToProcess = [];
 
         for (let i = 6; i >= 0; i--) { // Von 6 Tagen zurück bis heute (0)
             const d = new Date(todayDate);
             d.setDate(todayDate.getDate() - i);
             const dateKey = d.toISOString().split('T')[0];
-            dateStringsToProcess.push(dateKey);
             dailyProductivityData[dateKey] = 0; // Initialisiere mit 0 Sekunden
             chartLabels.push(d.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' }));
         }
 
-        entries.forEach(entry => {
+        // Befülle dailyProductivityData nur mit Einträgen, die in den letzten 7 Tagen liegen
+        last7DaysEntries.forEach(entry => {
             const entryDate = new Date(entry.timestamp);
-            entryDate.setHours(0, 0, 0, 0);
+            entryDate.setHours(0, 0, 0, 0); // Nur Datum, ohne Uhrzeit
             const dateString = entryDate.toISOString().split('T')[0];
-
             if (dailyProductivityData.hasOwnProperty(dateString)) {
                 dailyProductivityData[dateString] += entry.duration_seconds;
             }
         });
 
-        // Fülle chartData in der gleichen Reihenfolge wie chartLabels
-        dateStringsToProcess.forEach(dateKey => {
-            chartData.push(dailyProductivityData[dateKey] / 3600); // In Stunden
+        chartLabels.forEach((label, index) => {
+            const dateFromLabel = new Date(todayDate);
+            dateFromLabel.setDate(todayDate.getDate() - (6 - index)); // Berechne das korrekte Datum für diesen Index
+            const dateKey = dateFromLabel.toISOString().split('T')[0];
+            chartData.push(dailyProductivityData[dateKey] / 3600);
         });
 
         renderDailyProductivityChart(chartLabels, chartData);
 
-        // --- Daten für die Top Kategorien (Alle Zeiten) ---
-        const categoryTotals = {};
-        entries.forEach(entry => {
-            const category = entry.category || 'Unbekannt';
-            categoryTotals[category] = (categoryTotals[category] || 0) + entry.duration_seconds;
-        });
-
-        const sortedCategories = Object.entries(categoryTotals)
+        // --- Daten für die Top Kategorien (Gesamt) ---
+        // Dies ist die gleiche Logik wie für allCategoryTotals, aber sortiert und begrenzt für die Top 5
+        const sortedTopCategories = Object.entries(allCategoryTotals)
             .sort(([, a], [, b]) => b - a)
-            .slice(0, 5); // Top 5 Kategorien anzeigen
+            .slice(0, 5);
+        renderTopCategoriesList(sortedTopCategories);
 
-        renderTopCategoriesList(sortedCategories);
+        // --- NEU: Gesamtzeiten pro Kategorie (Alle Perioden) ---
+        const allCategoryTotalsArray = Object.entries(allCategoryTotals)
+            .sort(([keyA], [keyB]) => keyA.localeCompare(keyB)); // Alphabetisch nach Kategorie sortieren
+        renderCategoryTotalTimesList(allCategoryTotalsArray);
+
 
     } catch (err) {
         console.error('Fehler beim Laden der Dashboard-Daten:', err);
@@ -138,7 +220,7 @@ async function loadDashboardData() {
     }
 }
 
-// Funktion zum Rendern des Heute-Kategorien-Balkendiagramms
+// Funktion zum Rendern des Heute-Kategorien-Balkendiagramms (bleibt gleich)
 let todayCategoryChartInstance = null;
 function renderTodayCategoryChart(labels, data, noData = false) {
     const ctx = document.getElementById('todayCategoryChart').getContext('2d');
@@ -148,8 +230,7 @@ function renderTodayCategoryChart(labels, data, noData = false) {
     }
 
     if (noData) {
-        // Zeige eine Meldung anstelle des Diagramms
-        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height); // Canvas leeren
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.font = '16px Arial';
         ctx.fillStyle = '#6c757d';
         ctx.textAlign = 'center';
@@ -164,7 +245,7 @@ function renderTodayCategoryChart(labels, data, noData = false) {
             datasets: [{
                 label: 'Zeit in Stunden',
                 data: data,
-                backgroundColor: 'rgba(255, 99, 132, 0.6)', // Eine andere Farbe
+                backgroundColor: 'rgba(255, 99, 132, 0.6)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 1
             }]
@@ -206,7 +287,7 @@ function renderTodayCategoryChart(labels, data, noData = false) {
 }
 
 
-// Funktion zum Rendern des Balkendiagramms für die letzten 7 Tage
+// Funktion zum Rendern des Balkendiagramms für die letzten 7 Tage (Logik für Labels/Data angepasst)
 let dailyProductivityChartInstance = null;
 function renderDailyProductivityChart(labels, data) {
     const ctx = document.getElementById('dailyProductivityChart').getContext('2d');
@@ -277,6 +358,22 @@ function renderTopCategoriesList(categories) {
         return `<li><strong>${category}:</strong> ${formatTime(totalSeconds)}</li>`;
     }).join('');
 }
+
+// NEU: Funktion zum Rendern der Gesamtzeiten pro Kategorie
+function renderCategoryTotalTimesList(categoryTotals) {
+    const categoryTotalTimesList = document.getElementById('categoryTotalTimesList');
+    if (!categoryTotalTimesList) return;
+
+    if (categoryTotals.length === 0) {
+        categoryTotalTimesList.innerHTML = '<li>Keine Kategorien-Gesamtzeiten gefunden.</li>';
+        return;
+    }
+
+    categoryTotalTimesList.innerHTML = categoryTotals.map(([category, totalSeconds]) => {
+        return `<li><strong>${category}:</strong> ${formatTime(totalSeconds)}</li>`;
+    }).join('');
+}
+
 
 // Beim Laden der Seite Dashboard-Daten laden
 document.addEventListener('DOMContentLoaded', () => {
