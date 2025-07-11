@@ -1,0 +1,172 @@
+/* public/settings-style.css */
+
+.settings-container {
+    max-width: 700px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.settings-container h1 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 30px;
+    font-size: 2.2em;
+    font-weight: 600;
+}
+
+.settings-section {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.settings-section h2 {
+    color: #495057;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.6em;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.setting-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.setting-item label {
+    flex: 1; /* Nimmt den meisten Platz ein */
+    font-weight: bold;
+    color: #555;
+    margin-right: 20px;
+    min-width: 150px; /* Mindestbreite für Labels */
+}
+
+.setting-item input[type="email"],
+.setting-item input[type="password"],
+.setting-item input[type="text"],
+.setting-item select {
+    flex: 2; /* Nimmt mehr Platz als Label ein */
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+    margin-right: 10px;
+    max-width: 250px; /* Max Breite für Input-Felder */
+}
+
+.setting-item input[type="checkbox"] {
+    margin-right: 10px;
+    width: auto; /* Checkboxen sollen nicht flex wachsen */
+}
+
+.save-button, .special-button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.95em;
+    transition: background-color 0.3s ease;
+    white-space: nowrap; /* Button-Text nicht umbrechen */
+}
+
+.save-button {
+    background-color: #007bff;
+    color: white;
+}
+
+.save-button:hover {
+    background-color: #0056b3;
+}
+
+.special-button {
+    background-color: #6c757d; /* Eine neutralere Farbe für den speziellen Button */
+    color: white;
+}
+
+.special-button:hover {
+    background-color: #5a6268;
+}
+
+.status-message {
+    text-align: center;
+    padding: 10px 15px;
+    margin-top: 20px;
+    border-radius: 5px;
+    font-size: 0.9em;
+    display: none; /* Standardmäßig ausgeblendet */
+}
+
+.status-message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+    .settings-container {
+        margin: 20px 15px;
+        padding: 20px;
+    }
+
+    .settings-container h1 {
+        font-size: 1.8em;
+    }
+
+    .settings-section h2 {
+        font-size: 1.4em;
+    }
+
+    .setting-item {
+        flex-direction: column; /* Stapelt Elemente vertikal auf kleinen Bildschirmen */
+        align-items: flex-start;
+    }
+
+    .setting-item label {
+        margin-right: 0;
+        margin-bottom: 8px; /* Abstand unter dem Label */
+        min-width: unset;
+        width: 100%;
+    }
+
+    .setting-item input[type="email"],
+    .setting-item input[type="password"],
+    .setting-item input[type="text"],
+    .setting-item select {
+        width: 100%; /* Felder nehmen volle Breite ein */
+        max-width: unset;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+
+    .save-button, .special-button {
+        width: 100%; /* Buttons nehmen volle Breite ein */
+    }
+
+    .setting-item input[type="checkbox"] {
+        margin-left: 0; /* Keine Einrückung für Checkbox */
+    }
+}

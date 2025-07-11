@@ -1,11 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Einstellungen - OnlyLearns</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="settings-style.css"> </head>
 <body>
+<nav class="menu">
+    <div class="hamburger" onclick="toggleMenu()">
+        <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
+    </div>
+    <ul id="dropdown" class="">
+        <li><a href="main.html">⌂ Home</a></li>
+        <li><a href="chat.html">💬 Chat</a></li>
+        <li><a href="report.html">📄 Report</a></li>
+        <li><a href="timer.html">⏱️ Timer</a></li>
+        <li><a href="dashboard.html">📈 Dashboard</a></li>
+        <li><button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">🚪 Logout</button></li>
+    </ul>
+</nav>
 
+<div class="settings-container">
+    <h1>⚙️ Einstellungen</h1>
+
+    <div class="settings-section">
+        <h2>Allgemeine Einstellungen</h2>
+        <div class="setting-item">
+            <label for="languageSelect">Sprache:</label>
+            <select id="languageSelect">
+                <option value="de">Deutsch</option>
+                <option value="en">English</option>
+            </select>
+            <button class="save-button" data-setting="language">Speichern</button>
+        </div>
+        <div class="setting-item">
+            <label for="notificationsToggle">Benachrichtigungen aktivieren:</label>
+            <input type="checkbox" id="notificationsToggle">
+            <button class="save-button" data-setting="notifications">Speichern</button>
+        </div>
+        <div class="setting-item">
+            <label>Design:</label>
+            <button id="darkModeButton" class="special-button">Dark/White Mode</button>
+        </div>
+    </div>
+
+    <div class="settings-section">
+        <h2>Kontoeinstellungen</h2>
+        <div class="setting-item">
+            <label for="emailInput">E-Mail-Adresse:</label>
+            <input type="email" id="emailInput" placeholder="Ihre E-Mail">
+            <button class="save-button" data-setting="email">Ändern</button>
+        </div>
+        <div class="setting-item">
+            <label for="passwordInput">Passwort:</label>
+            <input type="password" id="passwordInput" placeholder="Neues Passwort">
+            <button class="save-button" data-setting="password">Ändern</button>
+        </div>
+        <div class="setting-item">
+            <label for="userNameInput">Benutzername:</label>
+            <input type="text" id="userNameInput" placeholder="Ihr Benutzername">
+            <button class="save-button" data-setting="username">Speichern</button>
+        </div>
+    </div>
+
+    <div id="statusMessage" class="status-message" style="display:none;"></div>
+
+</div>
+
+<script src="script.js"></script>
+<script src="settings.js"></script>
 </body>
 </html>
