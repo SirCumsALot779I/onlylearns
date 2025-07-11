@@ -1,0 +1,132 @@
+/* public/dashboard-style.css */
+
+.dashboard-container {
+    max-width: 960px;
+    margin: 30px auto;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+.dashboard-container h1 {
+    text-align: center;
+    color: #007bff;
+    margin-bottom: 30px;
+    font-size: 2.2em;
+    font-weight: 600;
+}
+
+.dashboard-section {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.dashboard-section h2 {
+    color: #495057;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.6em;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 10px;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px; /* Feste Höhe für das Diagramm */
+    width: 100%;
+    margin-bottom: 15px;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Optional: Animation für Ladezustand */
+.chart-container.loading {
+    opacity: 0.5;
+}
+
+#topCategoriesList {
+    list-style: none; /* Entfernt die Standard-Zahlen */
+    padding: 0;
+    margin: 0;
+}
+
+#topCategoriesList li {
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+    padding: 12px 18px;
+    margin-bottom: 8px;
+    border-radius: 6px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.1em;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+#topCategoriesList li strong {
+    color: #007bff;
+    margin-right: 15px;
+}
+
+/* Nummerierung für die Top-Kategorien-Liste manuell hinzufügen */
+#topCategoriesList {
+  counter-reset: category-counter; /* Zähler initialisieren */
+}
+
+#topCategoriesList li::before {
+  counter-increment: category-counter; /* Zähler erhöhen */
+  content: counter(category-counter) ". "; /* Zähler vor dem Listenelement anzeigen */
+  font-weight: bold;
+  color: #6c757d;
+  margin-right: 8px;
+}
+
+
+.loading-message, .error-message {
+    text-align: center;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    font-size: 1.1em;
+}
+
+.loading-message {
+    background-color: #e0f7fa;
+    color: #00796b;
+    border: 1px solid #b2ebf2;
+}
+
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+.chart-info, .list-info {
+    font-size: 0.9em;
+    color: #6c757d;
+    text-align: center;
+    margin-top: 15px;
+    line-height: 1.4;
+}
+
+/* Responsive Anpassungen */
+@media (max-width: 768px) {
+    .dashboard-container {
+        margin: 20px 15px;
+        padding: 20px;
+    }
+
+    .dashboard-container h1 {
+        font-size: 1.8em;
+    }
+
+    .dashboard-section h2 {
+        font-size: 1.4em;
+    }
+}

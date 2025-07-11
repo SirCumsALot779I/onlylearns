@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - OnlyLearns</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard-style.css"> </head>
+<body>
+<nav class="menu">
+    <div class="hamburger" onclick="toggleMenu()">
+        <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
+    </div>
+    <ul id="dropdown" class="">
+        <li><a href="main.html">⌂ Home</a></li>
+        <li><a href="chat.html">💬 Chat</a></li>
+        <li><a href="report.html">📄 Report</a></li>
+        <li><a href="timer.html">⏱️ Timer</a></li> <li><a href="settings.html">⚙️ Einstellungen</a></li>
+        <li><button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">🚪 Logout</button></li>
+    </ul>
+</nav>
+
+<div class="dashboard-container">
+    <h1>📊 Ihr Produktivitäts-Dashboard</h1>
+
+    <div class="dashboard-section">
+        <h2>Produktivität der letzten 7 Tage</h2>
+        <div class="chart-container">
+            <canvas id="dailyProductivityChart"></canvas>
+        </div>
+        <p class="chart-info">Diese Grafik zeigt Ihre täglich verbrachte Zeit in allen Kategorien über die letzten 7 Tage.</p>
+    </div>
+
+    <div class="dashboard-section">
+        <h2>Top Kategorien</h2>
+        <ol id="topCategoriesList">
+            <li>Lade Top Kategorien...</li>
+        </ol>
+        <p class="list-info">Eine Liste Ihrer meistgenutzten Kategorien, sortiert nach der Gesamtzeit.</p>
+    </div>
+
+    <div id="loadingMessage" class="loading-message">
+        <p>Daten werden geladen...</p>
+    </div>
+    <div id="errorMessage" class="error-message" style="display:none;">
+        <p>Fehler beim Laden der Dashboard-Daten. Bitte versuchen Sie es später erneut.</p>
+    </div>
+</div>
+
+<script src="script.js"></script> <script src="dashboard.js"></script> </body>
+</html>
