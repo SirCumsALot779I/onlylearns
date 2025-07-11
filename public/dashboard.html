@@ -17,13 +17,22 @@
         <li><a href="main.html">⌂ Home</a></li>
         <li><a href="chat.html">💬 Chat</a></li>
         <li><a href="report.html">📄 Report</a></li>
-        <li><a href="timer.html">⏱️ Timer</a></li> <li><a href="settings.html">⚙️ Einstellungen</a></li>
+        <li><a href="timer.html">⏱️ Timer</a></li>
+        <li><a href="settings.html">⚙️ Einstellungen</a></li>
         <li><button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">🚪 Logout</button></li>
     </ul>
 </nav>
 
 <div class="dashboard-container">
     <h1>📊 Ihr Produktivitäts-Dashboard</h1>
+
+    <div class="dashboard-section">
+        <h2>Produktivität Heute nach Kategorie</h2>
+        <div class="chart-container">
+            <canvas id="todayCategoryChart"></canvas>
+        </div>
+        <p class="chart-info">Diese Grafik zeigt Ihre heutige verbrachte Zeit, aufgeteilt nach Kategorien.</p>
+    </div>
 
     <div class="dashboard-section">
         <h2>Produktivität der letzten 7 Tage</h2>
@@ -34,11 +43,11 @@
     </div>
 
     <div class="dashboard-section">
-        <h2>Top Kategorien</h2>
+        <h2>Top Kategorien (Gesamt)</h2>
         <ol id="topCategoriesList">
             <li>Lade Top Kategorien...</li>
         </ol>
-        <p class="list-info">Eine Liste Ihrer meistgenutzten Kategorien, sortiert nach der Gesamtzeit.</p>
+        <p class="list-info">Eine Liste Ihrer meistgenutzten Kategorien, sortiert nach der Gesamtzeit über alle aufgezeichneten Perioden.</p>
     </div>
 
     <div id="loadingMessage" class="loading-message">
@@ -49,5 +58,7 @@
     </div>
 </div>
 
-<script src="script.js"></script> <script src="dashboard.js"></script> </body>
+<script src="script.js"></script>
+<script src="dashboard.js"></script>
+</body>
 </html>
