@@ -1,5 +1,111 @@
 /* public/chat-style.css */
 
+/* Globale Body-Stile aus style.css */
+body {
+    margin: 0;
+    background-color: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+/* Navigations- und Menü-Stile aus style.css */
+.menu {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.menu-icon {
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.5s ease;
+    opacity: 1;
+}
+
+.menu-icon:hover {
+    opacity: 0.3;
+}
+
+.hamburger {
+    font-size: 2.5em;
+    cursor: pointer;
+    user-select: none;
+}
+
+#dropdown {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    background-color: #111;
+    z-index: 1000;
+    width: 180px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.8s ease, opacity 1.0s ease;
+}
+
+#dropdown.visible {
+    max-height: 500px;
+    opacity: 1;
+}
+
+ul li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #222;
+}
+
+ul li:last-child {
+    border-bottom: none;
+}
+
+ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    display: block;
+}
+
+.hamburger:hover span {
+    background-color: #aaa;
+}
+
+ul li:hover {
+    background-color: #333;
+}
+
+.hidden {
+    display: none;
+}
+
+#logoutButton {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+#logoutButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Chat spezifische Stile */
 .chat-container {
     max-width: 1200px;
     margin: 30px auto;
@@ -9,9 +115,9 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
     color: #333;
-    display: flex; /* Für Seitenleiste und Hauptchat-Bereich */
+    display: flex;
     gap: 20px;
-    min-height: 70vh; /* Mindesthöhe für den Chat-Bereich */
+    min-height: 70vh;
 }
 
 .chat-container h1 {
@@ -20,11 +126,11 @@
     margin-bottom: 25px;
     font-size: 2.2em;
     font-weight: 600;
-    flex-basis: 100%; /* Nimmt die volle Breite oben ein */
+    flex-basis: 100%;
 }
 
 .chat-sidebar {
-    flex: 0 0 250px; /* Feste Breite für die Seitenleiste */
+    flex: 0 0 250px;
     background-color: #f8f9fa;
     border: 1px solid #e9ecef;
     border-radius: 8px;
@@ -46,8 +152,8 @@
     list-style: none;
     padding: 0;
     margin: 0;
-    flex-grow: 1; /* Liste füllt verfügbaren Platz aus */
-    overflow-y: auto; /* Scrollbar, wenn viele Partner */
+    flex-grow: 1;
+    overflow-y: auto;
 }
 
 #chatPartnersList li {
@@ -75,9 +181,8 @@
     text-align: center;
 }
 
-
 .chat-main {
-    flex-grow: 1; /* Nimmt den restlichen Platz ein */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     background-color: #f8f9fa;
@@ -97,12 +202,12 @@
 }
 
 .messages-container {
-    flex-grow: 1; /* Füllt den verfügbaren Platz aus */
+    flex-grow: 1;
     padding: 20px;
-    overflow-y: auto; /* Scrollbar für Nachrichten */
+    overflow-y: auto;
     display: flex;
-    flex-direction: column; /* Nachrichten stapeln sich vertikal */
-    gap: 10px; /* Abstand zwischen Nachrichten */
+    flex-direction: column;
+    gap: 10px;
 }
 
 .no-messages-placeholder {
@@ -113,11 +218,11 @@
 }
 
 .chat-message {
-    max-width: 80%; /* Nachrichtenbreite */
+    max-width: 80%;
     padding: 10px 15px;
     border-radius: 15px;
     line-height: 1.4;
-    word-wrap: break-word; /* Lange Wörter umbrechen */
+    word-wrap: break-word;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
@@ -131,21 +236,21 @@
 
 .message-sender {
     font-weight: bold;
-    color: #0056b3; /* Dunklerer Blau für Absender */
+    color: #0056b3;
 }
 
 .own-message {
-    align-self: flex-end; /* Eigene Nachrichten rechtsbündig */
-    background-color: #dcf8c6; /* Hellgrün für eigene Nachrichten */
+    align-self: flex-end;
+    background-color: #dcf8c6;
     color: #333;
-    border-bottom-right-radius: 3px; /* Kleine Ecke für Blase */
+    border-bottom-right-radius: 3px;
 }
 
 .other-message {
-    align-self: flex-start; /* Andere Nachrichten linksbündig */
-    background-color: #e0e0e0; /* Hellgrau für andere Nachrichten */
+    align-self: flex-start;
+    background-color: #e0e0e0;
     color: #333;
-    border-bottom-left-radius: 3px; /* Kleine Ecke für Blase */
+    border-bottom-left-radius: 3px;
 }
 
 .chat-input-area {
@@ -163,10 +268,10 @@
     border: 1px solid #ced4da;
     border-radius: 20px;
     font-size: 1em;
-    resize: none; /* Deaktiviert manuelle Größenänderung */
+    resize: none;
     margin-right: 10px;
     min-height: 40px;
-    max-height: 120px; /* Verhindert zu große Texteingabe */
+    max-height: 120px;
     overflow-y: auto;
 }
 
@@ -196,7 +301,6 @@
     cursor: not-allowed;
 }
 
-/* Allgemeine Status/Lademeldungen */
 .loading-message, .error-message {
     text-align: center;
     padding: 20px;
@@ -217,18 +321,17 @@
     border: 1px solid #ef9a9a;
 }
 
-/* Responsive Anpassungen */
 @media (max-width: 768px) {
     .chat-container {
-        flex-direction: column; /* Stapelt die Seitenleiste und den Hauptchat */
+        flex-direction: column;
         margin: 20px 15px;
         padding: 15px;
         gap: 15px;
     }
 
     .chat-sidebar {
-        flex: auto; /* Nimmt wieder volle Breite ein */
-        max-height: 200px; /* Begrenzte Höhe für die Partnerliste auf Mobilgeräten */
+        flex: auto;
+        max-height: 200px;
     }
 
     .chat-container h1 {

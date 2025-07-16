@@ -1,19 +1,125 @@
 /* public/dashboard-style.css */
 
+/* Globale Body-Stile aus style.css */
+body {
+    margin: 0;
+    background-color: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    box-sizing: border-box;
+    margin-top: 20px;
+}
+
+/* Navigations- und Menü-Stile aus style.css */
+.menu {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.menu-icon {
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    user-select: none;
+    transition: opacity 0.5s ease;
+    opacity: 1;
+}
+
+.menu-icon:hover {
+    opacity: 0.3;
+}
+
+.hamburger {
+    font-size: 2.5em;
+    cursor: pointer;
+    user-select: none;
+}
+
+#dropdown {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    background-color: #111;
+    z-index: 1000;
+    width: 180px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.8s ease, opacity 1.0s ease;
+}
+
+#dropdown.visible {
+    max-height: 500px;
+    opacity: 1;
+}
+
+ul li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #222;
+}
+
+ul li:last-child {
+    border-bottom: none;
+}
+
+ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    display: block;
+}
+
+.hamburger:hover span {
+    background-color: #aaa;
+}
+
+ul li:hover {
+    background-color: #333;
+}
+
+.hidden {
+    display: none;
+}
+
+#logoutButton {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+#logoutButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dashboard spezifische Stile */
 .dashboard-container {
     max-width: 960px;
     margin: 30px auto;
     padding: 25px;
-    background-color: 	#161618;
+    background-color: #161618; /* Angepasste Farbe */
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     font-family: Arial, sans-serif;
-    color: #333;
+    color: #333; /* Dieser Stil wird vom body-Stil überschrieben, falls er nicht spezifischer ist */
 }
 
 .dashboard-container h1 {
     text-align: center;
-    color: #ffffff;
+    color: #ffffff; /* Angepasste Farbe */
     margin-bottom: 30px;
     font-size: 2.2em;
     font-weight: 600;
@@ -36,7 +142,6 @@
     padding-bottom: 10px;
 }
 
-/* NEU: Grid für die Übersichts-Statistiken */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -67,10 +172,9 @@
     margin: 0;
 }
 
-
 .chart-container {
     position: relative;
-    height: 300px; /* Feste Höhe für das Diagramm */
+    height: 300px;
     width: 100%;
     margin-bottom: 15px;
     transition: opacity 0.3s ease-in-out;
@@ -104,9 +208,8 @@
     line-height: 1.4;
 }
 
-/* Stil für Top-Kategorien und Gesamtzeiten pro Kategorie (ähnlich, aber Top-Kategorien hat Nummerierung) */
 #topCategoriesList, #categoryTotalTimesList {
-    list-style: none; /* Entfernt die Standard-Zahlen */
+    list-style: none;
     padding: 0;
     margin: 0;
 }
@@ -129,20 +232,18 @@
     margin-right: 15px;
 }
 
-/* Nummerierung für die Top-Kategorien-Liste manuell hinzufügen */
 #topCategoriesList {
-  counter-reset: category-counter; /* Zähler initialisieren */
+  counter-reset: category-counter;
 }
 
 #topCategoriesList li::before {
-  counter-increment: category-counter; /* Zähler erhöhen */
-  content: counter(category-counter) ". "; /* Zähler vor dem Listenelement anzeigen */
+  counter-increment: category-counter;
+  content: counter(category-counter) ". ";
   font-weight: bold;
   color: #6c757d;
   margin-right: 8px;
 }
 
-/* Responsive Anpassungen */
 @media (max-width: 768px) {
     .dashboard-container {
         margin: 20px 15px;
@@ -158,6 +259,6 @@
     }
 
     .stats-grid {
-        grid-template-columns: 1fr; /* Eine Spalte auf kleinen Bildschirmen */
+        grid-template-columns: 1fr;
     }
 }
