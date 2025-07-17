@@ -363,20 +363,8 @@ ul li:hover {
 
 
 
-/ralph Schumacher werbung
-
-.video-corner-container {
-    position: fixed; /* Hält das Video an einer festen Position im Viewport */
-    bottom: 20px;    /* Abstand vom unteren Rand */
-    right: 20px;     /* Abstand vom rechten Rand */
-    width: 250px;    /* Breite des Videos */
-    height: auto;    /* Höhe proportional anpassen */
-    z-index: 1000;   /* Stellt sicher, dass das Video über den meisten anderen Inhalten liegt */
-    overflow: hidden; /* Verhindert, dass Videoteile über den Container hinausragen */
-    border-radius: 8px; /* Optional: Abgerundete Ecken */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Schatten */
-}
-
+/*ralph Schumacher werbung*/
+/* Konsolidierte und korrigierte Video-Stile */
 .video-corner-container {
     position: fixed; /* Hält den Container an einer festen Position im Viewport */
     bottom: 20px;    /* Abstand vom unteren Rand */
