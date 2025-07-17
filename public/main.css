@@ -126,16 +126,26 @@ ul li:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Schatten */
 }
 
+.video-corner-container {
+    position: fixed; /* Hält den Container an einer festen Position im Viewport */
+    bottom: 20px;    /* Abstand vom unteren Rand */
+    right: 20px;     /* Abstand vom rechten Rand */
+    width: 250px;    /* Breite des Containers (und damit des sichtbaren Videos) */
+    height: auto;    /* Höhe proportional anpassen */
+    z-index: 1000;   /* Stellt sicher, dass der Container über den meisten anderen Inhalten liegt */
+    overflow: hidden; /* Verhindert, dass Videoteile über den Container hinausragen */
+    border-radius: 8px; /* Optional: Abgerundete Ecken */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: Schatten */
+}
+
 .video-corner-container video {
-    width: 20%;
-    height: 20%;
-    bottom: 10px;
-    right: 10px;
+    width: 100%;     /* Das Video füllt die gesamte Breite seines Containers aus */
+    height: 100%;    /* Das Video füllt die gesamte Höhe seines Containers aus */
     object-fit: cover; /* Stellt sicher, dass das Video den gesamten Container ausfüllt und dabei das Seitenverhältnis beibehält, schneidet aber ggf. Teile ab */
     /* pointer-events: none; /* Optional: Wenn das Video nur ein Hintergrund ist und keine Klicks abfangen soll */
 }
 
-/* Anpassungen für kleinere Bildschirme (optional) */
+/* Anpassungen für kleinere Bildschirme (optional, aber empfohlen) */
 @media (max-width: 768px) {
     .video-corner-container {
         width: 180px; /* Kleinere Breite auf mobilen Geräten */
