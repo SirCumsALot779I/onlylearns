@@ -129,6 +129,8 @@ ul li:hover {
 .video-corner-container video {
     width: 20%;
     height: 20%;
+    bottom: 10px;
+    right: 10px;
     object-fit: cover; /* Stellt sicher, dass das Video den gesamten Container ausfüllt und dabei das Seitenverhältnis beibehält, schneidet aber ggf. Teile ab */
     /* pointer-events: none; /* Optional: Wenn das Video nur ein Hintergrund ist und keine Klicks abfangen soll */
 }
