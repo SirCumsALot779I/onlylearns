@@ -284,11 +284,7 @@ button:active {
     background-color: rgba(255, 255, 255, 0.1); /* Leichter Hintergrund beim Hover */
 }
 
-
-
-/ralph Schumacher werbung
-
-
+/* Konsolidierte und korrigierte Video-Stile */
 .video-corner-container {
     position: fixed; /* Hält den Container an einer festen Position im Viewport */
     bottom: 20px;    /* Abstand vom unteren Rand */
