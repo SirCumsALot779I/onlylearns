@@ -1,8 +1,3 @@
-// public/chat.js
-
-// Supabase Client Initialisierung kommt von script.js
-// const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
 let currentUserId = null;
 let selectedPartnerId = null;
 let selectedPartnerName = null;
@@ -16,7 +11,7 @@ const chatPartnersList = document.getElementById('chatPartnersList');
 const loadingMessage = document.getElementById('loadingMessage');
 const errorMessage = document.getElementById('errorMessage');
 
-// Hilfsfunktion zum Formatieren der Zeit
+//zum Formatieren der Zeit
 function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
     return date.toLocaleDateString('de-DE', {
@@ -28,7 +23,6 @@ function formatTimestamp(timestamp) {
     });
 }
 
-// Nachricht zum Chat-Container hinzufügen
 function addMessageToChat(message, isOwnMessage) {
     const messageElement = document.createElement('div');
     messageElement.classList.add('chat-message');
@@ -46,10 +40,9 @@ function addMessageToChat(message, isOwnMessage) {
         <div class="message-content">${message.content}</div>
     `;
     messagesContainer.appendChild(messageElement);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight; // Zum neuesten scrollen
+    messagesContainer.scrollTop = messagesContainer.scrollHeight; 
 }
 
-// Nachrichten laden
 async function loadMessages() {
     if (!currentUserId || !selectedPartnerId) {
         messagesContainer.innerHTML = `<div class="no-messages-placeholder">Wählen Sie einen Chatpartner, um Nachrichten anzuzeigen.</div>`;
@@ -57,7 +50,6 @@ async function loadMessages() {
     }
 
     try {
-        // Nachrichten abrufen, die vom aktuellen Benutzer an den Partner ODER vom Partner an den aktuellen Benutzer gesendet wurden
         const { data, error } = await supabaseClient
             .from('messages')
             .select(`
@@ -70,7 +62,7 @@ async function loadMessages() {
 
         if (error) throw error;
 
-        messagesContainer.innerHTML = ''; // Vorherige Nachrichten leeren
+        messagesContainer.innerHTML = ''; 
         if (data.length === 0) {
             messagesContainer.innerHTML = `<div class="no-messages-placeholder">Noch keine Nachrichten in diesem Chat. Seien Sie der Erste!</div>`;
         } else {
@@ -103,8 +95,7 @@ async function sendMessage() {
 
         if (error) throw error;
 
-        messageInput.value = ''; // Eingabefeld leeren
-        // Nachricht wird durch Realtime oder Polling hinzugefügt
+        messageInput.value = ''; 
     } catch (error) {
         console.error('Fehler beim Senden der Nachricht:', error.message);
         showStatusMessage('Fehler beim Senden der Nachricht: ' + error.message, true);
@@ -114,8 +105,8 @@ async function sendMessage() {
 // Event-Listener für Senden-Button und Enter-Taste
 sendMessageButton.addEventListener('click', sendMessage);
 messageInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) { // Enter drücken sendet, Shift+Enter für Zeilenumbruch
-        e.preventDefault(); // Verhindert einen Zeilenumbruch im Textfeld
+    if (e.key === 'Enter' && !e.shiftKey) { 
+        e.preventDefault(); 
         sendMessage();
     }
 });
@@ -131,12 +122,10 @@ async function loadChatPartners() {
         // DEBUG START: Temporär entfernt, um sicherzustellen, dass der fetch-Aufruf immer ausgeführt wird
         const { data: { user, session } } = await supabaseClient.auth.getSession();
 
-        // Temporäre user.id Zuweisung für Debug-Zwecke, falls kein User angemeldet ist
-        // Dies sollte nach dem Debugging entfernt werden.
+        // Temporäre user.id Zuweisung für Debug-Zwecke
         if (!user) {
              console.warn("User not logged in. Using a dummy ID for debugging. Please log in for full functionality.");
-             currentUserId = "dummy-user-id-for-debug-123"; // Ersetze dies mit einer echten UUID, wenn du testen willst
-             // Oder besser: Lass es leer und erwarte den 401 vom Backend, aber der fetch wird trotzdem gemacht
+             currentUserId = "dummy-user-id-for-debug-123"; 
         } else {
              currentUserId = user.id;
         }
@@ -144,18 +133,13 @@ async function loadChatPartners() {
         let authToken = session?.access_token;
         if (!authToken) {
             console.warn("No access token found. The backend API call will likely fail with 401 Unauthorized.");
-            // Für Debug-Zwecke senden wir trotzdem eine Anfrage, auch wenn der Token fehlt
-            // In der Produktion sollte hier ein 'return' stehen, wie es vorher war
-            authToken = 'debug_no_token'; // Oder eine leere Zeichenkette, je nachdem wie der Backend-Fehler aussehen soll
+            authToken = 'debug_no_token'; 
         }
-        // DEBUG END
+        // DEBUG ENDE
 
-
-        // API-Aufruf, um alle Profile außer dem eigenen zu erhalten
-        // Annahme: Es gibt einen Node.js Endpunkt /api/get-all-profiles
         const res = await fetch('/api/get-all-profiles', {
             headers: {
-                'Authorization': `Bearer ${authToken}` // HIER wird der Token aus der Session gesendet (oder debug_no_token)
+                'Authorization': `Bearer ${authToken}`
             }
         });
 
@@ -165,11 +149,11 @@ async function loadChatPartners() {
             console.error(`API response was not OK: Status ${res.status}, Message: ${errorText}`);
             throw new Error(`Fehler beim Laden der Profile: ${errorText} (Status: ${res.status})`);
         }
-        // DEBUG END
+        // DEBUG ENDE
 
         const profiles = await res.json();
 
-        // DEBUG START: Log the received profiles data
+        // DEBUG START
         console.log("Received profiles data:", profiles);
         // DEBUG END
 
@@ -180,7 +164,7 @@ async function loadChatPartners() {
             console.error("Profiles data is not an array:", profiles);
             errorMessage.innerHTML = `<p>Fehler: Unerwartetes Datenformat vom Server. Konnte Chatpartner nicht laden.</p>`;
             errorMessage.style.display = 'block';
-            return; // Abbrechen, da Daten ungültig sind
+            return; 
         }
         // DEBUG END
 
@@ -191,7 +175,7 @@ async function loadChatPartners() {
         } else {
             otherProfiles.forEach(profile => {
                 const li = document.createElement('li');
-                li.textContent = profile.username || profile.id; // Zeige Benutzername oder ID
+                li.textContent = profile.username || profile.id; 
                 li.dataset.partnerId = profile.id;
                 li.dataset.partnerName = profile.username;
                 li.addEventListener('click', () => selectChatPartner(profile.id, profile.username));
@@ -207,14 +191,12 @@ async function loadChatPartners() {
     }
 }
 
-// Chatpartner auswählen
+
 function selectChatPartner(partnerId, partnerName) {
-    // Entferne 'selected' Klasse von allen
     document.querySelectorAll('#chatPartnersList li').forEach(li => {
         li.classList.remove('selected');
     });
 
-    // Füge 'selected' Klasse zum aktuellen hinzu
     const selectedLi = document.querySelector(`#chatPartnersList li[data-partner-id="${partnerId}"]`);
     if (selectedLi) {
         selectedLi.classList.add('selected');
@@ -225,10 +207,9 @@ function selectChatPartner(partnerId, partnerName) {
     chatHeader.textContent = `Chat mit ${selectedPartnerName}`;
     messageInput.disabled = false;
     sendMessageButton.disabled = false;
-
-    // Nachrichten laden, wenn Partner ausgewählt ist
+    
     loadMessages();
-    subscribeToMessages(); // Realtime-Abonnement aktualisieren
+    subscribeToMessages(); 
 }
 
 
@@ -248,10 +229,9 @@ function subscribeToMessages() {
             event: 'INSERT',
             schema: 'public',
             table: 'messages',
-            filter: `(sender_id=eq.${selectedPartnerId},receiver_id=eq.${currentUserId})` // Nachrichten, die der Partner an mich sendet
+            filter: `(sender_id=eq.${selectedPartnerId},receiver_id=eq.${currentUserId})` // Nachrichten an mich
         }, async (payload) => {
             console.log('Realtime-Nachricht empfangen (von Partner):', payload.new);
-            // Zusätzliche Daten wie Benutzername abrufen
             const { data: sender_profile, error: senderError } = await supabaseClient
                 .from('profiles')
                 .select('username')
@@ -273,11 +253,10 @@ function subscribeToMessages() {
             event: 'INSERT',
             schema: 'public',
             table: 'messages',
-            filter: `(sender_id=eq.${currentUserId},receiver_id=eq.${selectedPartnerId})` // Nachrichten, die ich an den Partner sende
+            filter: `(sender_id=eq.${currentUserId},receiver_id=eq.${selectedPartnerId})` // Nachrichten and Person B
         }, async (payload) => {
             console.log('Realtime-Nachricht empfangen (von mir):', payload.new);
-            // Hier brauchen wir die Profile nicht unbedingt, da wir wissen, dass es von uns ist
-            // Aber der Vollständigkeit halber, wenn man es für Anzeige braucht
+
             const { data: sender_profile, error: senderError } = await supabaseClient
                 .from('profiles')
                 .select('username')
@@ -300,57 +279,37 @@ function subscribeToMessages() {
                 console.log('Realtime-Channel abonniert:', `chat_${currentUserId}_${selectedPartnerId}`);
             } else if (status === 'CHANNEL_ERROR') {
                 console.error('Realtime-Channel Fehler. Fällt zurück auf Polling.', realtimeChannel.error);
-                // Fallback auf Polling, wenn Realtime fehlschlägt
-                // clearInterval(pollingInterval); // Falls ein Polling-Interval läuft, beenden
-                // pollingInterval = setInterval(loadMessages, 5000); // Neues Polling starten
             }
         });
 }
 
-// Fallback: Polling (alle 5 Sekunden aktualisieren)
 let pollingInterval = null;
 function startPolling() {
-    if (pollingInterval) clearInterval(pollingInterval); // Vorhandenes Interval löschen
-    pollingInterval = setInterval(loadMessages, 5000); // Alle 5 Sekunden Nachrichten laden
+    if (pollingInterval) clearInterval(pollingInterval); 
+    pollingInterval = setInterval(loadMessages, 5000); 
 }
-// stopPolling(); // Wenn Realtime funktioniert, Polling stoppen
 
-// Initialisierung beim Laden der Seite
 document.addEventListener('DOMContentLoaded', async () => {
-    // DEBUG START: Temporär entfernt, um sicherzustellen, dass loadChatPartners immer aufgerufen wird
-    // const { data: { user } } = await supabaseClient.auth.getUser();
-    // if (!user) {
-    //     errorMessage.innerHTML = '<p>Bitte melden Sie sich an, um den Chat zu nutzen.</p>';
-    //     errorMessage.style.display = 'block';
-    //     messageInput.disabled = true;
-    //     sendMessageButton.disabled = true;
-    //     return;
-    // }
-    // currentUserId = user.id; // currentUserId wird jetzt in loadChatPartners gesetzt
 
     // Lade Chatpartner beim Start
     await loadChatPartners(); // Dieser Aufruf wird jetzt immer gemacht
-    // DEBUG END
-
-    // Wenn Realtime nicht genutzt wird, Polling starten
-    // startPolling(); // Kommentar entfernen, um Polling zu aktivieren
+    // DEBUG ENDE
+    
 });
 
-// Bei Seitenwechsel oder Schließen des Tabs Realtime-Kanal aufräumen
 window.addEventListener('beforeunload', () => {
     if (realtimeChannel) {
         supabaseClient.removeChannel(realtimeChannel);
     }
 });
 
-// Status-Nachrichten anzeigen (kopiert von settings.js, kann zentralisiert werden)
 function showStatusMessage(message, isError = false) {
-    const statusMessageElement = document.getElementById('statusMessage'); // Annahme, dass es ein Status-Element gibt
+    const statusMessageElement = document.getElementById('statusMessage'); 
     if (!statusMessageElement) return;
 
     statusMessageElement.textContent = message;
     statusMessageElement.style.display = 'block';
-    statusMessageElement.className = isError ? 'status-message error' : 'status-message success'; // CSS-Klassen für Styling
+    statusMessageElement.className = isError ? 'status-message error' : 'status-message success'; 
 
     setTimeout(() => {
         statusMessageElement.style.display = 'none';
