@@ -1,9 +1,4 @@
-// Initialisiere den Supabase Client
-// !!! WICHTIG: Ersetze diese Platzhalter durch deine tatsächlichen Supabase URL und ANON KEY !!!
-// Diese sollten in einer realen Anwendung nicht direkt im Code stehen,
-// sondern z.B. über Umgebungsvariablen eines Build-Tools eingefügt werden.
-// Für dieses Beispiel verwenden wir sie direkt.
-const SUPABASE_URL = 'https://ibwojujxyymvalwannza.supabase.co'; // Beispiel: 'https://abcde12345.supabase.co'
+const SUPABASE_URL = 'https://ibwojujxyymvalwannza.supabase.co'; 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlid29qdWp4eXltdmFsd2FubnphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2MzIxODYsImV4cCI6MjA2NjIwODE4Nn0.THsCEW7MwyTf25wi2NzSR7zLaplf6fNN_fATmcj5C2A'; // Beispiel: 'eyJhbGciOiJIUzI1Ni...'
 
 const { createClient } = supabase; // Nutzt die globale Supabase-Bibliothek, die über CDN geladen wird
@@ -21,22 +16,16 @@ const signupEmailInput = document.getElementById('signupEmail');
 const signupPasswordInput = document.getElementById('signupPassword');
 const signupConfirmPasswordInput = document.getElementById('signupConfirmPassword');
 
-// Funktion zur Anzeige von Nachrichten (z.B. Erfolgs- oder Fehlermeldungen)
+// Funktion zur Anzeige von Nachrichten (Erfolgs- und Fehlermeldungen)
 function showMessage(message, type = 'info') {
-    // Hier kannst du ein Element auf der Seite aktualisieren, um Nachrichten anzuzeigen
-    // Zum Beispiel: Ein div mit der ID 'message-area'
-    // const messageArea = document.getElementById('message-area');
-    // if (messageArea) {
-    //     messageArea.textContent = message;
-    //     messageArea.className = `message ${type}`; // Für Styling (message info, message error)
-    // }
-    alert(message); // Für den Anfang verwenden wir alert
+
+    alert(message); 
 }
 
 // Event Listener für das Login-Formular
 if (loginForm) {
     loginForm.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Verhindert das Neuladen der Seite
+        event.preventDefault(); 
 
         const email = loginEmailInput.value;
         const password = loginPasswordInput.value;
@@ -54,7 +43,7 @@ if (loginForm) {
                 console.log('Login erfolgreich:', data);
                 showMessage('Login erfolgreich!', 'success');
                 // Weiterleitung zur Hauptanwendung oder Dashboard
-                window.location.href = 'main.html'; // Oder '/' wenn index.html der Standard ist
+                window.location.href = 'main.html'; 
             }
         } catch (err) {
             console.error('Netzwerkfehler beim Login:', err);
@@ -63,10 +52,10 @@ if (loginForm) {
     });
 }
 
-// Event Listener für das Registrierungs-Formular
+
 if (signupForm) {
     signupForm.addEventListener('submit', async (event) => {
-        event.preventDefault(); // Verhindert das Neuladen der Seite
+        event.preventDefault(); 
 
         const email = signupEmailInput.value;
         const password = signupPasswordInput.value;
@@ -89,8 +78,7 @@ if (signupForm) {
             } else {
                 console.log('Registrierung erfolgreich:', data);
                 showMessage('Registrierung erfolgreich! Bitte überprüfen Sie Ihre E-Mails zur Bestätigung.', 'success');
-                // Optional: Benutzer nach Registrierung direkt einloggen oder zur Login-Formular wechseln lassen
-                // window.location.href = '/timer.html';
+
             }
         } catch (err) {
             console.error('Netzwerkfehler bei der Registrierung:', err);
@@ -99,16 +87,12 @@ if (signupForm) {
     });
 }
 
-// Optional: Überprüfen, ob der Benutzer bereits angemeldet ist (beim Laden der Seite)
 async function checkAuthStatus() {
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (user) {
         console.log('Benutzer ist angemeldet:', user);
-        // Beispiel: Weiterleitung zur Hauptseite, wenn angemeldet
-        // window.location.href = '/timer.html';
+
     } else {
         console.log('Kein Benutzer angemeldet.');
     }
 }
-
-// checkAuthStatus(); // Deaktiviere dies vorerst, da wir das Auth-Formular anzeigen wollen
