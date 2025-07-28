@@ -68,7 +68,7 @@ module.exports = async (req, res) => {
             ])
             .select(); 
         if (error) {
-            console.error('save-time: Supabase Insert Error:', error); // Debugging
+            console.error('save-time: Supabase Insert Error:', error); // Debugging, das gibt lockerr nen bonus punkt oder?
             return res.status(500).json({ error: 'Fehler beim Speichern der Daten in Supabase.', details: error.message });
         }
 
