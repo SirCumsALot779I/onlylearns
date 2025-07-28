@@ -3,12 +3,12 @@ body {
     background-color: #000;
     color: white;
     font-family: Arial, sans-serif;
-    min-height: 100vh; /* Stellt sicher, dass der Body mindestens die Höhe des Viewports hat */
-    display: flex; /* Aktiviere Flexbox */
-    flex-direction: column; /* Ordne Kinder vertikal an */
-    align-items: center; /* Zentriere Kinder horizontal */
-    padding-top: 20px; /* Optional: Etwas Abstand vom oberen Rand */
-    box-sizing: border-box; /* Sicherstellen, dass padding nicht zur Gesamtgröße beiträgt */
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding-top: 20px;
+    box-sizing: border-box; 
     margin-top:20px
 }
 
@@ -67,7 +67,6 @@ ul li {
     border-bottom: 1px solid #222;
 }
 
-/* Nur auf das Dropdown-Menü mit der ID 'dropdown' anwenden */
 #dropdown {
     position: absolute;
     top: 50px;
@@ -84,7 +83,6 @@ ul li {
 }
 
 
-/* Sichtbares Menü */
 #dropdown.visible {
     max-height: 500px;
     opacity: 1;
@@ -124,23 +122,18 @@ text-align: center;
 }
 
 #stopwatch-container {
-    /* Breite des Containers festlegen */
-    width: 300px; /* Beispielbreite, passe sie nach Bedarf an */
+    width: 300px; 
 
-    /* Zentrierung */
     margin-left: auto;
     margin-right: auto;
-    /* oder shorthand: margin: 0 auto; (0 für oben/unten, auto für links/rechts) */
 
-    /* Optional: Abstand nach oben für vertikale Zentrierung */
-    margin-top: 100px; /* Oder flexbox/grid für perfekte vertikale Zentrierung */
+    margin-top: 100px; 
 
-    /* Optional: Hintergrund, Polsterung, Rand für bessere Sichtbarkeit */
 
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Zentriert den Inhalt innerhalb des Containers */
+    text-align: center;
 }
 
 
@@ -150,22 +143,15 @@ text-align: center;
 
 
 
-
-/* Stil für das gesamte Select-Element (das "Arbeit"-Feld, das immer sichtbar ist) */
 #kategorie {
-    /* Hintergrundfarbe des Select-Feldes */
-    background-color: grey; /* Oder einen spezifischeren Grauton, z.B. #888 oder #555 */
+    background-color: grey; 
 
-    /* Textfarbe im Select-Feld */
-    color: white; /* Weiße Schrift */
+    color: white; 
 
-    /* Optional: Rahmen anpassen, falls er nicht zur Grauschrift passt */
-    border: 1px solid #ccc; /* Behalte den Rahmen oder mach ihn auch grau */
+    border: 1px solid #ccc; 
 
-    /* Optional: Schatten entfernen oder anpassen, falls vorhanden */
     box-shadow: none;
 
-    /* Weitere Anpassungen von vorhin beibehalten oder hinzufügen */
     width: 80%;
     padding: 10px;
     margin-bottom: 25px;
@@ -173,20 +159,16 @@ text-align: center;
     font-size: 1em;
 }
 
-/* Stil für die einzelnen Optionen im Dropdown-Menü, wenn es geöffnet ist */
 #kategorie option {
-    /* Hintergrundfarbe der Optionen */
-    background-color: grey; /* Oder einen spezifischeren Grauton */
+    background-color: grey; 
 
-    /* Textfarbe der Optionen */
-    color: white; /* Weiße Schrift */
+    color: white; 
 
 
 }
 
-/* Optional: Stil für die ausgewählte Option, wenn man sie ausgewählt hat (ist oft das gleiche wie #kategorie) */
 #kategorie option:checked {
-    background-color: darkgrey; /* Vielleicht ein etwas dunkleres Grau für die ausgewählte Option */
+    background-color: darkgrey; 
     color: white;
 }
 
@@ -196,20 +178,14 @@ text-align: center;
 
 
 button {
-    /* Hintergrundfarbe des Buttons */
-    background-color: grey; /* Oder einen spezifischeren Grauton, z.B. #555 oder #777 */
+    background-color: grey;
 
-    /* Textfarbe des Buttons */
-    color: white; /* Weiße Schrift */
+    color: white; 
 
-    /* Optional: Rahmen anpassen, falls er noch blau ist oder nicht passt */
-    border: none; /* Entfernt den Standardrahmen, falls er stört */
-    /* Oder: border: 1px solid #666; für einen grauen Rahmen */
+    border: none; 
 
-    /* Optional: Schatten anpassen, damit er auch zum Grauton passt */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Kann beibehalten oder angepasst werden */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 
-    /* Weitere Anpassungen von vorhin beibehalten */
     padding: 12px 25px;
     font-size: 1.1em;
     margin: 0 10px;
@@ -218,21 +194,18 @@ button {
     transition: background-color 0.3s ease, transform 0.1s ease;
 }
 
-/* Stil für den Hover-Effekt (wenn die Maus über den Button fährt) */
 button:hover {
-    background-color: darkgrey; /* Ein etwas dunkleres Grau beim Hover */
+    background-color: darkgrey;
     transform: translateY(-2px);
 }
 
-/* Stil für den Active-Effekt (wenn der Button geklickt wird) */
 button:active {
     transform: translateY(0);
 }
 
 
 #uhr {
-    font-size: 3em; /* Beispiel: Macht die Zahlen noch größer. Experimentiere mit dem Wert! */
-    /* Oder auch 5em, 5.5em, 7em - je nachdem, wie groß du es haben möchtest. */
+    font-size: 3em;
     font-weight: bold;
     margin-bottom: 30px;
     color: #2c3e50;
@@ -244,36 +217,36 @@ button:active {
 /zeiten anzeige
 
 #savedTimesContainer {
-    width: 600px; /* Oder 80% */
-    margin: 50px auto 20px auto; /* Zentrieren und Abstand von oben */
-    background-color: #333; /* Dunklerer Hintergrund */
+    width: 600px; 
+    margin: 50px auto 20px auto;
+    background-color: #333; 
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     color: white;
-    text-align: left; /* Text linksbündig im Container */
+    text-align: left;
 }
 
 #savedTimesContainer h2 {
     text-align: center;
-    color: 	#f6f6e8; /* Eine Akzentfarbe */
+    color: 	#f6f6e8; 
     margin-bottom: 25px;
     font-size: 1.8em;
 }
 
 #timeEntriesList {
-    list-style: none; /* Entfernt die Standard-Aufzählungspunkte */
+    list-style: none; 
     padding: 0;
     margin: 0;
 }
 
 #timeEntriesList li {
-    background-color: #444; /* Etwas hellerer Hintergrund für Listeneinträge */
+    background-color: #444; 
     margin-bottom: 7px;
     padding: 10px;
     border-radius: 8px;
-    display: flex; /* Für Layout von Kategorie, Zeit und Datum */
-    justify-content: space-between; /* Elemente auseinander ziehen */
+    display: flex; 
+    justify-content: space-between; 
     align-items: center;
     font-size: 1.1em;
 }
@@ -288,11 +261,11 @@ button:active {
 
 #timeEntriesList li .category {
     font-weight: bold;
-    color: #ffd700; /* Goldgelb für die Kategorie */
+    color: #ffd700; 
 }
 
 #timeEntriesList li .duration {
-    color: #00BFFF; /* Hellblau für die Dauer */
+    color: #00BFFF; 
 }
 
 #timeEntriesList li .timestamp {
@@ -304,32 +277,30 @@ button:active {
 #dropdown-nav-button{
     background: none;
     border: none;
-    color: #fff; /* Passend zu deinem Text im Menü */
+    color: #fff; 
     cursor: pointer;
     padding: 10px 15px;
     width: 100%;
     text-align: left;
     font-size: 1em;
-    /* Optional: Hover-Effekt wie bei den Links */
     transition: background-color 0.3s ease;
 }
 
 #dropdown-nav-button:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* Leichter Hintergrund beim Hover */
+    background-color: rgba(255, 255, 255, 0.1); 
 }
 #logoutButton {
     background: none;
     border: none;
-    color: #fff; /* Passend zu deinem Text im Menü */
+    color: #fff; 
     cursor: pointer;
     padding: 10px 15px;
     width: 100%;
     text-align: left;
     font-size: 1em;
-    /* Optional: Hover-Effekt wie bei den Links */
     transition: background-color 0.3s ease;
 }
 
 #logoutButton:hover {
-    background-color: rgba(255, 255, 255, 0.1); /* Leichter Hintergrund beim Hover */
+    background-color: rgba(255, 255, 255, 0.1); 
 }
