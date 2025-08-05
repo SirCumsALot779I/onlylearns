@@ -10,8 +10,6 @@ body {
     padding-top: 20px;
     box-sizing: border-box; 
     margin-top: 20px;
-    font-size: 1rem;
-    line-height: 1.6;
 }
 
 .center-text {
@@ -20,7 +18,6 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     font-size: 3em;
-    text-align: center;
 }
 
 .menu {
@@ -36,43 +33,37 @@ body {
     user-select: none;
     transition: opacity 0.5s ease;
     opacity: 1;
-    outline-offset: 3px;
-    outline: none;
 }
 
-.menu-icon:hover,
-.menu-icon:focus-visible {
-    opacity: 0.8;
-    outline: 3px solid #00bfff;
+.menu-icon:hover {
+    opacity: 0.3;
 }
 
 .hamburger {
     font-size: 2.5em;
     cursor: pointer;
     user-select: none;
-    outline-offset: 3px;
-    outline: none;
-}
-
-.hamburger:hover,
-.hamburger:focus-visible {
-    background-color: #333;
-    outline: 3px solid #00bfff;
 }
 
 #dropdown {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease, opacity 0.5s ease;
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    background-color: #111;
+    z-index: 1000;
+    width: 180px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.8s ease, opacity 1.0s ease;
 }
 
 #dropdown.visible {
-  max-height: 1000px;
-  opacity: 1;
-  overflow: visible;
+    max-height: 500px;
+    opacity: 1;
 }
-
 
 ul li {
     padding: 15px 20px;
@@ -88,23 +79,13 @@ ul li a {
     text-decoration: none;
     font-size: 1.1em;
     display: block;
-    outline-offset: 3px;
-    outline: none;
 }
 
-ul li a:hover,
-ul li a:focus-visible {
-    background-color: #333;
-    outline: 3px solid #00bfff;
-}
-
-.hamburger:hover span,
-.hamburger:focus-visible span {
+.hamburger:hover span {
     background-color: #aaa;
 }
 
-ul li:hover,
-ul li:focus-within {
+ul li:hover {
     background-color: #333;
 }
 
@@ -122,32 +103,10 @@ ul li:focus-within {
     text-align: left;
     font-size: 1em;
     transition: background-color 0.3s ease;
-    outline-offset: 3px;
-    outline: none;
 }
 
-#logoutButton:hover,
-#logoutButton:focus-visible {
+#logoutButton:hover {
     background-color: rgba(255, 255, 255, 0.1);
-    outline: 3px solid #00bfff;
-}
-
-#changeMessageButton {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-size: 1em;
-    padding: 10px 20px;
-    outline-offset: 3px;
-    outline: none;
-    transition: opacity 0.3s ease, outline 0.3s ease;
-}
-
-#changeMessageButton:hover,
-#changeMessageButton:focus-visible {
-  outline: 2px solid #00bfff;
-  outline-offset: 2px;
 }
 
 .video-corner-container {
@@ -175,8 +134,3 @@ ul li:focus-within {
         right: 10px;
     }
 }
-
-.hidden {
-  display: none;
-}
-
