@@ -1,17 +1,5 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-//nur test-code weil supabase mal wieder nervt
-supabase.auth.getSession().then(({ data, error }) => {
-  if (error) {
-    console.error("Fehler beim Abrufen der Session:", error);
-  } else if (!data.session) {
-    console.log("Keine Session gefunden.");
-  } else {
-    console.log("Session gefunden:", data.session);
-  }
-});
-//test-code zuende
-
 const supabase = createClient('https://DEINE_SUPABASE_URL', 'DEIN_ANON_KEY');
 
 const input = document.getElementById('todo-input');
@@ -23,7 +11,6 @@ async function getUser() {
   if (error || !data.session) return null;
   return data.session.user;
 }
-
 
 function renderMessage(text, type = 'info') {
   const msg = document.createElement('div');
@@ -96,15 +83,16 @@ addBtn.addEventListener('click', async () => {
   const text = input.value.trim();
   if (!text || !user) return;
 
-  await supabase.from('todos').insert({ user_id: user.id, text, done: false });const { error } = await supabase
-  .from('todos')
-  .insert({ user_id: user.id, text, done: false });
+  const { error } = await supabase
+    .from('todos')
+    .insert({ user_id: user.id, text, done: false });
 
-if (error) {
-  console.error("Fehler beim Speichern:", error);
-  renderMessage("Fehler beim Hinzufügen des To-Dos.", "error");
-  return;
-}
+  if (error) {
+    console.error("Fehler beim Speichern:", error);
+    renderMessage("Fehler beim Hinzufügen des To-Dos.", "error");
+    return;
+  }
+
   input.value = '';
   loadTodos();
 });
