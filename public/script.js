@@ -1,15 +1,15 @@
+
 const SUPABASE_URL = 'https://ibwojujxyymvalwannza.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlid29qdWp4eXltdmFsd2FubnphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2MzIxODYsImV4cCI6MjA2NjIwODE4Nn0.THsCEW7MwyTf25wi2NzSR7zLaplf6fNN_fATmcj5C2A';
 const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 function toggleMenu() {
     const dropdown = document.getElementById('dropdown');
-    const toggleBtn = document.getElementById('menuToggleButton');
-    if (!dropdown || !toggleBtn) return;
-    const isVisible = dropdown.classList.toggle('visible');
-    dropdown.style.maxHeight = isVisible ? dropdown.scrollHeight + 'px' : '0';
-    dropdown.setAttribute('aria-hidden', !isVisible);
-    toggleBtn.setAttribute('aria-expanded', isVisible);
+    if (!dropdown) return;
+    dropdown.classList.toggle('visible');
+    dropdown.style.maxHeight = dropdown.classList.contains('visible')
+        ? dropdown.scrollHeight + 'px'
+        : '0';
 }
 
 let timer;
@@ -27,9 +27,7 @@ function formatTime(s) {
 function updateTime() {
     seconds++;
     const uhrDisplay = document.getElementById('uhr');
-    if (uhrDisplay) {
-        uhrDisplay.innerText = formatTime(seconds);
-    }
+    if (uhrDisplay) uhrDisplay.innerText = formatTime(seconds);
 }
 
 function startPauseTimer() {
@@ -39,20 +37,12 @@ function startPauseTimer() {
         clearInterval(timer);
         isRunning = false;
         isPaused = true;
-        if (startPauseButton) {
-            startPauseButton.innerText = 'Fortfahren';
-            startPauseButton.setAttribute('aria-pressed', 'false');
-            startPauseButton.setAttribute('aria-label', 'Timer fortsetzen');
-        }
+        if (startPauseButton) startPauseButton.innerText = 'Fortfahren';
     } else {
         timer = setInterval(updateTime, 1000);
         isRunning = true;
         isPaused = false;
-        if (startPauseButton) {
-            startPauseButton.innerText = 'Pause';
-            startPauseButton.setAttribute('aria-pressed', 'true');
-            startPauseButton.setAttribute('aria-label', 'Timer pausieren');
-        }
+        if (startPauseButton) startPauseButton.innerText = 'Pause';
         if (endButton) endButton.style.display = 'inline-block';
     }
 }
@@ -67,46 +57,44 @@ async function endTimer() {
     try {
         const { data: { session } } = await supabaseClient.auth.getSession();
         const headers = { 'Content-Type': 'application/json' };
-        if (session && session.access_token) {
+        if (session && session.access_token) { 
             headers.Authorization = `Bearer ${session.access_token}`;
         } else {
+            console.warn("Keine aktive Supabase Session gefunden. Zeit kann nicht mit Benutzer-ID gespeichert werden.");
             alert('Bitte melden Sie sich an, um Ihre Arbeitszeit zu speichern.');
             seconds = 0;
             document.getElementById('uhr').innerText = '00:00:00';
             const startPauseButton = document.getElementById('startPauseButton');
             const endButton = document.getElementById('endButton');
-            if (startPauseButton) {
-                startPauseButton.innerText = 'Start';
-                startPauseButton.setAttribute('aria-pressed', 'false');
-                startPauseButton.setAttribute('aria-label', 'Timer starten');
-            }
+            if (startPauseButton) startPauseButton.innerText = 'Start';
             if (endButton) endButton.style.display = 'none';
             if (kategorieSelect) kategorieSelect.value = 'arbeit';
-            return;
+            return; 
         }
+
         const response = await fetch('/api/save-time', {
             method: 'POST',
             headers,
             body: JSON.stringify({ category: selectedCategory, durationSeconds: timeSpentSeconds })
         });
+
         if (!response.ok) {
             const errorText = await response.text();
+            console.error('Speicher-Fehler Response:', errorText);
             throw new Error(errorText);
         }
+
         alert('Zeit erfolgreich gespeichert! 🎉');
         loadTimeEntries(document.getElementById('timeFilter')?.value || 'all');
     } catch (err) {
+        console.error('Speicher-Fehler:', err);
         alert('Fehler beim Speichern der Zeit: ' + (err.message || 'Unbekannter Fehler.'));
     }
     seconds = 0;
     document.getElementById('uhr').innerText = '00:00:00';
     const startPauseButton = document.getElementById('startPauseButton');
     const endButton = document.getElementById('endButton');
-    if (startPauseButton) {
-        startPauseButton.innerText = 'Start';
-        startPauseButton.setAttribute('aria-pressed', 'false');
-        startPauseButton.setAttribute('aria-label', 'Timer starten');
-    }
+    if (startPauseButton) startPauseButton.innerText = 'Start';
     if (endButton) endButton.style.display = 'none';
     if (kategorieSelect) kategorieSelect.value = 'arbeit';
 }
@@ -118,15 +106,18 @@ async function loadTimeEntries(filter = 'all') {
     try {
         const { data: { session } } = await supabaseClient.auth.getSession();
         const headers = {};
-        if (session && session.access_token) {
+        if (session && session.access_token) { 
             headers.Authorization = `Bearer ${session.access_token}`;
         } else {
+            console.log('Keine aktive Supabase Session. Laden der Zeiten wird eingeschränkt.');
             list.innerHTML = '<li>Bitte melden Sie sich an, um Ihre Zeiten zu sehen.</li>';
-            return;
+            return; 
         }
+
         const res = await fetch(`/api/get-time-entries?filter=${filter}`, { headers });
         if (!res.ok) {
             const errorText = await res.text();
+            console.error('Lade-Fehler Response:', errorText);
             throw new Error(errorText);
         }
         const entries = await res.json();
@@ -137,6 +128,7 @@ async function loadTimeEntries(filter = 'all') {
               }).join('')
             : '<li>Keine Einträge gefunden.</li>';
     } catch (err) {
+        console.error('Lade-Fehler:', err);
         list.innerHTML = `<li>Fehler beim Laden: ${err.message}</li>`;
     }
 }
