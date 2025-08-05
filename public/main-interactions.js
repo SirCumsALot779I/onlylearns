@@ -1,4 +1,4 @@
-<button id="changeMessageButton" aria-live="polite" aria-atomic="true" aria-label="Motivierender Spruch">
+<button id="changeMessageButton" aria-live="polite" aria-atomic="true" aria-label="Motivierender Spruch" tabindex="0">
   Willkommen, fauler Sack
 </button>
 
