@@ -1,63 +1,66 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8" />
-    <title>Timer - OnlyLearns</title>
+    <meta charset="UTF-8">
+    <title>Timer</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png" />
-    <link rel="stylesheet" href="timer-style.css" />
+    <link rel="stylesheet" href="timer.css">
 </head>
 <body>
-<nav class="menu" aria-label="Hauptnavigation">
-    <button class="hamburger" aria-expanded="false" aria-controls="dropdown" aria-label="Menü umschalten" onclick="toggleMenu()">
-        <img src="img/big_kahuna_burger_hladik.png" alt="Menü Icon" class="menu-icon" />
-    </button>
-    <ul id="dropdown" role="menu">
-        <li role="none"><a href="main.html" role="menuitem">⌂ Home</a></li>
-        <li role="none"><a href="timer.html" role="menuitem" aria-current="page">Timer</a></li>
-        <li role="none"><a href="dashboard.html" role="menuitem">Dashboard</a></li>
-        <li role="none"><a href="to-do.html" role="menuitem">To-Do-Liste</a></li>
-        <li role="none"><a href="settings.html" role="menuitem">⚙️ Einstellungen</a></li>
-        <li role="none">
-            <button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;" aria-label="Logout">🚪 Logout</button>
-        </li>
+<nav class="menu">
+    <div class="hamburger" onclick="toggleMenu()">
+        <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
+    </div>
+    <ul id="dropdown" class="">
+        <li><a href="main.html">Home</a></li>
+        <li><a href="timer.html">Timer</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="to-do.html">To-do-Liste</a></li>
+        <li><a href="settings.html">Einstellungen</a></li>
+        <li><button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">Logout</button></li>
     </ul>
 </nav>
 
-<main class="timer-container" aria-label="Timer Hauptbereich">
-    <h1>Timer</h1>
 
-    <section class="timer-section" aria-labelledby="timer-start-stop">
-        <h2 id="timer-start-stop">Timer-Steuerung</h2>
-        <button id="startTimerBtn" aria-pressed="false" aria-label="Timer starten">Start</button>
-        <button id="stopTimerBtn" aria-pressed="false" aria-label="Timer stoppen" disabled>Stop</button>
-        <button id="resetTimerBtn" aria-label="Timer zurücksetzen">Reset</button>
-    </section>
+<div id="stopwatch-container">
+    <h1>Stoppuhr</h1>
 
-    <section class="timer-section" aria-labelledby="timer-display">
-        <h2 id="timer-display">Timer Anzeige</h2>
-        <p id="timerDisplay" aria-live="polite" aria-atomic="true" role="timer">00:00:00</p>
-    </section>
+    <label for="kategorie">Kategorie:</label>
+    <select id="kategorie">
+        <option value="algorithmen">Algorithmen</option>
+        <option value="web_eng">Web Eng</option>
+        <option value="algebra">Algebra</option>
+    </select>
 
-    <section class="timer-section" aria-labelledby="kategorie-auswahl">
-        <h2 id="kategorie-auswahl">Kategorie auswählen</h2>
-        <label for="categorySelect" class="visually-hidden">Kategorie auswählen</label>
-        <select id="categorySelect" name="category">
-            <option value="" disabled selected>Bitte Kategorie wählen</option>
-            <option value="Arbeit">Arbeit</option>
-            <option value="Lernen">Lernen</option>
-            <option value="Sport">Sport</option>
-            <option value="Freizeit">Freizeit</option>
+    <div id="uhr">00:00:00</div>
+    <button id="startPauseButton" onclick="startPauseTimer()">Start</button> <button id="endButton" onclick="endTimer()" style="display:none;">Beenden</button> </div>
+
+
+<div id="savedTimesContainer">
+    <h2>Gespeicherte Zeiten</h2>
+
+    <div class="filter-controls">
+        <label for="timeFilter">Anzeigen:</label>
+        <select id="timeFilter">
+            <option value="all">Alle</option>
+            <option value="today">Heute</option>
+            <option value="yesterday">Gestern</option>
+            <option value="last_7_days">Letzte 7 Tage</option>
         </select>
-    </section>
-</main>
+    </div>
+    <ul id="timeEntriesList">
+        <li>Lade Daten...</li>
+    </ul>
+</div>
 
-<aside class="video-corner-container" aria-hidden="true">
+<div class="video-corner-container">
     <video id="background-video" autoplay loop muted playsinline>
-        <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4" />
-        Dein Browser unterstützt das Video-Tag nicht.
+        <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4">
+        Dein Browser unterstützt das Video-Tag nicht(aka is todes goofy).
     </video>
-</aside>
+</div>
 
 <script src="script.js"></script>
 <script src="timer.js"></script>
