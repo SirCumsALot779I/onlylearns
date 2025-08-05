@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Mainpage</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="main.css" />
     <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png" />
-
     <style>
-        /* um den Fokus sichtbar machen, auch schon in .css hinzugefügt */
         :focus {
             outline: 2px solid #00bfff;
             outline-offset: 2px;
         }
-
         .skip-link {
             position: absolute;
             left: -999px;
@@ -23,44 +20,108 @@
             padding: 1rem;
             z-index: 100;
         }
-
         .skip-link:focus {
             left: 10px;
             top: 10px;
         }
+        #dropdown {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            background-color: #111;
+            border-radius: 12px;
+            width: 180px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.8s ease, opacity 1s ease;
+        }
+        #dropdown.visible {
+            max-height: 500px;
+            opacity: 1;
+        }
+        ul#dropdown {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        ul#dropdown li {
+            border-bottom: 1px solid #222;
+        }
+        ul#dropdown li:last-child {
+            border-bottom: none;
+        }
+        ul#dropdown li a,
+        #logoutButton {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 15px 20px;
+            display: block;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+        }
+        ul#dropdown li a:hover,
+        ul#dropdown li a:focus,
+        #logoutButton:hover,
+        #logoutButton:focus {
+            background-color: #333;
+            outline: 3px solid #00bfff;
+        }
+        .hamburger {
+            font-size: 0; /* icon via img */
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            outline-offset: 3px;
+        }
+        .hamburger:focus {
+            outline: 3px solid #00bfff;
+        }
+        .menu-icon {
+            width: 36px;
+            height: 36px;
+            user-select: none;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
-
     <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
 
     <nav class="menu" aria-label="Hauptmenü">
-        <button class="hamburger" onclick="toggleMenu()" aria-label="Menü öffnen">
-            <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
+        <button id="menuButton" class="hamburger" aria-haspopup="true" aria-expanded="false" aria-controls="dropdown" aria-label="Menü öffnen">
+            <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon" />
         </button>
-        <ul id="dropdown">
-            <li><a href="main.html">⌂Home</a></li>
-            <li><a href="timer.html"> Timer</a></li>
-            <li><a href="dashboard.html"> Dashboard</a></li>
-            <li><a href="to-do.html"> To-Do-Liste</a></li>
-            <li><a href="settings.html">⚙️Einstellungen</a></li>
-            <li>
-                <button id="logoutButton" type="button" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">
-                    🚪Logout
+        <ul id="dropdown" role="menu" tabindex="-1" aria-label="Navigation">
+            <li role="none"><a href="main.html" role="menuitem" tabindex="-1">⌂ Home</a></li>
+            <li role="none"><a href="timer.html" role="menuitem" tabindex="-1">Timer</a></li>
+            <li role="none"><a href="dashboard.html" role="menuitem" tabindex="-1">Dashboard</a></li>
+            <li role="none"><a href="to-do.html" role="menuitem" tabindex="-1">To-Do-Liste</a></li>
+            <li role="none"><a href="settings.html" role="menuitem" tabindex="-1">⚙️ Einstellungen</a></li>
+            <li role="none">
+                <button id="logoutButton" role="menuitem" tabindex="-1" type="button" style="width: 100%; text-align: left;">
+                    🚪 Logout
                 </button>
             </li>
         </ul>
     </nav>
 
-    <div class="video-corner-container">
-        <video id="background-video" autoplay loop muted playsinline aria-hidden="true">
-            <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4">
+    <div class="video-corner-container" aria-hidden="true">
+        <video id="background-video" autoplay loop muted playsinline>
+            <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4" />
             Dein Browser unterstützt das Video-Tag nicht.
         </video>
     </div>
 
     <main id="main-content" class="center-text">
-        Willkommen, fauler sack
+        <button id="changeMessageButton" aria-live="polite" aria-atomic="true" aria-label="Motivierender Spruch" tabindex="0">
+            Willkommen, fauler Sack
+        </button>
     </main>
 
     <script src="script.js"></script>
