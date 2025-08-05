@@ -5,20 +5,14 @@ menuButton.addEventListener('click', () => {
   const isVisible = dropdown.classList.toggle('visible');
   menuButton.setAttribute('aria-expanded', isVisible);
 
+  const menuItems = dropdown.querySelectorAll('[role="menuitem"]');
+
   if (isVisible) {
-    dropdown.focus();
-    const firstItem = dropdown.querySelector('[role="menuitem"]');
-    if (firstItem) {
-      firstItem.tabIndex = 0;
-      firstItem.focus();
-    }
-    dropdown.querySelectorAll('[role="menuitem"]').forEach(item => {
-      if (item !== firstItem) item.tabIndex = -1;
-    });
+    menuItems.forEach(item => item.tabIndex = 0);
+    if (menuItems.length > 0) menuItems[0].focus();
+    
   } else {
-    dropdown.querySelectorAll('[role="menuitem"]').forEach(item => {
-      item.tabIndex = -1;
-    });
+    menuItems.forEach(item => item.tabIndex = -1);
     menuButton.focus();
   }
 });
@@ -49,7 +43,6 @@ const messages = [
   "das ist Text. Ich hab doch auch kein plan was hier noch stehen kann, geh doch bitte einfach lernen du **** ***** ***** ******",
   "Hier könnte ihre Werbung stehen!"
 ];
-
 
 const changeMessageButton = document.getElementById('changeMessageButton');
 let currentMessageIndex = 0;
