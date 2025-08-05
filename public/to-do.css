@@ -1,1 +1,123 @@
+body {
+    margin: 0;
+    background-color: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding-top: 20px;
+}
+
+.menu {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.menu-icon {
+    width: 36px;
+    cursor: pointer;
+    transition: opacity 0.5s ease;
+}
+
+#dropdown {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    background-color: #111;
+    border-radius: 12px;
+    width: 180px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.8s ease, opacity 1s ease;
+}
+
+#dropdown.visible {
+    max-height: 500px;
+    opacity: 1;
+}
+
+ul li a, #logoutButton {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1em;
+    padding: 15px 20px;
+    display: block;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+}
+
+ul li a:hover, #logoutButton:hover {
+    background-color: #333;
+}
+
+.todo-container {
+    max-width: 600px;
+    margin: 100px auto 50px;
+    background-color: #333;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.todo-container h1 {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.input-section {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#newTodoInput {
+    flex: 1;
+    padding: 10px;
+    font-size: 1em;
+    border-radius: 6px;
+    border: none;
+    margin-right: 10px;
+    background-color: #555;
+    color: white;
+}
+
+button {
+    background-color: grey;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: darkgrey;
+}
+
+#todoList {
+    list-style: none;
+    padding: 0;
+}
+
+#todoList li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #444;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+}
+
+.todo-text {
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+input[type="checkbox"] {
+    transform: scale(1.5);
+}
 
