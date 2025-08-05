@@ -1,137 +1,103 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Dashboard - OnlyLearns</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png" />
-    <link rel="stylesheet" href="dashboard-style.css" />
-    <style>
 
-      a:focus, button:focus, input:focus, select:focus {
-        outline: 3px solid #0f62fe;
-        outline-offset: 2px;
-      }
-      .skip-link {
-        position: absolute;
-        left: -999px;
-        top: auto;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
-        z-index: 100;
-      }
-      .skip-link:focus {
-        position: static;
-        width: auto;
-        height: auto;
-        padding: 8px;
-        background: #0f62fe;
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-      }
-    </style>
-</head>
+    <link rel="stylesheet" href="dashboard-style.css"> </head>
 <body>
-  <!-- springt zum Hauptinhalt -->
-  <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
-
-  <nav class="menu" role="navigation" aria-label="Hauptmenü">
-    <div class="hamburger" onclick="toggleMenu()" role="button" tabindex="0" aria-label="Menü ein-/ausblenden" onkeypress="if(event.key==='Enter') toggleMenu();">
-      <img src="img/big_kahuna_burger_hladik.png" alt="Menü-Icon" class="menu-icon" />
+<nav class="menu">
+    <div class="hamburger" onclick="toggleMenu()">
+        <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
     </div>
-    <ul id="dropdown" class="" role="menubar">
-      <li role="none"><a href="main.html" role="menuitem" tabindex="0">⌂Home</a></li>
-      <li role="none"><a href="timer.html" role="menuitem" tabindex="0"> Timer</a></li>
-      <li role="none"><a href="dashboard.html" role="menuitem" aria-current="page" tabindex="0"> Dashboard</a></li>
-      <li role="none"><a href="to-do.html" role="menuitem" tabindex="0"> To-Do-Liste</a></li>
-      <li role="none"><a href="settings.html" role="menuitem" tabindex="0">⚙️Einstellungen</a></li>
-      <li role="none">
-        <button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;" aria-label="Logout">
-          🚪Logout
-        </button>
-      </li>
+    <ul id="dropdown" class="">
+        <li><a href="main.html">⌂Home</a></li>
+        <li><a href="timer.html"> Timer</a></li>
+        <li><a href="dashboard.html"> Dashboard</a></li>
+        <li><a href="to-do.html"> To-Do-Liste</a></li>
+        <li><a href="settings.html">⚙️Einstellungen</a></li>
+        <li><button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">🚪 Logout</button></li>
     </ul>
-  </nav>
+</nav>
 
-  <main id="main-content" tabindex="-1">
-    <div class="dashboard-container">
-      <h1>Dein Produktivitäts-Dashboard</h1>
+<div class="dashboard-container">
+    <h1>Dein Produktivitäts-Dashboard</h1>
 
-      <section class="dashboard-section summary-stats" aria-labelledby="summary-stats-title">
-        <h2 id="summary-stats-title">Übersicht deiner Zeiten</h2>
+    <div class="dashboard-section summary-stats">
+        <h2>Übersicht deiner Zeiten</h2>
         <div class="stats-grid">
-          <article class="stat-card" aria-label="Gesamtzeit über alle Perioden">
-            <h3>Gesamtzeit (Alle)</h3>
-            <p id="totalTimeAll">Lade...</p>
-          </article>
-          <article class="stat-card" aria-label="Zeit Heute">
-            <h3>Zeit Heute</h3>
-            <p id="totalTimeToday">Lade...</p>
-          </article>
-          <article class="stat-card" aria-label="Zeit Gestern">
-            <h3>Zeit Gestern</h3>
-            <p id="totalTimeYesterday">Lade...</p>
-          </article>
-          <article class="stat-card" aria-label="Zeit Letzte 7 Tage">
-            <h3>Zeit Letzte 7 Tage</h3>
-            <p id="totalTimeLast7Days">Lade...</p>
-          </article>
+            <div class="stat-card">
+                <h3>Gesamtzeit (Alle)</h3>
+                <p id="totalTimeAll">Lade...</p>
+            </div>
+            <div class="stat-card">
+                <h3>Zeit Heute</h3>
+                <p id="totalTimeToday">Lade...</p>
+            </div>
+            <div class="stat-card">
+                <h3>Zeit Gestern</h3>
+                <p id="totalTimeYesterday">Lade...</p>
+            </div>
+            <div class="stat-card">
+                <h3>Zeit Letzte 7 Tage</h3>
+                <p id="totalTimeLast7Days">Lade...</p>
+            </div>
         </div>
-      </section>
+    </div>
 
-      <section class="dashboard-section" aria-labelledby="category-chart-title">
-        <h2 id="category-chart-title">Produktivität Heute nach Kategorie</h2>
+    <div class="dashboard-section">
+        <h2>Produktivität Heute nach Kategorie</h2>
         <div class="chart-container">
-          <canvas id="todayCategoryChart" role="img" aria-label="Diagramm der heutigen Produktivität nach Kategorien"></canvas>
+            <canvas id="todayCategoryChart"></canvas>
         </div>
         <p class="chart-info">Diese Grafik zeigt Ihre heutige verbrachte Zeit, aufgeteilt nach Kategorien.</p>
-      </section>
+    </div>
 
-      <section class="dashboard-section" aria-labelledby="last7days-chart-title">
-        <h2 id="last7days-chart-title">Produktivität der letzten 7 Tage</h2>
+    <div class="dashboard-section">
+        <h2>Produktivität der letzten 7 Tage</h2>
         <div class="chart-container">
-          <canvas id="dailyProductivityChart" role="img" aria-label="Diagramm der Produktivität der letzten 7 Tage"></canvas>
+            <canvas id="dailyProductivityChart"></canvas>
         </div>
         <p class="chart-info">Diese Grafik zeigt Ihre täglich verbrachte Zeit in allen Kategorien über die letzten 7 Tage.</p>
-      </section>
+    </div>
 
-      <section class="dashboard-section" aria-labelledby="category-total-title">
-        <h2 id="category-total-title">Gesamtzeiten pro Kategorie (Alle Perioden)</h2>
-        <ul id="categoryTotalTimesList" aria-live="polite" aria-relevant="additions">
-          <li>Lade Kategorienzeiten...</li>
+    <div class="dashboard-section">
+        <h2>Gesamtzeiten pro Kategorie (Alle Perioden)</h2>
+        <ul id="categoryTotalTimesList">
+            <li>Lade Kategorienzeiten...</li>
         </ul>
         <p class="list-info">Eine detaillierte Auflistung der Gesamtzeit pro Kategorie über alle deine Aufzeichnungen.</p>
-      </section>
+    </div>
 
-      <section class="dashboard-section" aria-labelledby="top-categories-title">
-        <h2 id="top-categories-title">Top Kategorien (Gesamt)</h2>
-        <ol id="topCategoriesList" aria-live="polite" aria-relevant="additions">
-          <li>Lade Top Kategorien...</li>
+    <div class="dashboard-section">
+        <h2>Top Kategorien (Gesamt)</h2>
+        <ol id="topCategoriesList">
+            <li>Lade Top Kategorien...</li>
         </ol>
         <p class="list-info">Eine Liste deiner meistgenutzten Kategorien, sortiert nach der Gesamtzeit über alle aufgezeichneten Perioden.</p>
-      </section>
-
-      <div id="loadingMessage" class="loading-message" role="alert" aria-live="assertive">
-        <p>Daten werden geladen...</p>
-      </div>
-      <div id="errorMessage" class="error-message" style="display:none;" role="alert" aria-live="assertive">
-        <p>Fehler beim Laden der Dashboard-Daten. Bitte versuche es später erneut.</p>
-      </div>
     </div>
-  </main>
 
-  <div class="video-corner-container" aria-hidden="true">
+    <div id="loadingMessage" class="loading-message">
+        <p>Daten werden geladen...</p>
+    </div>
+    <div id="errorMessage" class="error-message" style="display:none;">
+        <p>Fehler beim Laden der Dashboard-Daten. Bitte versuche es später erneut.</p>
+    </div>
+</div>
+
+<div class="video-corner-container">
     <video id="background-video" autoplay loop muted playsinline>
-      <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4" />
-      Dein Browser unterstützt das Video-Tag nicht(rip).
+        <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4">
+        Dein Browser unterstützt das Video-Tag nicht(rip).
     </video>
-  </div>
+</div>
 
-  <script src="script.js"></script>
-  <script src="dashboard.js"></script>
+<script src="script.js"></script>
+<script src="dashboard.js"></script>
+
 </body>
 </html>
