@@ -5,14 +5,134 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login & Registration</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="auth-style.css" />
     <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #000; 
+            color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        main {
+            display: flex;
+            gap: 40px; 
+        }
+
+        .form-wrapper {
+            background: #161618; 
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            width: 320px;
+            box-sizing: border-box;
+        }
+
+        .form-wrapper h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .input-field {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-field label {
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .input-field input {
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background: #1e1e1e;
+            color: #f0f0f0;
+            font-size: 14px;
+        }
+
+        .input-field input:focus {
+            outline: none;
+            border-color: #555;
+        }
+
+        .forget {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .forget label {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .forget a {
+            color: #bbb;
+            text-decoration: none;
+        }
+
+        .forget a:hover {
+            text-decoration: underline;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #333;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #444;
+        }
+
+        .register {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .hidden-checkbox {
+            display: none;
+        }
+
+        #check:checked ~ main .login {
+            display: none;
+        }
+        #check:not(:checked) ~ main .signup {
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <div class="wrapper">
     <input type="checkbox" id="check" class="hidden-checkbox" aria-hidden="true" />
 
     <main>
+
         <section aria-label="Login Form" class="form-wrapper login">
             <form action="#" id="loginForm">
                 <h2>Login</h2>
