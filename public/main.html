@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -6,64 +7,33 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="main.css">
     <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png" />
-
-    <style>
-
-        :focus {
-            outline: 2px solid #00bfff;
-            outline-offset: 2px;
-        }
-
-        .skip-link {
-            position: absolute;
-            left: -999px;
-            top: auto;
-            background: #000;
-            color: #fff;
-            padding: 1rem;
-            z-index: 100;
-        }
-
-        .skip-link:focus {
-            left: 10px;
-            top: 10px;
-        }
-    </style>
 </head>
 <body>
-
-    <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
-
-    <nav class="menu" aria-label="Hauptmenü">
-        <button class="hamburger" onclick="toggleMenu()" aria-label="Menü öffnen">
-            <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
-        </button>
-        <ul id="dropdown">
-            <li><a href="main.html">⌂Home</a></li>
-            <li><a href="timer.html"> Timer</a></li>
-            <li><a href="dashboard.html"> Dashboard</a></li>
-            <li><a href="to-do.html"> To-Do-Liste</a></li>
-            <li><a href="settings.html">⚙️Einstellungen</a></li>
-            <li>
-                <button id="logoutButton" type="button" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">
-                    🚪Logout
-                </button>
-            </li>
-        </ul>
-    </nav>
-
-    <div class="video-corner-container">
-        <video id="background-video" autoplay loop muted playsinline aria-hidden="true">
-            <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4">
-            Dein Browser unterstützt das Video-Tag nicht.
-        </video>
+<nav class="menu">
+    <div class="hamburger" onclick="toggleMenu()">
+        <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
     </div>
+    <ul id="dropdown" class="">
+        <li><a href="main.html">⌂Home</a></li>
+        <li><a href="timer.html"> Timer</a></li>
+        <li><a href="dashboard.html"> Dashboard</a></li>
+        <li><a href="to-do.html"> To-Do-Liste</a></li>
+        <li><a href="settings.html">⚙️Einstellungen</a></li>
+        <li><button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">🚪 Logout</button></li>
+    </ul>
+</nav>
 
-    <main id="main-content" class="center-text">
-        Willkommen, fauler sack
-    </main>
+<div class="video-corner-container">
+    <video id="background-video" autoplay loop muted playsinline>
+        <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4">
+        Dein Browser unterstützt das Video-Tag nicht(schade für dich).
+    </video>
+</div>
 
-    <script src="script.js"></script>
-    <script src="main-interactions.js"></script>
+<div class="center-text">Willkommen, fauler sack</div>
+
+<script src="script.js"></script>
+<script src="main-interactions.js"></script>
+
 </body>
 </html>
