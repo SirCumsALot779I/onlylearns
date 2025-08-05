@@ -105,35 +105,35 @@ ul li:hover {
     max-width: 700px;
     margin: 30px auto;
     padding: 25px;
-    background-color: #fff;
+    background-color: #111; 
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
     font-family: Arial, sans-serif;
-    color: #333;
+    color: #f1f1f1; 
 }
 
 .settings-container h1 {
     text-align: center;
-    color: #007bff;
+    color: #66b2ff;
     margin-bottom: 30px;
     font-size: 2.2em;
     font-weight: 600;
 }
 
 .settings-section {
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background-color: #1a1a1a; 
+    border: 1px solid #333;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 30px;
 }
 
 .settings-section h2 {
-    color: #495057;
+    color: #ddd; 
     margin-top: 0;
     margin-bottom: 15px;
     font-size: 1.6em;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid #66b2ff; 
     padding-bottom: 10px;
 }
 
@@ -154,7 +154,7 @@ ul li:hover {
 .setting-item label {
     flex: 1;
     font-weight: bold;
-    color: #555;
+    color: #ccc;
     margin-right: 20px;
     min-width: 150px;
 }
@@ -165,7 +165,9 @@ ul li:hover {
 .setting-item select {
     flex: 2;
     padding: 8px 12px;
-    border: 1px solid #ccc;
+    background-color: #222;
+    border: 1px solid #444;
+    color: #f1f1f1;
     border-radius: 5px;
     font-size: 1em;
     margin-right: 10px;
@@ -188,21 +190,21 @@ ul li:hover {
 }
 
 .save-button {
-    background-color: #007bff;
+    background-color: #3399ff;
     color: white;
 }
 
 .save-button:hover {
-    background-color: #0056b3;
+    background-color: #007acc;
 }
 
 .special-button {
-    background-color: #6c757d;
+    background-color: #444;
     color: white;
 }
 
 .special-button:hover {
-    background-color: #5a6268;
+    background-color: #555;
 }
 
 .status-message {
