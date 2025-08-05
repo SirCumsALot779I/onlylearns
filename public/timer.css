@@ -1,14 +1,14 @@
 body {
     margin: 0;
     background-color: #000;
-    color: #f5f5f5;
+    color: white;
     font-family: Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 20px;
-    box-sizing: border-box;
+    min-height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    padding-top: 20px; 
+    box-sizing: border-box; 
     margin-top: 20px;
 }
 
@@ -31,11 +31,6 @@ body {
     opacity: 0.3;
 }
 
-.menu-icon:focus {
-    outline: 3px solid #ffd700;
-    outline-offset: 2px;
-}
-
 .hamburger {
     font-size: 2.5em;
     cursor: pointer;
@@ -54,7 +49,7 @@ body {
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-    transition: max-height 0.8s ease, opacity 1s ease;
+    transition: max-height 0.8s ease, opacity 1.0s ease;
 }
 
 #dropdown.visible {
@@ -72,20 +67,18 @@ ul li:last-child {
 }
 
 ul li a {
-    color: #fff;
+    color: white;
     text-decoration: none;
     font-size: 1.1em;
     display: block;
 }
 
-ul li:hover,
-ul li a:focus {
-    background-color: #444;
-    outline: none;
-}
-
 .hamburger:hover span {
     background-color: #aaa;
+}
+
+ul li:hover {
+    background-color: #333;
 }
 
 .hidden {
@@ -97,19 +90,28 @@ h1 {
 }
 
 #stopwatch-container {
-    width: 300px;
-    margin: 100px auto 0 auto;
+    width: 300px; 
+
+    margin-left: auto;
+    margin-right: auto;
+    
+    margin-top: 100px;
+
     padding: 20px;
     border-radius: 8px;
-    background-color: #161618;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
 
 #kategorie {
-    background-color: #222;
-    color: #fff;
-    border: 1px solid #555;
+    background-color: grey; 
+
+    color: white; 
+
+    border: 1px solid #ccc; 
+
+    box-shadow: none;
+
     width: 80%;
     padding: 10px;
     margin-bottom: 25px;
@@ -117,26 +119,26 @@ h1 {
     font-size: 1em;
 }
 
-#kategorie:focus {
-    outline: 3px solid #00bfff;
-    outline-offset: 2px;
-}
-
 #kategorie option {
-    background-color: #222;
-    color: #fff;
+    background-color: grey; 
+
+    color: white; 
 }
 
 #kategorie option:checked {
-    background-color: #444;
-    color: #fff;
+    background-color: darkgrey; 
+    color: white;
 }
 
 button {
-    background-color: #333;
-    color: #fff;
-    border: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    background-color: grey;
+
+    color: white; 
+
+    border: none; 
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+
     padding: 12px 25px;
     font-size: 1.1em;
     margin: 0 10px;
@@ -146,13 +148,8 @@ button {
 }
 
 button:hover {
-    background-color: #555;
+    background-color: darkgrey; 
     transform: translateY(-2px);
-}
-
-button:focus {
-    outline: 3px solid #00bfff;
-    outline-offset: 3px;
 }
 
 button:active {
@@ -163,42 +160,42 @@ button:active {
     font-size: 3em;
     font-weight: bold;
     margin-bottom: 30px;
-    color: #f5f5f5;
+    color: #2c3e50;
     letter-spacing: 2px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 #savedTimesContainer {
-    width: 600px;
-    margin: 50px auto 20px auto;
-    background-color: #222;
+    width: 600px; 
+    margin: 50px auto 20px auto; 
+    background-color: #333; 
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-    color: #fff;
-    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+    text-align: left; 
 }
 
 #savedTimesContainer h2 {
     text-align: center;
-    color: #f6f6e8;
+    color:  #f6f6e8; 
     margin-bottom: 25px;
     font-size: 1.8em;
 }
 
 #timeEntriesList {
-    list-style: none;
+    list-style: none; 
     padding: 0;
     margin: 0;
 }
 
 #timeEntriesList li {
-    background-color: #333;
+    background-color: #444; 
     margin-bottom: 7px;
     padding: 10px;
     border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
+    display: flex; 
+    justify-content: space-between; 
     align-items: center;
     font-size: 1.1em;
 }
@@ -213,11 +210,11 @@ button:active {
 
 #timeEntriesList li .category {
     font-weight: bold;
-    color: #ffd700;
+    color: #ffd700; 
 }
 
 #timeEntriesList li .duration {
-    color: #00bfff;
+    color: #00BFFF; 
 }
 
 #timeEntriesList li .timestamp {
@@ -226,11 +223,10 @@ button:active {
     text-align: right;
 }
 
-#dropdown-nav-button,
-#logoutButton {
+#dropdown-nav-button{
     background: none;
     border: none;
-    color: #fff;
+    color: #fff; 
     cursor: pointer;
     padding: 10px 15px;
     width: 100%;
@@ -239,51 +235,47 @@ button:active {
     transition: background-color 0.3s ease;
 }
 
-#dropdown-nav-button:hover,
-#logoutButton:hover {
+#dropdown-nav-button:hover {
     background-color: rgba(255, 255, 255, 0.1);
 }
+#logoutButton {
+    background: none;
+    border: none;
+    color: #fff; 
+    cursor: pointer;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
 
-#dropdown-nav-button:focus,
-#logoutButton:focus {
-    outline: 3px solid #ffd700;
-    outline-offset: 2px;
+#logoutButton:hover {
+    background-color: rgba(255, 255, 255, 0.1); 
 }
 
 .video-corner-container {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    width: 250px;
-    height: auto;
-    z-index: 1000;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    position: fixed; 
+    bottom: 20px;   
+    right: 20px;     
+    width: 250px;    
+    height: auto;    
+    z-index: 1000;  
+    overflow: hidden; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
 }
 
 .video-corner-container video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 100%;     
+    height: 100%;   
+    object-fit: cover; 
 }
 
 @media (max-width: 768px) {
     .video-corner-container {
-        width: 180px;
+        width: 180px; 
         bottom: 10px;
         right: 10px;
     }
-    #savedTimesContainer {
-        width: 90%;
-        padding: 15px;
-    }
-    #stopwatch-container {
-        width: 90%;
-    }
-}
-
-a:focus {
-    outline: 3px solid #00bfff;
-    outline-offset: 3px;
 }
