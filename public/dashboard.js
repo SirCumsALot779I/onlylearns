@@ -31,14 +31,12 @@ async function loadDashboardData() {
     const totalTimeYesterday = document.getElementById('totalTimeYesterday'); 
     const totalTimeLast7Days = document.getElementById('totalTimeLast7Days'); 
 
-
     if (totalTimeAll) totalTimeAll.innerText = 'Lade...';
     if (totalTimeToday) totalTimeToday.innerText = 'Lade...';
     if (totalTimeYesterday) totalTimeYesterday.innerText = 'Lade...';
     if (totalTimeLast7Days) totalTimeLast7Days.innerText = 'Lade...';
     if (topCategoriesList) topCategoriesList.innerHTML = '<li>Lade Top Kategorien...</li>';
     if (categoryTotalTimesList) categoryTotalTimesList.innerHTML = '<li>Lade Kategorienzeiten...</li>';
-
 
     loadingMessage.style.display = 'block';
     errorMessage.style.display = 'none';
@@ -51,7 +49,6 @@ async function loadDashboardData() {
             errorMessage.style.display = 'block';
             loadingMessage.style.display = 'none';
             chartContainers.forEach(container => container.style.opacity = '1');
-          
             if (totalTimeAll) totalTimeAll.innerText = 'N/A';
             if (totalTimeToday) totalTimeToday.innerText = 'N/A';
             if (totalTimeYesterday) totalTimeYesterday.innerText = 'N/A';
@@ -77,7 +74,6 @@ async function loadDashboardData() {
             errorMessage.innerHTML = '<p>Keine Zeit-Einträge gefunden, um das Dashboard zu erstellen.</p>';
             errorMessage.style.display = 'block';
             chartContainers.forEach(container => container.style.opacity = '1');
-            
             if (totalTimeAll) totalTimeAll.innerText = formatTime(0);
             if (totalTimeToday) totalTimeToday.innerText = formatTime(0);
             if (totalTimeYesterday) totalTimeYesterday.innerText = formatTime(0);
@@ -104,13 +100,10 @@ async function loadDashboardData() {
         const last7DaysEntries = [];
         const allCategoryTotals = {}; 
 
-
         entries.forEach(entry => {
             const entryDate = new Date(entry.timestamp);
             const duration = entry.duration_seconds;
-
             totalAllSeconds += duration; 
-
             const entryDateOnly = new Date(entryDate.getFullYear(), entryDate.getMonth(), entryDate.getDate());
 
             if (isToday(entryDate)) {
@@ -127,19 +120,15 @@ async function loadDashboardData() {
                  last7DaysEntries.push(entry); 
             }
 
-            
             const category = entry.category || 'Unbekannt';
             allCategoryTotals[category] = (allCategoryTotals[category] || 0) + duration;
         });
 
-    
         if (totalTimeAll) totalTimeAll.innerText = formatTime(totalAllSeconds);
         if (totalTimeToday) totalTimeToday.innerText = formatTime(totalTodaySeconds);
         if (totalTimeYesterday) totalTimeYesterday.innerText = formatTime(totalYesterdaySeconds);
         if (totalTimeLast7Days) totalTimeLast7Days.innerText = formatTime(totalLast7DaysSeconds);
 
-
-     
         if (todayEntries.length === 0) {
             renderTodayCategoryChart([], [], true); 
         } else {
@@ -165,7 +154,6 @@ async function loadDashboardData() {
             chartLabels.push(d.toLocaleDateString('de-DE', { weekday: 'short', day: '2-digit', month: '2-digit' }));
         }
 
-     
         last7DaysEntries.forEach(entry => {
             const entryDate = new Date(entry.timestamp);
             entryDate.setHours(0, 0, 0, 0); 
@@ -193,7 +181,6 @@ async function loadDashboardData() {
             .sort(([keyA], [keyB]) => keyA.localeCompare(keyB)); 
         renderCategoryTotalTimesList(allCategoryTotalsArray);
 
-
     } catch (err) {
         console.error('Fehler beim Laden der Dashboard-Daten:', err);
         errorMessage.innerHTML = `<p>Fehler: ${err.message}</p>`;
@@ -207,11 +194,9 @@ async function loadDashboardData() {
 let todayCategoryChartInstance = null;
 function renderTodayCategoryChart(labels, data, noData = false) {
     const ctx = document.getElementById('todayCategoryChart').getContext('2d');
-
     if (todayCategoryChartInstance) {
         todayCategoryChartInstance.destroy();
     }
-
     if (noData) {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.font = '16px Arial';
@@ -220,7 +205,6 @@ function renderTodayCategoryChart(labels, data, noData = false) {
         ctx.fillText('Keine Zeit-Einträge für heute gefunden.', ctx.canvas.width / 2, ctx.canvas.height / 2);
         return;
     }
-
     todayCategoryChartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -291,15 +275,12 @@ function renderTodayCategoryChart(labels, data, noData = false) {
     });
 }
 
-
 let dailyProductivityChartInstance = null;
 function renderDailyProductivityChart(labels, data) {
     const ctx = document.getElementById('dailyProductivityChart').getContext('2d');
-
     if (dailyProductivityChartInstance) {
         dailyProductivityChartInstance.destroy();
     }
-
     dailyProductivityChartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
@@ -370,17 +351,13 @@ function renderDailyProductivityChart(labels, data) {
     });
 }
 
-
-
 function renderTopCategoriesList(categories) {
     const topCategoriesList = document.getElementById('topCategoriesList');
     if (!topCategoriesList) return;
-
     if (categories.length === 0) {
         topCategoriesList.innerHTML = '<li>Keine Kategorien gefunden.</li>';
         return;
     }
-
     topCategoriesList.innerHTML = categories.map(([category, totalSeconds]) => {
         return `<li><strong>${category}:</strong> ${formatTime(totalSeconds)}</li>`;
     }).join('');
@@ -389,17 +366,14 @@ function renderTopCategoriesList(categories) {
 function renderCategoryTotalTimesList(categoryTotals) {
     const categoryTotalTimesList = document.getElementById('categoryTotalTimesList');
     if (!categoryTotalTimesList) return;
-
     if (categoryTotals.length === 0) {
         categoryTotalTimesList.innerHTML = '<li>Keine Kategorien-Gesamtzeiten gefunden.</li>';
         return;
     }
-
     categoryTotalTimesList.innerHTML = categoryTotals.map(([category, totalSeconds]) => {
         return `<li><strong>${category}:</strong> ${formatTime(totalSeconds)}</li>`;
     }).join('');
 }
-
 
 document.addEventListener('DOMContentLoaded', () => {
     loadDashboardData();
