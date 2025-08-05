@@ -1,4 +1,4 @@
- const centerTextElement = document.querySelector('.center-text');
+    const centerTextElement = document.querySelector('.center-text');
 
     const messages = [
         "Willkommen, fauler Sack.",
