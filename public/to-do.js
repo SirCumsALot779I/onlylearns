@@ -1,104 +1,96 @@
-const supabaseClient = supabase.createClient("https://<YOUR_PROJECT>.supabase.co", "<YOUR_PUBLIC_ANON_KEY>");
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+
+const supabase = createClient('https://DEINE_SUPABASE_URL', 'DEIN_ANON_KEY');
+
+const input = document.getElementById('todo-input');
+const addBtn = document.getElementById('add-btn');
+const list = document.getElementById('todo-list');
+
+async function getUser() {
+  const { data } = await supabase.auth.getUser();
+  return data.user;
+}
+
+function renderMessage(text, type = 'info') {
+  const msg = document.createElement('div');
+  msg.className = type === 'error' ? 'error-message' : 'loading-message';
+  msg.textContent = text;
+  list.innerHTML = '';
+  list.appendChild(msg);
+}
+
+function renderTodos(todos) {
+  list.innerHTML = '';
+  if (todos.length === 0) {
+    const li = document.createElement('li');
+    li.textContent = 'Noch keine To-Dos.';
+    li.className = 'list-info';
+    list.appendChild(li);
+    return;
+  }
+
+  todos.forEach(todo => {
+    const li = document.createElement('li');
+    li.className = 'todo-list-item';
+
+    const span = document.createElement('span');
+    span.textContent = todo.text;
+    span.className = todo.done ? 'done' : '';
+    span.addEventListener('click', async () => {
+      await supabase.from('todos').update({ done: !todo.done }).eq('id', todo.id);
+      loadTodos();
+    });
+
+    const delBtn = document.createElement('button');
+    delBtn.textContent = '🗑️';
+    delBtn.addEventListener('click', async () => {
+      await supabase.from('todos').delete().eq('id', todo.id);
+      loadTodos();
+    });
+
+    li.appendChild(span);
+    li.appendChild(delBtn);
+    list.appendChild(li);
+  });
+}
 
 async function loadTodos() {
-    const todoList = document.getElementById("todoList");
-    todoList.innerHTML = "Lade Aufgaben...";
+  const user = await getUser();
+  if (!user) {
+    renderMessage('Bitte zuerst einloggen.', 'error');
+    return;
+  }
 
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    if (!session?.user) {
-        todoList.innerHTML = "<li>Bitte einloggen, um Aufgaben zu sehen.</li>";
-        return;
-    }
+  renderMessage('Lade Aufgaben...');
+  const { data, error } = await supabase
+    .from('todos')
+    .select('*')
+    .eq('user_id', user.id)
+    .order('created_at', { ascending: true });
 
-    const { data, error } = await supabaseClient
-        .from("todos")
-        .select("*")
-        .eq("user_id", session.user.id)
-        .order("inserted_at", { ascending: false });
+  if (error) {
+    renderMessage('Fehler beim Laden der Aufgaben.', 'error');
+    console.error(error);
+    return;
+  }
 
-    if (error) {
-        todoList.innerHTML = "<li>Fehler beim Laden</li>";
-        console.error(error);
-        return;
-    }
-
-    if (data.length === 0) {
-        todoList.innerHTML = "<li>Keine Aufgaben</li>";
-        return;
-    }
-
-    todoList.innerHTML = "";
-    data.forEach(todo => {
-        const li = document.createElement("li");
-
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.checked = todo.checked;
-        checkbox.addEventListener("change", () => toggleTodo(todo.id, checkbox.checked));
-
-        const span = document.createElement("span");
-        span.className = "todo-text";
-        span.innerText = todo.text;
-
-        const delBtn = document.createElement("button");
-        delBtn.textContent = "🗑️";
-        delBtn.onclick = () => deleteTodo(todo.id);
-
-        li.appendChild(checkbox);
-        li.appendChild(span);
-        li.appendChild(delBtn);
-        todoList.appendChild(li);
-    });
+  renderTodos(data);
 }
 
-async function addTodo() {
-    const input = document.getElementById("newTodoInput");
-    const text = input.value.trim();
-    if (!text) return;
+addBtn.addEventListener('click', async () => {
+  const user = await getUser();
+  const text = input.value.trim();
+  if (!text || !user) return;
 
-    const { data: { session } } = await supabaseClient.auth.getSession();
-    if (!session?.user) {
-        alert("Bitte anmelden.");
-        return;
-    }
-
-    const { error } = await supabaseClient.from("todos").insert([
-        {
-            user_id: session.user.id,
-            text,
-            checked: false
-        }
-    ]);
-
-    if (error) {
-        alert("Fehler beim Speichern");
-        console.error(error);
-    } else {
-        input.value = "";
-        loadTodos();
-    }
-}
-
-async function toggleTodo(id, checked) {
-    await supabaseClient.from("todos").update({ checked }).eq("id", id);
-}
-
-async function deleteTodo(id) {
-    await supabaseClient.from("todos").delete().eq("id", id);
-    loadTodos();
-}
-
-function toggleMenu() {
-    const dropdown = document.getElementById("dropdown");
-    dropdown.classList.toggle("visible");
-}
-
-document.getElementById("logoutButton").addEventListener("click", async () => {
-    await supabaseClient.auth.signOut();
-    location.reload();
+  await supabase.from('todos').insert({ user_id: user.id, text, done: false });
+  input.value = '';
+  loadTodos();
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    loadTodos();
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter') addBtn.click();
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  loadTodos();
+});
