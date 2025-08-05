@@ -38,7 +38,7 @@ async function endTimer() {
     isRunning = false;
     isPaused = false;
     const kategorieSelect = document.getElementById('kategorie');
-    const selectedCategory = kategorieSelect?.value || 'algorithmen';
+    const selectedCategory = kategorieSelect?.value || 'algorithmen'; 
     const timeSpentSeconds = seconds;
 
     try {
@@ -73,7 +73,7 @@ async function endTimer() {
         }
 
         alert('Zeit erfolgreich gespeichert! 🎉');
-        loadTimeEntries();
+        loadTimeEntries(); 
     } catch (err) {
         console.error('Speicher-Fehler:', err);
         alert('Fehler beim Speichern der Zeit: ' + (err.message || 'Unbekannter Fehler.'));
@@ -84,7 +84,7 @@ async function endTimer() {
         const endButton = document.getElementById('endButton');
         if (startPauseButton) startPauseButton.innerText = 'Start';
         if (endButton) endButton.style.display = 'none';
-        if (kategorieSelect) kategorieSelect.value = 'algorithmen';
+        if (kategorieSelect) kategorieSelect.value = 'algorithmen'; 
     }
 }
 
@@ -106,18 +106,19 @@ function isYesterday(someDate) {
 function isLast7Days(someDate) {
     const today = new Date();
     const sevenDaysAgo = new Date();
-    sevenDaysAgo.setDate(today.getDate() - 6);
-    sevenDaysAgo.setHours(0, 0, 0, 0);
+    sevenDaysAgo.setDate(today.getDate() - 6); 
+    sevenDaysAgo.setHours(0, 0, 0, 0); 
 
     const entryDateOnly = new Date(someDate.getFullYear(), someDate.getMonth(), someDate.getDate());
 
     return entryDateOnly >= sevenDaysAgo && entryDateOnly <= today;
 }
 
-async function loadTimeEntries() {
+
+async function loadTimeEntries() { 
     const list = document.getElementById('timeEntriesList');
     if (!list) return;
-    list.innerHTML = '<li>Lade Daten…</li>';
+    list.innerHTML = '<li>Lade Daten…</li>'; 
     try {
         const { data: { session } } = await supabaseClient.auth.getSession();
         const headers = {};
@@ -145,7 +146,7 @@ async function loadTimeEntries() {
             today: { total: 0, entries: [] },
             yesterday: { total: 0, entries: [] },
             last7Days: { total: 0, entries: [] },
-            other: { total: 0, entries: [] }
+            other: { total: 0, entries: [] } 
         };
 
         entries.forEach(e => {
@@ -160,8 +161,8 @@ async function loadTimeEntries() {
                 categorizedTimes.yesterday.entries.push(e);
             }
             if (isLast7Days(entryDate)) {
-                categorizedTimes.last7Days.total += duration;
-                categorizedTimes.last7Days.entries.push(e);
+                 categorizedTimes.last7Days.total += duration;
+                 categorizedTimes.last7Days.entries.push(e); 
             } else {
                 categorizedTimes.other.total += duration;
                 categorizedTimes.other.entries.push(e);
@@ -169,10 +170,10 @@ async function loadTimeEntries() {
         });
 
         let htmlContent = '';
-        const selectedFilter = document.getElementById('timeFilter')?.value || 'all';
+        const selectedFilter = document.getElementById('timeFilter')?.value || 'all'; 
 
         const renderCategory = (categoryName, data) => {
-            if (data.entries.length === 0) return '';
+            if (data.entries.length === 0) return ''; 
 
             let categoryHtml = `
                 <h3>${categoryName} - Gesamt: ${formatTime(data.total)}</h3>
@@ -184,7 +185,7 @@ async function loadTimeEntries() {
             categoryHtml += data.entries.map(e => {
                 const date = new Date(e.timestamp).toLocaleString('de-DE', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit', year: 'numeric' });
                 return `<li><span>${e.category}</span> <span>${formatTime(e.duration_seconds)}</span> <span>${date}</span></li>`;
-            }).join('');
+              }).join('');
             categoryHtml += '</ul>';
             return categoryHtml;
         };
@@ -201,6 +202,7 @@ async function loadTimeEntries() {
                 break;
             case 'all':
             default:
+   
                 htmlContent += renderCategory('Heute', categorizedTimes.today);
                 htmlContent += renderCategory('Gestern', categorizedTimes.yesterday);
 
@@ -219,6 +221,7 @@ async function loadTimeEntries() {
         }
 
         list.innerHTML = htmlContent;
+
     } catch (err) {
         console.error('Lade-Fehler:', err);
         list.innerHTML = `<li>Fehler beim Laden: ${err.message}</li>`;
@@ -230,6 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (timeFilterSelect) {
         timeFilterSelect.addEventListener('change', () => loadTimeEntries());
     }
+
     if (document.getElementById('timeEntriesList')) {
         loadTimeEntries();
     }
