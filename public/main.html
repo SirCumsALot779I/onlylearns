@@ -3,53 +3,95 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Test Menü und Nachrichten</title>
+<title>Menü & Nachrichten</title>
 <style>
-  :focus {
-    outline: none;
+  body {
+    background: #000;
+    color: #ccc;
+    font-family: Arial, sans-serif;
+    margin: 2rem;
   }
-  .user-is-tabbing :focus {
-    outline: 2px solid #00bfff;
-    outline-offset: 2px;
+
+  nav.menu {
+    position: relative;
   }
-  #changeMessageButton {
+
+  #menuButton {
+    background: none;
+    border: 2px solid #ccc;
+    color: #ccc;
+    padding: 8px 12px;
     font-size: 1rem;
-    padding: 8px 16px;
     cursor: pointer;
+    border-radius: 8px;
   }
+
   #dropdown {
     display: none;
     position: absolute;
-    top: 50px;
-    left: 10px;
-    background: #111;
+    top: 40px;
+    left: 0;
+    background: #222;
     border-radius: 12px;
-    width: 180px;
+    width: 200px;
+    padding: 0;
+    margin: 0;
+    list-style: none;
     box-shadow: 0 4px 10px rgba(255,255,255,0.1);
+    z-index: 10;
   }
+
   #dropdown.visible {
     display: block;
   }
+
   #dropdown li {
-    list-style: none;
+    border-bottom: 1px solid #444;
   }
+
+  #dropdown li:last-child {
+    border-bottom: none;
+  }
+
   #dropdown li a, #dropdown li button {
-    color: white;
     display: block;
     padding: 10px 15px;
+    color: #ccc;
     text-decoration: none;
-    width: 100%;
-    text-align: left;
     background: none;
     border: none;
+    width: 100%;
+    text-align: left;
     cursor: pointer;
+    font-size: 1rem;
   }
+
   #dropdown li a:hover,
-  #dropdown li a:focus,
   #dropdown li button:hover,
+  #dropdown li a:focus,
   #dropdown li button:focus {
-    background-color: #333;
-    outline: 3px solid #00bfff;
+    background-color: #444;
+    outline: none;
+  }
+
+  #changeMessageButton {
+    margin-top: 2rem;
+    font-size: 1rem;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    background: none;
+    color: #ccc;
+  }
+
+  /* Fokus-Rahmen nur bei Tastaturnutzung */
+  body:not(.user-is-tabbing) :focus {
+    outline: none !important;
+  }
+  body.user-is-tabbing :focus {
+    outline: 2px solid #00bfff;
+    outline-offset: 2px;
   }
 </style>
 </head>
@@ -57,7 +99,7 @@
 
 <nav class="menu" aria-label="Hauptmenü">
   <button id="menuButton" aria-haspopup="true" aria-expanded="false" aria-controls="dropdown" aria-label="Menü öffnen">
-    Menü öffnen
+    ☰ Menü
   </button>
   <ul id="dropdown" role="menu" tabindex="-1" aria-label="Navigation">
     <li role="none"><a href="#" role="menuitem" tabindex="-1">⌂ Home</a></li>
