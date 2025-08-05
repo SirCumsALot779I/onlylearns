@@ -181,3 +181,8 @@ ul li:focus-within {
         right: 10px;
     }
 }
+
+.hidden {
+  display: none;
+}
+
