@@ -1,33 +1,6 @@
 const menuButton = document.getElementById('menuButton');
 const dropdown = document.getElementById('dropdown');
-
-menuButton.addEventListener('click', () => {
-  const isVisible = dropdown.classList.toggle('visible');
-  menuButton.setAttribute('aria-expanded', isVisible);
-
-  const menuItems = dropdown.querySelectorAll('[role="menuitem"]');
-
-  if (isVisible) {
-    menuItems.forEach(item => item.tabIndex = 0);
-    if (menuItems.length > 0) menuItems[0].focus();
-    
-  } else {
-    menuItems.forEach(item => item.tabIndex = -1);
-    menuButton.focus();
-  }
-});
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && dropdown.classList.contains('visible')) {
-    dropdown.classList.remove('visible');
-    menuButton.setAttribute('aria-expanded', 'false');
-    dropdown.querySelectorAll('[role="menuitem"]').forEach(item => {
-      item.tabIndex = -1;
-    });
-    menuButton.focus();
-  }
-});
-
+const changeMessageButton = document.getElementById('changeMessageButton');
 const messages = [
   "Willkommen, fauler sack",
   "solltest du nicht lernen?",
@@ -43,37 +16,52 @@ const messages = [
   "das ist Text. Ich hab doch auch kein plan was hier noch stehen kann, geh doch bitte einfach lernen du **** ***** ***** ******",
   "Hier könnte ihre Werbung stehen!"
 ];
-
-const changeMessageButton = document.getElementById('changeMessageButton');
 let currentMessageIndex = 0;
 
-const changeMessageButton = document.getElementById('changeMessageButton');
-let currentMessageIndex = 0;
-
-function changeCenterText() {
-  currentMessageIndex = (currentMessageIndex + 1) % messages.length;
-  changeMessageButton.textContent = messages[currentMessageIndex];
-}
-
-changeMessageButton.addEventListener('click', changeCenterText);
-
-changeMessageButton.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    e.preventDefault();  
-    changeCenterText();
+menuButton.addEventListener('click', () => {
+  const isVisible = dropdown.classList.toggle('visible');
+  menuButton.setAttribute('aria-expanded', isVisible);
+  if (isVisible) {
+    dropdown.focus();
+    const firstItem = dropdown.querySelector('[role="menuitem"]');
+    if (firstItem) {
+      firstItem.tabIndex = 0;
+      firstItem.focus();
+    }
+    dropdown.querySelectorAll('[role="menuitem"]').forEach(item => {
+      if (item !== firstItem) item.tabIndex = -1;
+    });
+  } else {
+    dropdown.querySelectorAll('[role="menuitem"]').forEach(item => {
+      item.tabIndex = -1;
+    });
+    menuButton.focus();
   }
 });
 
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && dropdown.classList.contains('visible')) {
+    dropdown.classList.remove('visible');
+    menuButton.setAttribute('aria-expanded', 'false');
+    dropdown.querySelectorAll('[role="menuitem"]').forEach(item => {
+      item.tabIndex = -1;
+    });
+    menuButton.focus();
+  }
+});
 
 function changeCenterText() {
   currentMessageIndex = (currentMessageIndex + 1) % messages.length;
   changeMessageButton.textContent = messages[currentMessageIndex];
 }
 
-document.addEventListener('click', () => {
-  changeCenterText();
-});
+document.addEventListener('click', changeCenterText);
+document.addEventListener('keydown', changeCenterText);
 
-document.addEventListener('keydown', () => {
-  changeCenterText();
-});
+function handleFirstTab(e) {
+  if (e.key === 'Tab') {
+    document.body.classList.add('user-is-tabbing');
+    window.removeEventListener('keydown', handleFirstTab);
+  }
+}
+window.addEventListener('keydown', handleFirstTab);
