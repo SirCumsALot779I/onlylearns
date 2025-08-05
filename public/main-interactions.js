@@ -1,35 +1,6 @@
 const menuButton = document.getElementById('menuButton');
 const dropdown = document.getElementById('dropdown');
 
-menuButton.addEventListener('click', () => {
-  const isVisible = dropdown.classList.toggle('visible');
-  menuButton.setAttribute('aria-expanded', isVisible);
-  if (isVisible) {
-    dropdown.focus();
-    const firstMenuItem = dropdown.querySelector('[role="menuitem"]');
-    if (firstMenuItem) firstMenuItem.tabIndex = 0;
-    dropdown.querySelectorAll('[role="menuitem"]').forEach(item => {
-      if (item !== firstMenuItem) item.tabIndex = -1;
-    });
-  } else {
-    dropdown.querySelectorAll('[role="menuitem"]').forEach(item => {
-      item.tabIndex = -1;
-    });
-    menuButton.focus();
-  }
-});
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && dropdown.classList.contains('visible')) {
-    dropdown.classList.remove('visible');
-    menuButton.setAttribute('aria-expanded', false);
-    dropdown.querySelectorAll('[role="menuitem"]').forEach(item => {
-      item.tabIndex = -1;
-    });
-    menuButton.focus();
-  }
-});
-
 const messages = [
   "Willkommen, fauler sack",
   "solltest du nicht lernen?",
