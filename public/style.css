@@ -1,15 +1,14 @@
 body {
     margin: 0;
     background-color: #000;
-    color: white;
+    color: #f5f5f5;
     font-family: Arial, sans-serif;
-    min-height: 100vh; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    padding-top: 20px;
-    box-sizing: border-box; 
-    margin-top:20px
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .center-text {
@@ -45,26 +44,34 @@ body {
     user-select: none;
 }
 
-.card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 0 solid transparent;
-    border-radius: .25rem;
-    margin-bottom: 1.5rem;
-    box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
-}
-.me-2 {
-    margin-right: .5rem!important;
+ul li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #222;
 }
 
-ul li {
-    padding: 10px 15px;
-    border-bottom: 1px solid #222;
+ul li:last-child {
+    border-bottom: none;
+}
+
+ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.1em;
+    display: block;
+}
+
+ul li:hover,
+ul li a:focus {
+    background-color: #444;
+    outline: none;
+}
+
+.hidden {
+    display: none;
+}
+
+h1 {
+    text-align: center;
 }
 
 #dropdown {
@@ -82,76 +89,49 @@ ul li {
     transition: max-height 0.8s ease, opacity 1.0s ease;
 }
 
-
 #dropdown.visible {
     max-height: 500px;
     opacity: 1;
 }
 
-
-ul li {
-    padding: 15px 20px;
-    border-bottom: 1px solid #222;
+#dropdown-nav-button,
+#logoutButton {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 10px 15px;
+    width: 100%;
+    text-align: left;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
 }
 
-ul li:last-child {
-    border-bottom: none;
+#dropdown-nav-button:hover,
+#logoutButton:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-ul li a {
-    color: white;
-    text-decoration: none;
-    font-size: 1.1em;
-    display: block;
-}
-
-.hamburger:hover span {
-    background-color: #aaa;
-}
-
-ul li:hover {
-    background-color: #333;
-}
-
-.hidden {
-    display: none;
-}
-
-h1 {
-text-align: center;
+#dropdown-nav-button:focus,
+#logoutButton:focus {
+    outline: 3px solid #ffd700;
+    outline-offset: 2px;
 }
 
 #stopwatch-container {
-    width: 300px; 
-
-    margin-left: auto;
-    margin-right: auto;
-
-    margin-top: 100px; 
-
-
+    width: 300px;
+    margin: 100px auto 0 auto;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #161618;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     text-align: center;
 }
 
-
-
-
-
-
-
-
 #kategorie {
-    background-color: grey; 
-
-    color: white; 
-
-    border: 1px solid #ccc; 
-
-    box-shadow: none;
-
+    background-color: #222;
+    color: #fff;
+    border: 1px solid #555;
     width: 80%;
     padding: 10px;
     margin-bottom: 25px;
@@ -159,33 +139,26 @@ text-align: center;
     font-size: 1em;
 }
 
+#kategorie:focus {
+    outline: 3px solid #00bfff;
+    outline-offset: 2px;
+}
+
 #kategorie option {
-    background-color: grey; 
-
-    color: white; 
-
-
+    background-color: #222;
+    color: #fff;
 }
 
 #kategorie option:checked {
-    background-color: darkgrey; 
-    color: white;
+    background-color: #444;
+    color: #fff;
 }
 
-
-
-
-
-
 button {
-    background-color: grey;
-
-    color: white; 
-
-    border: none; 
-
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-
+    background-color: #333;
+    color: #fff;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
     padding: 12px 25px;
     font-size: 1.1em;
     margin: 0 10px;
@@ -195,58 +168,58 @@ button {
 }
 
 button:hover {
-    background-color: darkgrey;
+    background-color: #555;
     transform: translateY(-2px);
+}
+
+button:focus {
+    outline: 3px solid #00bfff;
+    outline-offset: 3px;
 }
 
 button:active {
     transform: translateY(0);
 }
 
-
 #uhr {
     font-size: 3em;
     font-weight: bold;
     margin-bottom: 30px;
-    color: #2c3e50;
+    color: #f5f5f5;
     letter-spacing: 2px;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-
-/zeiten anzeige
-
 #savedTimesContainer {
-    width: 600px; 
+    width: 600px;
     margin: 50px auto 20px auto;
-    background-color: #333; 
+    background-color: #222;
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    color: #fff;
     text-align: left;
 }
 
 #savedTimesContainer h2 {
     text-align: center;
-    color: 	#f6f6e8; 
+    color: #f6f6e8;
     margin-bottom: 25px;
     font-size: 1.8em;
 }
 
 #timeEntriesList {
-    list-style: none; 
+    list-style: none;
     padding: 0;
     margin: 0;
 }
 
 #timeEntriesList li {
-    background-color: #444; 
+    background-color: #333;
     margin-bottom: 7px;
     padding: 10px;
     border-radius: 8px;
-    display: flex; 
-    justify-content: space-between; 
+    display: flex;
+    justify-content: space-between;
     align-items: center;
     font-size: 1.1em;
 }
@@ -261,11 +234,11 @@ button:active {
 
 #timeEntriesList li .category {
     font-weight: bold;
-    color: #ffd700; 
+    color: #ffd700;
 }
 
 #timeEntriesList li .duration {
-    color: #00BFFF; 
+    color: #00bfff;
 }
 
 #timeEntriesList li .timestamp {
@@ -274,33 +247,17 @@ button:active {
     text-align: right;
 }
 
-#dropdown-nav-button{
-    background: none;
-    border: none;
-    color: #fff; 
-    cursor: pointer;
-    padding: 10px 15px;
-    width: 100%;
-    text-align: left;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
+a:focus {
+    outline: 3px solid #00bfff;
+    outline-offset: 3px;
 }
 
-#dropdown-nav-button:hover {
-    background-color: rgba(255, 255, 255, 0.1); 
-}
-#logoutButton {
-    background: none;
-    border: none;
-    color: #fff; 
-    cursor: pointer;
-    padding: 10px 15px;
-    width: 100%;
-    text-align: left;
-    font-size: 1em;
-    transition: background-color 0.3s ease;
-}
-
-#logoutButton:hover {
-    background-color: rgba(255, 255, 255, 0.1); 
+@media (max-width: 768px) {
+    #savedTimesContainer {
+        width: 90%;
+        padding: 15px;
+    }
+    #stopwatch-container {
+        width: 90%;
+    }
 }
