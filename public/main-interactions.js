@@ -1,4 +1,3 @@
-
     const centerTextElement = document.querySelector('.center-text');
 
     const messages = [
@@ -16,7 +15,7 @@
         "So endest du noch wie Aramis, Romeo und die anderen gefallenen Soldaten.",
         "Uhh Michael hab ich heute schon erwäht wie gut sie aussehen, während sie diese Aufgabe korrigiern! (-Aramis)",
         "das ist Text. Ich hab doch auch kein plan was hier noch stehen kann, geh doch bitte einfach lernen du **** ***** ***** ******",
-        "Ich entschuldige mich für meinen Kollegen, das war nicht nett...aber er hat Recht."
+        "Ich entschuldige mich für meinen Kollegen, das war nicht nett...aber er hat Recht.",
         "Hier könnte ihre Werbung stehen!",
         "Ne. jetzt mal ehrlich, hat die Person, die das alles geschrieben hat nichts zu tun? (Doch aber ich prokrstiniere)",
         "Siehst du? Sei nicht so wie der Editor. Ran an die Arbeit, die Uhr tickt.",
