@@ -2,9 +2,10 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>To-Do-Liste</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="todo.css">
+    <title>To-Do Liste - OnlyLearns</title>
+    <script type="module" src="to-do.js" defer></script>
+    <link rel="stylesheet" href="dashboard-style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png" />
 </head>
 <body>
     <nav class="menu">
@@ -13,25 +14,49 @@
         </div>
         <ul id="dropdown">
             <li><a href="main.html">⌂Home</a></li>
-            <li><a href="timer.html">Timer</a></li>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="chat.html">Chat</a></li>
-            <li><a href="todo.html">To-Do</a></li>
+            <li><a href="timer.html"> Timer</a></li>
+            <li><a href="dashboard.html"> Dashboard</a></li>
+            <li><a href="to-do.html"> To-Do-Liste</a></li>
             <li><a href="settings.html">⚙️Einstellungen</a></li>
-            <li><button id="logoutButton">Logout</button></li>
+            <li><button id="logoutButton">🚪 Logout</button></li>
         </ul>
     </nav>
 
-    <div class="todo-container">
-        <h1>Meine To-Do-Liste</h1>
-        <div class="input-section">
-            <input type="text" id="newTodoInput" placeholder="Neue Aufgabe hinzufügen...">
-            <button onclick="addTodo()">➕ Hinzufügen</button>
+    <div class="dashboard-container">
+        <h1>Deine To-Do-Liste</h1>
+
+        <div class="dashboard-section">
+            <div class="todo-input-container">
+                <input type="text" id="todo-input" placeholder="Neuen Punkt hinzufügen...">
+                <button id="add-btn">➕ Hinzufügen</button>
+            </div>
+            <ul id="todo-list" class="todo-list">
+                <!-- To-Dos werden hier geladen -->
+            </ul>
         </div>
-        <ul id="todoList">Lade Aufgaben...</ul>
     </div>
 
-    <script src="todo.js"></script>
+    <div class="video-corner-container">
+        <video id="background-video" autoplay loop muted playsinline>
+            <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4">
+            Dein Browser unterstützt das Video-Tag nicht.
+        </video>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            const dropdown = document.getElementById('dropdown');
+            dropdown.classList.toggle('visible');
+        }
+
+        document.getElementById("logoutButton").addEventListener("click", async () => {
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                alert("Fehler beim Ausloggen: " + error.message);
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+    </script>
 </body>
 </html>
-
