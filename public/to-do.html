@@ -1,51 +1,62 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8" />
-    <title>To-Do-Liste - OnlyLearns</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="UTF-8">
+    <title>To-Do Liste - OnlyLearns</title>
+    <script type="module" src="to-do.js" defer></script>
+    <link rel="stylesheet" href="dashboard-style.css">
     <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png" />
-    <link rel="stylesheet" href="todo-style.css" />
 </head>
 <body>
-<nav class="menu" aria-label="Hauptnavigation">
-    <button class="hamburger" aria-expanded="false" aria-controls="dropdown" aria-label="Menü umschalten" onclick="toggleMenu()">
-        <img src="img/big_kahuna_burger_hladik.png" alt="Menü Icon" class="menu-icon" />
-    </button>
-    <ul id="dropdown" role="menu">
-        <li role="none"><a href="main.html" role="menuitem">⌂Home</a></li>
-        <li role="none"><a href="timer.html" role="menuitem"> Timer</a></li>
-        <li role="none"><a href="dashboard.html" role="menuitem"> Dashboard</a></li>
-        <li role="none"><a href="to-do.html" role="menuitem" aria-current="page"> To-Do-Liste</a></li>
-        <li role="none"><a href="settings.html" role="menuitem">⚙️Einstellungen</a></li>
-        <li role="none">
-            <button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;" aria-label="Logout">🚪 Logout</button>
-        </li>
+    <nav class="menu">
+        <div class="hamburger" onclick="toggleMenu()">
+            <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
+        </div>
+    <ul id="dropdown" class="">
+        <li><a href="main.html">Home</a></li>
+        <li><a href="timer.html">Timer</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="to-do.html">To-do-Liste</a></li>
+        <li><a href="settings.html">Einstellungen</a></li>
+        <li><button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">Logout</button></li>
     </ul>
-</nav>
+    </nav>
 
-<main class="todo-container" aria-label="To-Do Liste">
-    <h1>Deine To-Do-Liste</h1>
+    <div class="dashboard-container">
+        <h1>Deine To-Do-Liste</h1>
 
-    <form id="addTodoForm" aria-label="Neue To-Do hinzufügen">
-        <label for="todoInput" class="visually-hidden">Neues To-Do</label>
-        <input type="text" id="todoInput" placeholder="Neues To-Do eingeben..." aria-required="true" />
-        <button type="submit" aria-label="To-Do hinzufügen">+</button>
-    </form>
+        <div class="dashboard-section">
+            <div class="todo-input-container">
+                <input type="text" id="todo-input" placeholder="Neuen Punkt hinzufügen...">
+                <button id="add-btn">➕ Hinzufügen</button>
+            </div>
+            <ul id="todo-list" class="todo-list">
+                <!-- To-Dos werden hier geladen -->
+            </ul>
+        </div>
+    </div>
 
-    <ul id="todoList" aria-live="polite" aria-relevant="additions removals" role="list" tabindex="0" aria-label="Liste der To-Dos">
-        <li>To-Dos werden geladen...</li>
-    </ul>
-</main>
+    <div class="video-corner-container">
+        <video id="background-video" autoplay loop muted playsinline>
+            <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4">
+            Dein Browser unterstützt das Video-Tag nicht.
+        </video>
+    </div>
 
-<aside class="video-corner-container" aria-hidden="true">
-    <video id="background-video" autoplay loop muted playsinline>
-        <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4" />
-        Dein Browser unterstützt das Video-Tag nicht.
-    </video>
-</aside>
+    <script>
+        function toggleMenu() {
+            const dropdown = document.getElementById('dropdown');
+            dropdown.classList.toggle('visible');
+        }
 
-<script src="script.js"></script>
-<script src="todo.js"></script>
+        document.getElementById("logoutButton").addEventListener("click", async () => {
+            const { error } = await supabase.auth.signOut();
+            if (error) {
+                alert("Fehler beim Ausloggen: " + error.message);
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+    </script>
 </body>
 </html>
