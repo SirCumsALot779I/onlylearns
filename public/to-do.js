@@ -12,6 +12,7 @@ async function getUser() {
   return data.session.user;
 }
 
+
 function renderMessage(text, type = 'info') {
   const msg = document.createElement('div');
   msg.className = type === 'error' ? 'error-message' : 'loading-message';
@@ -83,16 +84,15 @@ addBtn.addEventListener('click', async () => {
   const text = input.value.trim();
   if (!text || !user) return;
 
-  const { error } = await supabase
-    .from('todos')
-    .insert({ user_id: user.id, text, done: false });
+  await supabase.from('todos').insert({ user_id: user.id, text, done: false });const { error } = await supabase
+  .from('todos')
+  .insert({ user_id: user.id, text, done: false });
 
-  if (error) {
-    console.error("Fehler beim Speichern:", error);
-    renderMessage("Fehler beim Hinzufügen des To-Dos.", "error");
-    return;
-  }
-
+if (error) {
+  console.error("Fehler beim Speichern:", error);
+  renderMessage("Fehler beim Hinzufügen des To-Dos.", "error");
+  return;
+}
   input.value = '';
   loadTodos();
 });
