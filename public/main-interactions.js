@@ -70,12 +70,8 @@ function changeCenterText() {
   changeMessageButton.textContent = messages[currentMessageIndex];
 }
 
-changeMessageButton.addEventListener('click', changeCenterText);
-
-document.addEventListener('click', (e) => {
-  if (e.target !== changeMessageButton) {
-    changeCenterText();
-  }
+document.addEventListener('click', () => {
+  changeCenterText();
 });
 
 document.addEventListener('keydown', () => {
