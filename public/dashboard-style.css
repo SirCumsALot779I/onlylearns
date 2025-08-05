@@ -1,3 +1,4 @@
+
 body {
     margin: 0;
     background-color: #000;
@@ -10,8 +11,6 @@ body {
     padding-top: 20px;
     box-sizing: border-box;
     margin-top: 20px;
-    font-size: 1rem;
-    line-height: 1.6;
 }
 
 .menu {
@@ -27,26 +26,16 @@ body {
     user-select: none;
     transition: opacity 0.5s ease;
     opacity: 1;
-    outline-offset: 3px;
 }
 
-.menu-icon:hover,
-.menu-icon:focus {
-    opacity: 0.8;
-    outline: 3px solid #66b2ff;
+.menu-icon:hover {
+    opacity: 0.3;
 }
 
 .hamburger {
     font-size: 2.5em;
     cursor: pointer;
     user-select: none;
-    outline-offset: 3px;
-}
-
-.hamburger:hover,
-.hamburger:focus {
-    background-color: #333;
-    outline: 3px solid #66b2ff;
 }
 
 #dropdown {
@@ -83,22 +72,13 @@ ul li a {
     text-decoration: none;
     font-size: 1.1em;
     display: block;
-    outline-offset: 3px;
 }
 
-ul li a:hover,
-ul li a:focus {
-    background-color: #333;
-    outline: 3px solid #66b2ff;
-}
-
-.hamburger:hover span,
-.hamburger:focus span {
+.hamburger:hover span {
     background-color: #ccc;
 }
 
-ul li:hover,
-ul li:focus-within {
+ul li:hover {
     background-color: #333;
 }
 
@@ -116,13 +96,10 @@ ul li:focus-within {
     text-align: left;
     font-size: 1em;
     transition: background-color 0.3s ease;
-    outline-offset: 3px;
 }
 
-#logoutButton:hover,
-#logoutButton:focus {
+#logoutButton:hover {
     background-color: rgba(255, 255, 255, 0.1);
-    outline: 3px solid #66b2ff;
 }
 
 .dashboard-container {
@@ -134,8 +111,6 @@ ul li:focus-within {
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
     font-family: Arial, sans-serif;
     color: #f0f0f0;
-    font-size: 1rem;
-    line-height: 1.6;
 }
 
 .dashboard-container h1 {
@@ -284,6 +259,7 @@ ul li:focus-within {
     }
 }
 
+/* Ralph Schumacher Werbung */
 .video-corner-container {
     position: fixed;
     bottom: 20px;
