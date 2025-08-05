@@ -1,1 +1,37 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do-Liste</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="todo.css">
+</head>
+<body>
+    <nav class="menu">
+        <div class="hamburger" onclick="toggleMenu()">
+            <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
+        </div>
+        <ul id="dropdown">
+            <li><a href="main.html">⌂Home</a></li>
+            <li><a href="timer.html">Timer</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="chat.html">Chat</a></li>
+            <li><a href="todo.html">To-Do</a></li>
+            <li><a href="settings.html">⚙️Einstellungen</a></li>
+            <li><button id="logoutButton">Logout</button></li>
+        </ul>
+    </nav>
+
+    <div class="todo-container">
+        <h1>Meine To-Do-Liste</h1>
+        <div class="input-section">
+            <input type="text" id="newTodoInput" placeholder="Neue Aufgabe hinzufügen...">
+            <button onclick="addTodo()">➕ Hinzufügen</button>
+        </div>
+        <ul id="todoList">Lade Aufgaben...</ul>
+    </div>
+
+    <script src="todo.js"></script>
+</body>
+</html>
 
