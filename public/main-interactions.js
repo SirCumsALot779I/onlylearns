@@ -71,3 +71,13 @@ function changeCenterText() {
 }
 
 changeMessageButton.addEventListener('click', changeCenterText);
+
+document.addEventListener('click', (e) => {
+  if (e.target !== changeMessageButton) {
+    changeCenterText();
+  }
+});
+
+document.addEventListener('keydown', () => {
+  changeCenterText();
+});
