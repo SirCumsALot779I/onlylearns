@@ -1,7 +1,7 @@
 body {
     margin: 0;
     background-color: #000;
-    color: white;
+    color: #f0f0f0;
     font-family: Arial, sans-serif;
     min-height: 100vh;
     display: flex;
@@ -41,7 +41,7 @@ body {
     position: absolute;
     top: 50px;
     left: 10px;
-    background-color: #111;
+    background-color: #1e1e1e;
     z-index: 1000;
     width: 180px;
     border-radius: 12px;
@@ -59,7 +59,7 @@ body {
 
 ul li {
     padding: 15px 20px;
-    border-bottom: 1px solid #222;
+    border-bottom: 1px solid #333;
 }
 
 ul li:last-child {
@@ -67,14 +67,14 @@ ul li:last-child {
 }
 
 ul li a {
-    color: white;
+    color: #f0f0f0;
     text-decoration: none;
     font-size: 1.1em;
     display: block;
 }
 
 .hamburger:hover span {
-    background-color: #aaa;
+    background-color: #ccc;
 }
 
 ul li:hover {
@@ -88,7 +88,7 @@ ul li:hover {
 #logoutButton {
     background: none;
     border: none;
-    color: #fff;
+    color: #f0f0f0;
     cursor: pointer;
     padding: 10px 15px;
     width: 100%;
@@ -105,35 +105,35 @@ ul li:hover {
     max-width: 960px;
     margin: 30px auto;
     padding: 25px;
-    background-color: #161618; 
+    background-color: #161618;
     border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.05);
     font-family: Arial, sans-serif;
-    color: #333; 
+    color: #f0f0f0;
 }
 
 .dashboard-container h1 {
     text-align: center;
-    color: #ffffff; 
+    color: #ffffff;
     margin-bottom: 30px;
     font-size: 2.2em;
     font-weight: 600;
 }
 
 .dashboard-section {
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background-color: #2a2a2a;
+    border: 1px solid #444;
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 30px;
 }
 
 .dashboard-section h2 {
-    color: #495057;
+    color: #cccccc;
     margin-top: 0;
     margin-bottom: 15px;
     font-size: 1.6em;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid #3399ff;
     padding-bottom: 10px;
 }
 
@@ -145,16 +145,16 @@ ul li:hover {
 }
 
 .stat-card {
-    background-color: #ffffff;
-    border: 1px solid #e0e0e0;
+    background-color: #1e1e1e;
+    border: 1px solid #333;
     border-radius: 8px;
     padding: 15px 20px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 8px rgba(255, 255, 255, 0.05);
 }
 
 .stat-card h3 {
-    color: #007bff;
+    color: #66b2ff;
     font-size: 1.2em;
     margin-top: 0;
     margin-bottom: 10px;
@@ -163,7 +163,7 @@ ul li:hover {
 .stat-card p {
     font-size: 1.8em;
     font-weight: bold;
-    color: #343a40;
+    color: #e0e0e0;
     margin: 0;
 }
 
@@ -184,20 +184,20 @@ ul li:hover {
 }
 
 .loading-message {
-    background-color: #e0f7fa;
-    color: #00796b;
-    border: 1px solid #b2ebf2;
+    background-color: #1e3a3a;
+    color: #66ffcc;
+    border: 1px solid #2e7d7d;
 }
 
 .error-message {
-    background-color: #ffebee;
-    color: #c62828;
-    border: 1px solid #ef9a9a;
+    background-color: #3a1e1e;
+    color: #ff6666;
+    border: 1px solid #7d2e2e;
 }
 
 .chart-info, .list-info {
     font-size: 0.9em;
-    color: #6c757d;
+    color: #aaa;
     text-align: center;
     margin-top: 15px;
     line-height: 1.4;
@@ -210,8 +210,8 @@ ul li:hover {
 }
 
 #topCategoriesList li, #categoryTotalTimesList li {
-    background-color: #fff;
-    border: 1px solid #dee2e6;
+    background-color: #1e1e1e;
+    border: 1px solid #444;
     padding: 12px 18px;
     margin-bottom: 8px;
     border-radius: 6px;
@@ -219,24 +219,24 @@ ul li:hover {
     justify-content: space-between;
     align-items: center;
     font-size: 1.1em;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.03);
 }
 
 #topCategoriesList li strong, #categoryTotalTimesList li strong {
-    color: #007bff;
+    color: #3399ff;
     margin-right: 15px;
 }
 
 #topCategoriesList {
-  counter-reset: category-counter;
+    counter-reset: category-counter;
 }
 
 #topCategoriesList li::before {
-  counter-increment: category-counter;
-  content: counter(category-counter) ". ";
-  font-weight: bold;
-  color: #6c757d;
-  margin-right: 8px;
+    counter-increment: category-counter;
+    content: counter(category-counter) ". ";
+    font-weight: bold;
+    color: #aaa;
+    margin-right: 8px;
 }
 
 @media (max-width: 768px) {
@@ -258,31 +258,29 @@ ul li:hover {
     }
 }
 
-
-/*ralph Schumacher werbung */
+/* Ralph Schumacher Werbung */
 .video-corner-container {
-    position: fixed; 
-    bottom: 20px;   
-    right: 20px;     
-    width: 250px;    
-    height: auto;    
-    z-index: 1000;   
-    overflow: hidden; 
-    border-radius: 8px; 
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 250px;
+    height: auto;
+    z-index: 1000;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
 }
 
 .video-corner-container video {
-    width: 100%;   
-    height: 100%;    
-    object-fit: cover; 
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 @media (max-width: 768px) {
     .video-corner-container {
-        width: 180px; 
+        width: 180px;
         bottom: 10px;
         right: 10px;
     }
-} }
 }
