@@ -1,7 +1,7 @@
 const menuButton = document.getElementById('menuButton');
 const dropdown = document.getElementById('dropdown');
-const changeMessageButton = document.getElementById('changeMessageButton');
 
+const changeMessageButton = document.getElementById('changeMessageButton');
 const messages = [
   "Willkommen, fauler sack",
   "solltest du nicht lernen?",
@@ -19,9 +19,11 @@ const messages = [
 ];
 let currentMessageIndex = 0;
 
+// Menü öffnen/schließen
 menuButton.addEventListener('click', () => {
   const isVisible = dropdown.classList.toggle('visible');
   menuButton.setAttribute('aria-expanded', isVisible);
+
   if (isVisible) {
     const firstItem = dropdown.querySelector('[role="menuitem"]');
     if (firstItem) {
@@ -39,7 +41,7 @@ menuButton.addEventListener('click', () => {
   }
 });
 
-document.addEventListener('keydown', (e) => {
+document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && dropdown.classList.contains('visible')) {
     dropdown.classList.remove('visible');
     menuButton.setAttribute('aria-expanded', 'false');
@@ -55,8 +57,19 @@ function changeCenterText() {
   changeMessageButton.textContent = messages[currentMessageIndex];
 }
 
-document.addEventListener('click', changeCenterText);
-document.addEventListener('keydown', changeCenterText);
+changeMessageButton.addEventListener('click', changeCenterText);
+
+document.addEventListener('click', (e) => {
+  if (e.target !== changeMessageButton && e.target !== menuButton) {
+    changeCenterText();
+  }
+});
+
+document.addEventListener('keydown', (e) => {
+  if (e.target !== menuButton) {
+    changeCenterText();
+  }
+});
 
 function handleFirstTab(e) {
   if (e.key === 'Tab') {
