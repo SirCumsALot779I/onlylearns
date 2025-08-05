@@ -1,5 +1,17 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
+//nur test-code weil supabase mal wieder nervt
+supabase.auth.getSession().then(({ data, error }) => {
+  if (error) {
+    console.error("Fehler beim Abrufen der Session:", error);
+  } else if (!data.session) {
+    console.log("Keine Session gefunden.");
+  } else {
+    console.log("Session gefunden:", data.session);
+  }
+});
+//test-code zuende
+
 const supabase = createClient('https://DEINE_SUPABASE_URL', 'DEIN_ANON_KEY');
 
 const input = document.getElementById('todo-input');
