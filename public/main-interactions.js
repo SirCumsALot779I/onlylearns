@@ -47,6 +47,24 @@ const messages = [
 const changeMessageButton = document.getElementById('changeMessageButton');
 let currentMessageIndex = 0;
 
+const changeMessageButton = document.getElementById('changeMessageButton');
+let currentMessageIndex = 0;
+
+function changeCenterText() {
+  currentMessageIndex = (currentMessageIndex + 1) % messages.length;
+  changeMessageButton.textContent = messages[currentMessageIndex];
+}
+
+changeMessageButton.addEventListener('click', changeCenterText);
+
+changeMessageButton.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    e.preventDefault();  
+    changeCenterText();
+  }
+});
+
+
 function changeCenterText() {
   currentMessageIndex = (currentMessageIndex + 1) % messages.length;
   changeMessageButton.textContent = messages[currentMessageIndex];
