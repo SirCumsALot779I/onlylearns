@@ -1,6 +1,7 @@
 const menuButton = document.getElementById('menuButton');
 const dropdown = document.getElementById('dropdown');
 const changeMessageButton = document.getElementById('changeMessageButton');
+
 const messages = [
   "Willkommen, fauler sack",
   "solltest du nicht lernen?",
@@ -22,7 +23,6 @@ menuButton.addEventListener('click', () => {
   const isVisible = dropdown.classList.toggle('visible');
   menuButton.setAttribute('aria-expanded', isVisible);
   if (isVisible) {
-    dropdown.focus();
     const firstItem = dropdown.querySelector('[role="menuitem"]');
     if (firstItem) {
       firstItem.tabIndex = 0;
