@@ -10,8 +10,6 @@ body {
     padding-top: 20px;
     box-sizing: border-box;
     margin-top: 20px;
-    font-size: 1rem;
-    line-height: 1.6;
 }
 
 .menu {
@@ -27,25 +25,16 @@ body {
     user-select: none;
     transition: opacity 0.5s ease;
     opacity: 1;
-    outline-offset: 3px;
 }
 
-.menu-icon:hover,
-.menu-icon:focus {
-    opacity: 0.8;
-    outline: 3px solid #00bfff;
+.menu-icon:hover {
+    opacity: 0.3;
 }
 
 .hamburger {
     font-size: 2.5em;
     cursor: pointer;
     user-select: none;
-}
-
-.hamburger:hover,
-.hamburger:focus {
-    background-color: #333;
-    outline: 3px solid #00bfff;
 }
 
 #dropdown {
@@ -84,19 +73,11 @@ ul li a {
     display: block;
 }
 
-ul li a:hover,
-ul li a:focus {
-    background-color: #333;
-    outline: 3px solid #00bfff;
-}
-
-.hamburger:hover span,
-.hamburger:focus span {
+.hamburger:hover span {
     background-color: #aaa;
 }
 
-ul li:hover,
-ul li:focus-within {
+ul li:hover {
     background-color: #333;
 }
 
@@ -116,13 +97,10 @@ ul li:focus-within {
     transition: background-color 0.3s ease;
 }
 
-#logoutButton:hover,
-#logoutButton:focus {
+#logoutButton:hover {
     background-color: rgba(255, 255, 255, 0.1);
-    outline: 3px solid #00bfff;
 }
 
-/* Settings Container */
 .settings-container {
     max-width: 700px;
     margin: 30px auto;
@@ -254,7 +232,6 @@ ul li:focus-within {
     border: 1px solid #b71c1c;
 }
 
-/* Responsiveness */
 @media (max-width: 768px) {
     .settings-container {
         margin: 20px 15px;
@@ -300,10 +277,6 @@ ul li:focus-within {
     }
 }
 
-/* Video Corner */
-.video-corner-container {
-    position: fixed;
-    bottom: 20px;    
     right: 20px;    
     width: 250px;    
     height: auto;    
