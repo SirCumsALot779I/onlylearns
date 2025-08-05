@@ -61,24 +61,18 @@ body {
 }
 
 #dropdown {
-    position: absolute;
-    top: 50px;
-    left: 10px;
-    background-color: #111;
-    z-index: 1000;
-    width: 180px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-    transition: max-height 0.8s ease, opacity 1.0s ease;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease, opacity 0.5s ease;
 }
 
 #dropdown.visible {
-    max-height: 500px;
-    opacity: 1;
+  max-height: 1000px;
+  opacity: 1;
+  overflow: visible;
 }
+
 
 ul li {
     padding: 15px 20px;
