@@ -215,7 +215,7 @@ function renderTodayCategoryChart(labels, data, noData = false) {
     if (noData) {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.font = '16px Arial';
-        ctx.fillStyle = '#6c757d';
+        ctx.fillStyle = '#aaa';
         ctx.textAlign = 'center';
         ctx.fillText('Keine Zeit-Einträge für heute gefunden.', ctx.canvas.width / 2, ctx.canvas.height / 2);
         return;
@@ -241,18 +241,35 @@ function renderTodayCategoryChart(labels, data, noData = false) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Stunden'
+                        text: 'Stunden',
+                        color: '#f0f0f0'
+                    },
+                    ticks: {
+                        color: '#f0f0f0'
+                    },
+                    grid: {
+                        color: '#333'
                     }
                 },
                 x: {
                     title: {
                         display: true,
-                        text: 'Kategorie'
+                        text: 'Kategorie',
+                        color: '#f0f0f0'
+                    },
+                    ticks: {
+                        color: '#f0f0f0'
+                    },
+                    grid: {
+                        color: '#333'
                     }
                 }
             },
             plugins: {
                 tooltip: {
+                    backgroundColor: '#222',
+                    titleColor: '#fff',
+                    bodyColor: '#ccc',
                     callbacks: {
                         label: function(context) {
                             let label = context.dataset.label || '';
@@ -262,6 +279,11 @@ function renderTodayCategoryChart(labels, data, noData = false) {
                             const totalSeconds = context.raw * 3600;
                             return label + formatTime(totalSeconds);
                         }
+                    }
+                },
+                legend: {
+                    labels: {
+                        color: '#f0f0f0'
                     }
                 }
             }
@@ -298,18 +320,35 @@ function renderDailyProductivityChart(labels, data) {
                     beginAtZero: true,
                     title: {
                         display: true,
-                        text: 'Stunden'
+                        text: 'Stunden',
+                        color: '#f0f0f0'
+                    },
+                    ticks: {
+                        color: '#f0f0f0'
+                    },
+                    grid: {
+                        color: '#333'
                     }
                 },
                 x: {
                     title: {
                         display: true,
-                        text: 'Datum'
+                        text: 'Datum',
+                        color: '#f0f0f0'
+                    },
+                    ticks: {
+                        color: '#f0f0f0'
+                    },
+                    grid: {
+                        color: '#333'
                     }
                 }
             },
             plugins: {
                 tooltip: {
+                    backgroundColor: '#222',
+                    titleColor: '#fff',
+                    bodyColor: '#ccc',
                     callbacks: {
                         label: function(context) {
                             let label = context.dataset.label || '';
@@ -320,11 +359,17 @@ function renderDailyProductivityChart(labels, data) {
                             return label + formatTime(totalSeconds);
                         }
                     }
+                },
+                legend: {
+                    labels: {
+                        color: '#f0f0f0'
+                    }
                 }
             }
         }
     });
 }
+
 
 
 function renderTopCategoriesList(categories) {
