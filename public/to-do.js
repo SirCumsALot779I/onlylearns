@@ -7,9 +7,11 @@ const addBtn = document.getElementById('add-btn');
 const list = document.getElementById('todo-list');
 
 async function getUser() {
-  const { data } = await supabase.auth.getUser();
-  return data.user;
+  const { data, error } = await supabase.auth.getSession();
+  if (error || !data.session) return null;
+  return data.session.user;
 }
+
 
 function renderMessage(text, type = 'info') {
   const msg = document.createElement('div');
@@ -82,7 +84,15 @@ addBtn.addEventListener('click', async () => {
   const text = input.value.trim();
   if (!text || !user) return;
 
-  await supabase.from('todos').insert({ user_id: user.id, text, done: false });
+  await supabase.from('todos').insert({ user_id: user.id, text, done: false });const { error } = await supabase
+  .from('todos')
+  .insert({ user_id: user.id, text, done: false });
+
+if (error) {
+  console.error("Fehler beim Speichern:", error);
+  renderMessage("Fehler beim Hinzufügen des To-Dos.", "error");
+  return;
+}
   input.value = '';
   loadTodos();
 });
