@@ -1,11 +1,10 @@
 const SUPABASE_URL = 'https://ibwojujxyymvalwannza.supabase.co'; 
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imlid29qdWp4eXltdmFsd2FubnphIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA2MzIxODYsImV4cCI6MjA2NjIwODE4Nn0.THsCEW7MwyTf25wi2NzSR7zLaplf6fNN_fATmcj5C2A'; // Beispiel: 'eyJhbGciOiJIUzI1Ni...'
 
-const { createClient } = supabase; // Nutzt die globale Supabase-Bibliothek, die über CDN geladen wird
+const { createClient } = supabase; 
 
 const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// DOM-Elemente abrufen
 const loginForm = document.getElementById('loginForm');
 const signupForm = document.getElementById('signupForm');
 
@@ -16,13 +15,11 @@ const signupEmailInput = document.getElementById('signupEmail');
 const signupPasswordInput = document.getElementById('signupPassword');
 const signupConfirmPasswordInput = document.getElementById('signupConfirmPassword');
 
-// Funktion zur Anzeige von Nachrichten (Erfolgs- und Fehlermeldungen)
 function showMessage(message, type = 'info') {
 
     alert(message); 
 }
 
-// Event Listener für das Login-Formular
 if (loginForm) {
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault(); 
