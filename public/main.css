@@ -134,3 +134,8 @@ ul li:hover {
         right: 10px;
     }
 }
+
+:focus {
+  outline: 2px solid #00bfff;
+  outline-offset: 2px;
+}
