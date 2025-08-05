@@ -1,68 +1,68 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Einstellungen - OnlyLearns</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png" />
-    <link rel="stylesheet" href="settings-style.css" />
-</head>
+
+    <link rel="stylesheet" href="settings-style.css"> </head>
 <body>
-<nav class="menu" aria-label="Hauptnavigation">
-    <button class="hamburger" aria-expanded="false" aria-controls="dropdown" aria-label="Menü umschalten" onclick="toggleMenu()">
-        <img src="img/big_kahuna_burger_hladik.png" alt="Menü Icon" class="menu-icon" />
-    </button>
-    <ul id="dropdown" role="menu">
-        <li role="none"><a href="main.html" role="menuitem">⌂Home</a></li>
-        <li role="none"><a href="timer.html" role="menuitem"> Timer</a></li>
-        <li role="none"><a href="dashboard.html" role="menuitem"> Dashboard</a></li>
-        <li role="none"><a href="to-do.html" role="menuitem"> To-Do-Liste</a></li>
-        <li role="none"><a href="settings.html" role="menuitem" aria-current="page">⚙️ Einstellungen</a></li>
-        <li role="none">
-            <button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;" aria-label="Logout">🚪 Logout</button>
-        </li>
+<nav class="menu">
+    <div class="hamburger" onclick="toggleMenu()">
+        <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
+    </div>
+    <ul id="dropdown" class="">
+        <li><a href="main.html">⌂Home</a></li>
+        <li><a href="timer.html"> Timer</a></li>
+        <li><a href="dashboard.html"> Dashboard</a></li>
+        <li><a href="to-do.html"> To-Do-Liste</a></li>
+        <li><a href="settings.html">⚙️Einstellungen</a></li>
+        <li><button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">🚪 Logout</button></li>
     </ul>
 </nav>
 
-<main class="settings-container">
+<div class="settings-container">
     <h1>⚙️Einstellungen</h1>
 
-    <section class="settings-section" aria-labelledby="allgemeine-einstellungen">
-        <h2 id="allgemeine-einstellungen">Allgemeine Einstellungen</h2>
+    <div class="settings-section">
+        <h2>Allgemeine Einstellungen</h2>
         <div class="setting-item">
-            <label for="darkModeButton">Design:</label>
-            <button id="darkModeButton" class="special-button" aria-pressed="false">Dark/White Mode</button>
+            <label>Design:</label>
+            <button id="darkModeButton" class="special-button">Dark/White Mode</button>
         </div>
-    </section>
+    </div>
 
-    <section class="settings-section" aria-labelledby="konto-einstellungen">
-        <h2 id="konto-einstellungen">Kontoeinstellungen</h2>
+    <div class="settings-section">
+        <h2>Kontoeinstellungen</h2>
         <div class="setting-item">
             <label for="emailInput">E-Mail-Adresse:</label>
-            <input type="email" id="emailInput" placeholder="Ihre E-Mail" />
+            <input type="email" id="emailInput" placeholder="Ihre E-Mail">
             <button class="save-button" data-setting="email">Ändern</button>
         </div>
         <div class="setting-item">
             <label for="passwordInput">Passwort:</label>
-            <input type="password" id="passwordInput" placeholder="Neues Passwort" />
+            <input type="password" id="passwordInput" placeholder="Neues Passwort">
             <button class="save-button" data-setting="password">Ändern</button>
         </div>
         <div class="setting-item">
             <label for="userNameInput">Benutzername:</label>
-            <input type="text" id="userNameInput" placeholder="Ihr Benutzername" />
+            <input type="text" id="userNameInput" placeholder="Ihr Benutzername">
             <button class="save-button" data-setting="username">Speichern</button>
         </div>
-    </section>
+    </div>
 
-    <div id="statusMessage" class="status-message" style="display:none;" role="alert" aria-live="polite"></div>
-</main>
+    <div id="statusMessage" class="status-message" style="display:none;"></div>
 
-<aside class="video-corner-container" aria-hidden="true">
+</div>
+
+<div class="video-corner-container">
     <video id="background-video" autoplay loop muted playsinline>
-        <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4" />
-        Dein Browser unterstützt das Video-Tag nicht.
+        <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4">
+        Dein Browser unterstützt das Video-Tag nicht(du arme Maus).
     </video>
-</aside>
+</div>
 
 <script src="script.js"></script>
 <script src="settings.js"></script>
