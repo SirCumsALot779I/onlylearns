@@ -1,27 +1,18 @@
-import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-
-const supabase = createClient('https://DEINE_SUPABASE_URL', 'DEIN_ANON_KEY');
-
 const input = document.getElementById('todo-input');
 const addBtn = document.getElementById('add-btn');
 const list = document.getElementById('todo-list');
 
-async function getUser() {
-  const { data, error } = await supabase.auth.getSession();
-  if (error || !data.session) return null;
-  return data.session.user;
+function getTodos() {
+  const todos = sessionStorage.getItem('todos');
+  return todos ? JSON.parse(todos) : [];
 }
 
-
-function renderMessage(text, type = 'info') {
-  const msg = document.createElement('div');
-  msg.className = type === 'error' ? 'error-message' : 'loading-message';
-  msg.textContent = text;
-  list.innerHTML = '';
-  list.appendChild(msg);
+function saveTodos(todos) {
+  sessionStorage.setItem('todos', JSON.stringify(todos));
 }
 
-function renderTodos(todos) {
+function renderTodos() {
+  const todos = getTodos();
   list.innerHTML = '';
   if (todos.length === 0) {
     const li = document.createElement('li');
@@ -31,23 +22,28 @@ function renderTodos(todos) {
     return;
   }
 
-  todos.forEach(todo => {
+  todos.forEach((todo, index) => {
     const li = document.createElement('li');
     li.className = 'todo-list-item';
 
     const span = document.createElement('span');
     span.textContent = todo.text;
-    span.className = todo.done ? 'done' : '';
-    span.addEventListener('click', async () => {
-      await supabase.from('todos').update({ done: !todo.done }).eq('id', todo.id);
-      loadTodos();
+    if (todo.done) span.classList.add('done');
+
+    span.addEventListener('click', () => {
+      const updatedTodos = getTodos();
+      updatedTodos[index].done = !updatedTodos[index].done;
+      saveTodos(updatedTodos);
+      renderTodos();
     });
 
     const delBtn = document.createElement('button');
     delBtn.textContent = '🗑️';
-    delBtn.addEventListener('click', async () => {
-      await supabase.from('todos').delete().eq('id', todo.id);
-      loadTodos();
+    delBtn.addEventListener('click', () => {
+      const updatedTodos = getTodos();
+      updatedTodos.splice(index, 1);
+      saveTodos(updatedTodos);
+      renderTodos();
     });
 
     li.appendChild(span);
@@ -56,45 +52,15 @@ function renderTodos(todos) {
   });
 }
 
-async function loadTodos() {
-  const user = await getUser();
-  if (!user) {
-    renderMessage('Bitte zuerst einloggen.', 'error');
-    return;
-  }
-
-  renderMessage('Lade Aufgaben...');
-  const { data, error } = await supabase
-    .from('todos')
-    .select('*')
-    .eq('user_id', user.id)
-    .order('created_at', { ascending: true });
-
-  if (error) {
-    renderMessage('Fehler beim Laden der Aufgaben.', 'error');
-    console.error(error);
-    return;
-  }
-
-  renderTodos(data);
-}
-
-addBtn.addEventListener('click', async () => {
-  const user = await getUser();
+addBtn.addEventListener('click', () => {
   const text = input.value.trim();
-  if (!text || !user) return;
+  if (!text) return;
 
-  await supabase.from('todos').insert({ user_id: user.id, text, done: false });const { error } = await supabase
-  .from('todos')
-  .insert({ user_id: user.id, text, done: false });
-
-if (error) {
-  console.error("Fehler beim Speichern:", error);
-  renderMessage("Fehler beim Hinzufügen des To-Dos.", "error");
-  return;
-}
+  const todos = getTodos();
+  todos.push({ text, done: false });
+  saveTodos(todos);
   input.value = '';
-  loadTodos();
+  renderTodos();
 });
 
 input.addEventListener('keydown', e => {
@@ -102,5 +68,5 @@ input.addEventListener('keydown', e => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadTodos();
+  renderTodos();
 });
