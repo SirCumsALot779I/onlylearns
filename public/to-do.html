@@ -1,223 +1,34 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Deine To-Dos!</title>
-<style>
-  body {
-    margin: 0;
-    background-color: #000;
-    color: white;
-    font-family: Arial, sans-serif;
-    padding-top: 20px;
-  }
-  .dashboard-container {
-    max-width: 1200px;
-    margin: 80px auto;
-    padding: 20px;
-    background-color: #161618;
-    border-radius: 12px;
-  }
-  .todo-title {
-    color: #fff;
-    font-size: 2em;
-    text-align: center;
-    margin-bottom: 30px;
-  }
-  #stickyGrid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    min-height: 200px;
-  }
-  .sticky-note {
-    background-color: #222;
-    border-radius: 10px;
-    padding: 20px;
-    color: #000;
-    font-size: 1em;
-    min-height: 150px;
-    width: 250px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    display: flex;
-    flex-direction: column;
-    user-select: none;
-    position: relative;
-  }
-  .sticky-note textarea {
-    background: transparent;
-    border: none;
-    resize: none;
-    width: 100%;
-    height: 100px;
-    font-size: 1.1em;
-    color: #000;
-    font-family: Arial, sans-serif;
-    outline: none;
-    margin-bottom: 10px;
-    user-select: text;
-  }
-  .delete-btn {
-    position: absolute;
-    top: 8px;
-    right: 10px;
-    background: none;
-    border: none;
-    color: #ff4444;
-    font-size: 1.2em;
-    cursor: pointer;
-    user-select: none;
-  }
-  .color-picker {
-    width: 100%;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-    margin-top: auto;
-    user-select: none;
-  }
-  .sticky-note.add-note {
-    background-color: #1e1e1e;
-    color: #fff;
-    font-size: 3em;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border: 2px dashed #555;
-    width: 250px;
-    height: 150px;
-  }
-  .sticky-note.add-note:hover {
-    background-color: #333;
-  }
-    
-  .dragging {
-    opacity: 0.5;
-  }
-</style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Deine To-Dos!</title>
+    <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<div class="dashboard-container">
-  <h1 class="todo-title">To-Dos hinzufügen</h1>
-  <div id="stickyGrid">
-    <div class="sticky-note add-note" id="addNoteButton"><span>+</span></div>
-  </div>
+<nav class="menu">
+    <div class="hamburger" onclick="toggleMenu()">
+        <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon" />
+    </div>
+    <ul id="dropdown">
+        <li><a href="main.html">Home</a></li>
+        <li><a href="timer.html">Timer</a></li>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="to-do.html">To-do-Liste</a></li>
+        <li><a href="settings.html">Einstellungen</a></li>
+        <li><button id="logoutButton">Logout</button></li>
+    </ul>
+</nav>
+
+<div class="todo-container">
+    <h1>To-Dos hinzufügen</h1>
+    <div class="sticky-wall" id="stickyWall"></div>
+    <button class="add-note" id="addNoteButton">+</button>
 </div>
 
-<script>
-  const stickyGrid = document.getElementById('stickyGrid');
-  const addNoteButton = document.getElementById('addNoteButton');
-
-  const colors = [
-    {name: 'Gelb', value: '#fff9c4'},
-    {name: 'Blau', value: '#bbdefb'},
-    {name: 'Pink', value: '#ffcdd2'},
-    {name: 'Orange', value: '#ffe0b2'},
-    {name: 'Grün', value: '#c3fbd8'}
-  ];
-
-  function saveNotes() {
-    const notes = [];
-    stickyGrid.querySelectorAll('.sticky-note:not(.add-note)').forEach(note => {
-      notes.push({
-        id: note.dataset.id,
-        text: note.querySelector('textarea').value,
-        color: note.style.backgroundColor
-      });
-    });
-    localStorage.setItem('stickyNotes', JSON.stringify(notes));
-  }
-
-  function createNoteElement(id, text, color) {
-    const note = document.createElement('div');
-    note.className = 'sticky-note';
-    note.style.backgroundColor = color;
-    note.dataset.id = id;
-    note.setAttribute('draggable', 'true');
-
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.addEventListener('input', saveNotes);
-    note.appendChild(textarea);
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = '×';
-    deleteBtn.className = 'delete-btn';
-    deleteBtn.addEventListener('click', e => {
-      e.stopPropagation();
-      note.remove();
-      saveNotes();
-    });
-    note.appendChild(deleteBtn);
-
-    const colorPicker = document.createElement('select');
-    colorPicker.className = 'color-picker';
-    colors.forEach(c => {
-      const option = document.createElement('option');
-      option.value = c.value;
-      option.textContent = c.name;
-      if (c.value === color) option.selected = true;
-      colorPicker.appendChild(option);
-    });
-    colorPicker.addEventListener('change', () => {
-      note.style.backgroundColor = colorPicker.value;
-      saveNotes();
-    });
-    note.appendChild(colorPicker);
-
-    note.addEventListener('dragstart', (e) => {
-      e.dataTransfer.setData('text/plain', id);
-      note.classList.add('dragging');
-
-      if(e.dataTransfer.setDragImage) {
-        e.dataTransfer.setDragImage(note, 20, 20);
-      }
-    });
-
-    note.addEventListener('dragend', () => {
-      note.classList.remove('dragging');
-    });
-
-    note.addEventListener('dragover', e => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-    });
-
-    note.addEventListener('drop', e => {
-      e.preventDefault();
-      const draggedId = e.dataTransfer.getData('text/plain');
-      if(draggedId === id) return;
-      const draggedNote = stickyGrid.querySelector(`.sticky-note[data-id="${draggedId}"]`);
-      if(!draggedNote) return;
-
-      stickyGrid.insertBefore(draggedNote, note);
-      saveNotes();
-    });
-
-    textarea.addEventListener('mousedown', e => {
-      e.stopPropagation();
-    });
-
-    stickyGrid.insertBefore(note, addNoteButton);
-  }
-
-  function loadNotes() {
-    const savedNotes = JSON.parse(localStorage.getItem('stickyNotes')) || [];
-    savedNotes.forEach(note => createNoteElement(note.id, note.text, note.color));
-  }
-
-  addNoteButton.addEventListener('click', () => {
-    const id = Date.now().toString();
-    const color = colors[Math.floor(Math.random() * colors.length)].value;
-    createNoteElement(id, '', color);
-    saveNotes();
-  });
-
-  loadNotes();
-</script>
+<script src="script.js"></script>
 
 </body>
 </html>
