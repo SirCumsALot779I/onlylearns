@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Deine To-Dos!</title>
-    <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sticky Notes mit Farbwahl</title>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
 <nav class="menu">
     <div class="hamburger" onclick="toggleMenu()">
-        <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon" />
+        <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
     </div>
     <ul id="dropdown">
         <li><a href="main.html">Home</a></li>
@@ -21,14 +20,11 @@
         <li><button id="logoutButton">Logout</button></li>
     </ul>
 </nav>
-
 <div class="todo-container">
     <h1>To-Dos hinzufügen</h1>
     <div class="sticky-wall" id="stickyWall"></div>
     <button class="add-note" id="addNoteButton">+</button>
 </div>
-
 <script src="script.js"></script>
-
 </body>
 </html>
