@@ -10,7 +10,6 @@ body {
     position: absolute;
     top: 10px;
     left: 10px;
-    z-index: 2000;
 }
 
 .menu-icon {
@@ -31,18 +30,11 @@ body {
     max-height: 0;
     opacity: 0;
     transition: max-height 0.8s ease, opacity 1s ease;
-    z-index: 3000;
 }
 
 #dropdown.visible {
     max-height: 500px;
     opacity: 1;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
 }
 
 ul li a, #logoutButton {
@@ -61,78 +53,80 @@ ul li a:hover, #logoutButton:hover {
     background-color: #333;
 }
 
-.dashboard-container {
-    max-width: 1200px;
-    margin: 80px auto;
-    padding: 20px;
+.todo-container {
+    max-width: 90%;
+    margin: 100px auto 50px;
     background-color: #161618;
+    padding: 30px;
     border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
 }
 
-.todo-title {
-    color: #fff;
-    font-size: 2em;
+.todo-container h1 {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
-.sticky-grid {
+.sticky-wall {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 20px;
 }
 
 .sticky-note {
-    background-color: #222;
-    border-radius: 10px;
-    padding: 20px;
-    color: #111;
-    font-size: 1em;
     min-height: 150px;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1em;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transition: transform 0.2s ease;
-    position: relative;
-    z-index: 1;
-}
-
-.sticky-note:hover {
-    transform: translateY(-5px);
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .sticky-note textarea {
     background: transparent;
     border: none;
     resize: none;
-    width: 100%;
+    width: 90%;
     height: 90%;
     font-size: 1.1em;
     color: #000;
     text-align: center;
     font-family: Arial, sans-serif;
     outline: none;
-}
-
-.color-select {
-    margin-top: 10px;
-    padding: 5px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-    cursor: pointer;
-    width: 100%;
-    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .delete-btn {
     position: absolute;
     top: 8px;
-    right: 10px;
+    right: 8px;
     background: none;
     border: none;
-    color: #ff4444;
-    font-size: 1.2em;
+    color: #000;
+    font-size: 1.3em;
     cursor: pointer;
+}
+
+.add-note {
+    margin-top: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 2em;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.add-note:hover {
+    background-color: #666;
 }
