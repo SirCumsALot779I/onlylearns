@@ -20,85 +20,49 @@ Die Websie bietet zwei Hauptfeatures, und zwar den Timer, welcher Zeiten erfasst
 - Supabase
 
 ## Ordnerstruktur
+```plaintext
 .
 ├── .idea/
-
 │   ├── .gitignore
-
 │   ├── misc.xml
-
 │   └── modules.xml
-
 ├── api/
-
 │   ├── get-all-profiles.js
-
 │   ├── get-time-entries.js
-
 │   ├── index.js
-
 │   └── save-time.js
-
 ├── public/
-
 │   ├── img/
-
 │   ├── vids/
-
 │   ├── auth-style.css
-
 │   ├── auth.js
-
 │   ├── chat-style.css
-
 │   ├── chat.html
-
 │   ├── chat.js
-
 │   ├── dashboard-style.css
-
 │   ├── dashboard.html
-
 │   ├── dashboard.js
-
 │   ├── index.html
-
 │   ├── main-interactions.js
-
 │   ├── main.css
-
 │   ├── main.html
-
 │   ├── scripts/
-
 │   ├── settings-style.css
-
 │   ├── settings.html
-
 │   ├── settings.js
-
 │   ├── style.css
-
 │   ├── timer.css
-
 │   ├── timer.html
-
 │   ├── timer.js
-
 │   ├── to-do.css
-
 │   ├── to-do.html
-
 │   └── to-do.js
-
 ├── .gitignore
-
 ├── OnlyLearns.iml
-
 ├── README.md
-
 ├── package-lock.json
-
 ├── package.json
-
 └── vercel.json
+```
+
+
