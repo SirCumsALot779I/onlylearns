@@ -96,6 +96,9 @@ ul li a:hover, #logoutButton:hover {
     text-align: center;
     font-family: Arial, sans-serif;
     outline: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .delete-btn {
