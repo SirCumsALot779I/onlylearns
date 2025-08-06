@@ -10,11 +10,13 @@ body {
     position: absolute;
     top: 10px;
     left: 10px;
+    z-index: 1000;
 }
 
 .menu-icon {
     width: 36px;
     cursor: pointer;
+    transition: opacity 0.5s ease;
 }
 
 #dropdown {
@@ -29,11 +31,18 @@ body {
     max-height: 0;
     opacity: 0;
     transition: max-height 0.8s ease, opacity 1s ease;
+    z-index: 1001;
 }
 
 #dropdown.visible {
     max-height: 500px;
     opacity: 1;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
 ul li a, #logoutButton {
@@ -52,45 +61,53 @@ ul li a:hover, #logoutButton:hover {
     background-color: #333;
 }
 
-.todo-container {
-    max-width: 90%;
-    margin: 100px auto 50px;
+.dashboard-container {
+    max-width: 1200px;
+    margin: 80px auto;
+    padding: 20px;
     background-color: #161618;
-    padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
 }
 
-.todo-container h1 {
+.todo-title {
+    color: #fff;
+    font-size: 2em;
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 30px;
 }
 
-.sticky-wall {
+.sticky-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
 }
 
 .sticky-note {
-    min-height: 180px;
-    padding: 10px;
+    background-color: #222;
     border-radius: 10px;
+    padding: 20px;
+    color: #111;
     font-size: 1em;
+    min-height: 150px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    justify-content: flex-start;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: transform 0.2s ease;
     position: relative;
+    z-index: 1;
+}
+
+.sticky-note:hover {
+    transform: translateY(-5px);
 }
 
 .sticky-note textarea {
     background: transparent;
     border: none;
     resize: none;
-    width: 90%;
-    height: 100px;
+    width: 100%;
+    height: 90%;
     font-size: 1.1em;
     color: #000;
     text-align: center;
@@ -98,44 +115,24 @@ ul li a:hover, #logoutButton:hover {
     outline: none;
 }
 
-.delete-btn {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    background: none;
-    border: none;
-    color: #000;
-    font-size: 1.3em;
-    cursor: pointer;
-}
-
 .color-select {
     margin-top: 10px;
     padding: 5px;
-    font-size: 0.9em;
     border-radius: 6px;
-    border: none;
+    border: 1px solid #ccc;
+    font-size: 1em;
     cursor: pointer;
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    background-position: right 10px center;
-    background-repeat: no-repeat;
-    background-size: 12px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.color-option {
-    color: #000;
-}
-
-.color-option-fff9c4 { background-color: #fff9c4; }
-.color-option-bbdefb { background-color: #bbdefb; }
-.color-option-ffcdd2 { background-color: #ffcdd2; }
-.color-option-ffe0b2 { background-color: #ffe0b2; }
-.color-option-f5f5f5 { background-color: #f5f5f5; }
-.color-option-e0e0e0 { background-color: #e0e0e0; }
-.color-option-9e9e9e { background-color: #9e9e9e; }
-
-.color-select option {
-    color: #000;
+.delete-btn {
+    position: absolute;
+    top: 8px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: #ff4444;
+    font-size: 1.2em;
+    cursor: pointer;
 }
