@@ -4,7 +4,7 @@ function toggleMenu() {
 }
 
 const stickyWall = document.getElementById('stickyWall');
-const addNoteButton = document.getElementById('addNote');
+const addNoteButton = document.getElementById('addNoteButton');
 
 const colors = ['#FFEB99', '#FFD6E0', '#CDEAFF', '#C3FBD8', '#FFF6C3'];
 
