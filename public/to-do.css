@@ -7,9 +7,10 @@ body {
 }
 
 .menu {
-    position: absolute;
+    position: fixed;
     top: 10px;
     left: 10px;
+    z-index: 9999;
 }
 
 .menu-icon {
@@ -19,8 +20,8 @@ body {
 }
 
 #dropdown {
-    position: absolute;
-    top: 50px;
+    position: fixed;
+    top: 60px;
     left: 10px;
     background-color: #111;
     border-radius: 12px;
@@ -30,6 +31,7 @@ body {
     max-height: 0;
     opacity: 0;
     transition: max-height 0.8s ease, opacity 1s ease;
+    z-index: 10000;
 }
 
 #dropdown.visible {
