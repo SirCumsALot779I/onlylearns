@@ -2,50 +2,196 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>To-Do Liste - OnlyLearns</title>
-    <script type="module" src="to-do.js" defer></script>
-    <link rel="stylesheet" href="dashboard-style.css">
-    <link rel="shortcut icon" type="image/x-icon" href="/img/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deine To-Dos!</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #000;
+            color: white;
+            font-family: Arial, sans-serif;
+            padding-top: 20px;
+        }
+
+        .menu {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .menu-icon {
+            width: 36px;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+        }
+
+        #dropdown {
+            position: absolute;
+            top: 50px;
+            left: 10px;
+            background-color: #111;
+            border-radius: 12px;
+            width: 180px;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.8s ease, opacity 1s ease;
+        }
+
+        #dropdown.visible {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li a, #logoutButton {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+            padding: 15px 20px;
+            display: block;
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        ul li a:hover, #logoutButton:hover {
+            background-color: #333;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 80px auto;
+            padding: 20px;
+            background-color: #161618;
+            border-radius: 12px;
+        }
+
+        .todo-title {
+            color: #fff;
+            font-size: 2em;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sticky-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .sticky-note {
+            background-color: #222;
+            border-radius: 10px;
+            padding: 20px;
+            color: #111;
+            font-size: 1em;
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: transform 0.2s ease;
+            position: relative;
+        }
+
+        .sticky-note:hover {
+            transform: translateY(-5px);
+        }
+
+        .sticky-note.yellow { background-color: #fff9c4; }
+        .sticky-note.blue { background-color: #bbdefb; }
+        .sticky-note.pink { background-color: #ffcdd2; }
+        .sticky-note.orange { background-color: #ffe0b2; }
+
+        .sticky-note.add-note {
+            background-color: #1e1e1e;
+            color: #fff;
+            font-size: 3em;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            border: 2px dashed #555;
+        }
+
+        .sticky-note.add-note:hover {
+            background-color: #333;
+        }
+
+        .sticky-note[contenteditable="true"] {
+            outline: none;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #ff4444;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <nav class="menu">
-        <div class="hamburger" onclick="toggleMenu()">
-            <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
-        </div>
+<nav class="menu">
+    <div class="hamburger" onclick="toggleMenu()">
+        <img src="img/big_kahuna_burger_hladik.png" alt="Menü" class="menu-icon">
+    </div>
     <ul id="dropdown" class="">
         <li><a href="main.html">Home</a></li>
         <li><a href="timer.html">Timer</a></li>
         <li><a href="dashboard.html">Dashboard</a></li>
         <li><a href="to-do.html">To-do-Liste</a></li>
         <li><a href="settings.html">Einstellungen</a></li>
+        <li><button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">Logout</button></li>
     </ul>
-    </nav>
-
-    <div class="dashboard-container">
-        <h1>Deine To-Do-Liste</h1>
-
-        <div class="dashboard-section">
-            <div class="todo-input-container">
-                <input type="text" id="todo-input" placeholder="Neuen Punkt hinzufügen...">
-                <button id="add-btn">➕ Hinzufügen</button>
-            </div>
-            <ul id="todo-list" class="todo-list">
-            </ul>
-        </div>
+</nav>
     </div>
 
-    <div class="video-corner-container">
-        <video id="background-video" autoplay loop muted playsinline>
-            <source src="/vids/wirkaufendeinauto.mp4" type="video/mp4">
-            Dein Browser unterstützt das Video-Tag nicht.
-        </video>
+    <div class="dashboard-container">
+        <h1 class="todo-title">To-Dos hinzufügen</h1>
+        <div class="sticky-grid" id="stickyGrid">
+            <div class="sticky-note add-note" id="addNoteButton">
+                <span>+</span>
+            </div>
+        </div>
     </div>
 
     <script>
         function toggleMenu() {
-            const dropdown = document.getElementById('dropdown');
-            dropdown.classList.toggle('visible');
+            document.getElementById('dropdown').classList.toggle('visible');
         }
+
+        const addNoteButton = document.getElementById('addNoteButton');
+        const stickyGrid = document.getElementById('stickyGrid');
+
+        const colors = ['yellow', 'blue', 'pink', 'orange'];
+
+        addNoteButton.addEventListener('click', () => {
+            const note = document.createElement('div');
+            note.classList.add('sticky-note', colors[Math.floor(Math.random() * colors.length)]);
+            note.setAttribute('contenteditable', 'true');
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete-btn');
+            deleteBtn.innerHTML = '×';
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                note.remove();
+            });
+
+            note.appendChild(deleteBtn);
+            stickyGrid.insertBefore(note, addNoteButton);
+        });
     </script>
 </body>
 </html>
