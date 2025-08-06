@@ -10,7 +10,7 @@ body {
     position: absolute;
     top: 10px;
     left: 10px;
-    z-index: 1000;
+    z-index: 2000;
 }
 
 .menu-icon {
@@ -31,7 +31,7 @@ body {
     max-height: 0;
     opacity: 0;
     transition: max-height 0.8s ease, opacity 1s ease;
-    z-index: 1001;
+    z-index: 3000;
 }
 
 #dropdown.visible {
