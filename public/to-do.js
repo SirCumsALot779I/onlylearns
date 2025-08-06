@@ -1,88 +1,61 @@
-document.addEventListener('DOMContentLoaded', () => {
-  function toggleMenu() {
-    document.getElementById('dropdown').classList.toggle('visible');
-  }
+const menu = document.getElementById('dropdown');
+function toggleMenu() {
+    menu.classList.toggle('visible');
+}
 
-  const addNoteButton = document.getElementById('addNoteButton');
-  const stickyWall = document.getElementById('stickyWall');
+const stickyWall = document.getElementById('stickyWall');
+const addNoteButton = document.getElementById('addNote');
 
-  const colorOptions = [
-    "#fff9c4",
-    "#bbdefb",
-    "#ffcdd2",
-    "#ffe0b2",
-    "#f5f5f5",
-    "#e0e0e0",
-    "#9e9e9e"
-  ];
+const colors = ['#FFEB99', '#FFD6E0', '#CDEAFF', '#C3FBD8', '#FFF6C3'];
 
-  function saveNotes() {
-    const notes = [];
-    document.querySelectorAll('.sticky-note').forEach(note => {
-      notes.push({
-        id: note.dataset.id,
-        text: note.querySelector('textarea').value,
-        color: note.style.backgroundColor
-      });
-    });
-    localStorage.setItem('stickyNotes', JSON.stringify(notes));
-  }
-
-  function loadNotes() {
+function loadNotes() {
     const savedNotes = JSON.parse(localStorage.getItem('stickyNotes')) || [];
     savedNotes.forEach(note => createNoteElement(note.id, note.text, note.color));
-  }
+}
 
-  function createNoteElement(id, text, color) {
+function saveNotes() {
+    const notes = [];
+    document.querySelectorAll('.sticky-note').forEach(note => {
+        notes.push({
+            id: note.dataset.id,
+            text: note.querySelector('textarea').value,
+            color: note.style.backgroundColor
+        });
+    });
+    localStorage.setItem('stickyNotes', JSON.stringify(notes));
+}
+
+function createNoteElement(id, text, color) {
     const note = document.createElement('div');
     note.className = 'sticky-note';
-    note.dataset.id = id;
     note.style.backgroundColor = color;
+    note.dataset.id = id;
+    note.style.position = 'relative';
 
     const textarea = document.createElement('textarea');
     textarea.value = text;
-    textarea.addEventListener('input', saveNotes);
+    textarea.addEventListener('input', saveNotes); 
 
     const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'delete-btn';
     deleteBtn.textContent = '×';
+    deleteBtn.className = 'delete-btn';
     deleteBtn.addEventListener('click', () => {
-      note.remove();
-      saveNotes();
-    });
-
-    const colorSelect = document.createElement('select');
-    colorSelect.className = 'color-select';
-    colorOptions.forEach(colorValue => {
-      const option = document.createElement('option');
-      option.value = colorValue;
-      option.textContent = colorValue;
-      if (colorValue === color) option.selected = true;
-      colorSelect.appendChild(option);
-    });
-
-    colorSelect.addEventListener('change', () => {
-      note.style.backgroundColor = colorSelect.value;
-      saveNotes();
+        note.remove();
+        saveNotes();
     });
 
     note.appendChild(deleteBtn);
     note.appendChild(textarea);
-    note.appendChild(colorSelect);
     stickyWall.appendChild(note);
-  }
+}
 
-  addNoteButton.addEventListener('click', () => {
+addNoteButton.addEventListener('click', () => {
     const id = Date.now().toString();
-    const color = colorOptions[Math.floor(Math.random() * colorOptions.length)];
+    const color = colors[Math.floor(Math.random() * colors.length)];
     createNoteElement(id, '', color);
     saveNotes();
-  });
-
-  window.addEventListener('beforeunload', saveNotes);
-
-  document.querySelector('.hamburger').addEventListener('click', toggleMenu);
-
-  loadNotes();
 });
 
+window.addEventListener('beforeunload', saveNotes);
+
+loadNotes();
