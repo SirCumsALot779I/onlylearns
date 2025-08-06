@@ -18,7 +18,6 @@
         <li><a href="dashboard.html">Dashboard</a></li>
         <li><a href="to-do.html">To-do-Liste</a></li>
         <li><a href="settings.html">Einstellungen</a></li>
-        <li><button id="logoutButton" style="background: none; border: none; color: #fff; cursor: pointer; padding: 10px 15px; width: 100%; text-align: left; font-size: 1em;">Logout</button></li>
     </ul>
     </nav>
 
@@ -31,7 +30,6 @@
                 <button id="add-btn">➕ Hinzufügen</button>
             </div>
             <ul id="todo-list" class="todo-list">
-                <!-- To-Dos werden hier geladen -->
             </ul>
         </div>
     </div>
@@ -48,15 +46,6 @@
             const dropdown = document.getElementById('dropdown');
             dropdown.classList.toggle('visible');
         }
-
-        document.getElementById("logoutButton").addEventListener("click", async () => {
-            const { error } = await supabase.auth.signOut();
-            if (error) {
-                alert("Fehler beim Ausloggen: " + error.message);
-            } else {
-                window.location.href = "index.html";
-            }
-        });
     </script>
 </body>
 </html>
