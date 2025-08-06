@@ -1,25 +1,17 @@
-function toggleMenu() {
-    document.getElementById('dropdown').classList.toggle('visible');
-}
-
-const stickyGrid = document.getElementById('stickyGrid');
+const stickyWall = document.getElementById('stickyWall');
 const addNoteButton = document.getElementById('addNoteButton');
 
-const colors = [
-    {name: 'Gelb', value: '#fff9c4'},
-    {name: 'Blau', value: '#bbdefb'},
-    {name: 'Pink', value: '#ffcdd2'},
-    {name: 'Orange', value: '#ffe0b2'},
-    {name: 'Grün', value: '#c3fbd8'}
-];
+const colors = ['#fff9c4', '#bbdefb', '#ffcdd2', '#ffe0b2', '#c3fbd8'];
+
+let draggedNote = null;
 
 function saveNotes() {
     const notes = [];
-    stickyGrid.querySelectorAll('.sticky-note:not(.add-note)').forEach(note => {
+    document.querySelectorAll('.sticky-note').forEach(note => {
         notes.push({
             id: note.dataset.id,
             text: note.querySelector('textarea').value,
-            color: note.style.backgroundColor
+            color: note.querySelector('.color-picker').value
         });
     });
     localStorage.setItem('stickyNotes', JSON.stringify(notes));
@@ -27,65 +19,90 @@ function saveNotes() {
 
 function createNoteElement(id, text, color) {
     const note = document.createElement('div');
-    note.className = 'sticky-note';
-    note.style.backgroundColor = color;
+    note.classList.add('sticky-note');
     note.dataset.id = id;
+    note.style.backgroundColor = color;
     note.setAttribute('draggable', 'true');
 
     const textarea = document.createElement('textarea');
     textarea.value = text;
     textarea.addEventListener('input', saveNotes);
-    note.appendChild(textarea);
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = '×';
-    deleteBtn.className = 'delete-btn';
-    deleteBtn.addEventListener('click', e => {
-        e.stopPropagation();
-        note.remove();
-        saveNotes();
-    });
-    note.appendChild(deleteBtn);
 
     const colorPicker = document.createElement('select');
-    colorPicker.className = 'color-picker';
+    colorPicker.classList.add('color-picker');
     colors.forEach(c => {
         const option = document.createElement('option');
-        option.value = c.value;
-        option.textContent = c.name;
-        if (c.value === color) option.selected = true;
+        option.value = c;
+        option.style.backgroundColor = c;
+        option.textContent = c;
+        if (c === color) option.selected = true;
         colorPicker.appendChild(option);
     });
     colorPicker.addEventListener('change', () => {
         note.style.backgroundColor = colorPicker.value;
         saveNotes();
     });
-    note.appendChild(colorPicker);
 
-    // Drag & Drop Events
-    note.addEventListener('dragstart', (e) => {
-        e.dataTransfer.setData('text/plain', id);
-        e.dataTransfer.effectAllowed = 'move';
-        note.style.opacity = '0.5';
-    });
-    note.addEventListener('dragend', () => {
-        note.style.opacity = '1';
-    });
-    note.addEventListener('dragover', e => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-    });
-    note.addEventListener('drop', e => {
-        e.preventDefault();
-        const draggedId = e.dataTransfer.getData('text/plain');
-        if(draggedId === id) return;
-        const draggedNote = stickyGrid.querySelector(`.sticky-note[data-id="${draggedId}"]`);
-        if (!draggedNote) return;
-        stickyGrid.insertBefore(draggedNote, note);
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = '×';
+    deleteBtn.classList.add('delete-btn');
+    deleteBtn.addEventListener('click', () => {
+        note.remove();
         saveNotes();
     });
 
-    stickyGrid.insertBefore(note, addNoteButton);
+    note.appendChild(deleteBtn);
+    note.appendChild(textarea);
+    note.appendChild(colorPicker);
+
+    note.addEventListener('dragstart', (e) => {
+        draggedNote = note;
+        note.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+    });
+
+    note.addEventListener('dragend', () => {
+        draggedNote = null;
+        note.classList.remove('dragging');
+    });
+
+    note.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (draggedNote === note) return;
+        const bounding = note.getBoundingClientRect();
+        const offset = e.clientY - bounding.top;
+        if (offset > bounding.height / 2) {
+            note.style['border-bottom'] = '2px solid #000';
+            note.style['border-top'] = '';
+        } else {
+            note.style['border-top'] = '2px solid #000';
+            note.style['border-bottom'] = '';
+        }
+    });
+
+    note.addEventListener('dragleave', () => {
+        note.style['border-bottom'] = '';
+        note.style['border-top'] = '';
+    });
+
+    note.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (draggedNote === note) return;
+
+        note.style['border-bottom'] = '';
+        note.style['border-top'] = '';
+
+        const bounding = note.getBoundingClientRect();
+        const offset = e.clientY - bounding.top;
+        if (offset > bounding.height / 2) {
+            stickyWall.insertBefore(draggedNote, note.nextSibling);
+        } else {
+            stickyWall.insertBefore(draggedNote, note);
+        }
+        saveNotes();
+    });
+
+    stickyWall.appendChild(note);
 }
 
 function loadNotes() {
@@ -95,9 +112,14 @@ function loadNotes() {
 
 addNoteButton.addEventListener('click', () => {
     const id = Date.now().toString();
-    const color = colors[Math.floor(Math.random() * colors.length)].value;
+    const color = colors[Math.floor(Math.random() * colors.length)];
     createNoteElement(id, '', color);
     saveNotes();
 });
 
-loadNotes();
+window.addEventListener('load', loadNotes);
+window.addEventListener('beforeunload', saveNotes);
+
+function toggleMenu() {
+    document.getElementById('dropdown').classList.toggle('visible');
+}
