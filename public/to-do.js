@@ -1,72 +1,58 @@
-const input = document.getElementById('todo-input');
-const addBtn = document.getElementById('add-btn');
-const list = document.getElementById('todo-list');
-
-function getTodos() {
-  const todos = sessionStorage.getItem('todos');
-  return todos ? JSON.parse(todos) : [];
+const menu = document.getElementById('dropdown');
+function toggleMenu() {
+    menu.classList.toggle('visible');
 }
 
-function saveTodos(todos) {
-  sessionStorage.setItem('todos', JSON.stringify(todos));
+const stickyWall = document.getElementById('stickyWall');
+const addNoteButton = document.getElementById('addNote');
+
+const colors = ['#FFEB99', '#FFD6E0', '#CDEAFF', '#C3FBD8', '#FFF6C3'];
+
+function loadNotes() {
+    const savedNotes = JSON.parse(localStorage.getItem('stickyNotes')) || [];
+    savedNotes.forEach(note => createNoteElement(note.id, note.text, note.color));
 }
 
-function renderTodos() {
-  const todos = getTodos();
-  list.innerHTML = '';
-  if (todos.length === 0) {
-    const li = document.createElement('li');
-    li.textContent = 'Noch keine To-Dos.';
-    li.className = 'list-info';
-    list.appendChild(li);
-    return;
-  }
+function saveNotes() {
+    const notes = [];
+    document.querySelectorAll('.sticky-note').forEach(note => {
+        notes.push({
+            id: note.dataset.id,
+            text: note.querySelector('textarea').value,
+            color: note.style.backgroundColor
+        });
+    });
+    localStorage.setItem('stickyNotes', JSON.stringify(notes));
+}
 
-  todos.forEach((todo, index) => {
-    const li = document.createElement('li');
-    li.className = 'todo-list-item';
+function createNoteElement(id, text, color) {
+    const note = document.createElement('div');
+    note.className = 'sticky-note';
+    note.style.backgroundColor = color;
+    note.dataset.id = id;
 
-    const span = document.createElement('span');
-    span.textContent = todo.text;
-    if (todo.done) span.classList.add('done');
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.addEventListener('input', saveNotes);
 
-    span.addEventListener('click', () => {
-      const updatedTodos = getTodos();
-      updatedTodos[index].done = !updatedTodos[index].done;
-      saveTodos(updatedTodos);
-      renderTodos();
+    const deleteBtn = document.createElement('button');
+    deleteBtn.textContent = '×';
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.addEventListener('click', () => {
+        note.remove();
+        saveNotes();
     });
 
-    const delBtn = document.createElement('button');
-    delBtn.textContent = '🗑️';
-    delBtn.addEventListener('click', () => {
-      const updatedTodos = getTodos();
-      updatedTodos.splice(index, 1);
-      saveTodos(updatedTodos);
-      renderTodos();
-    });
-
-    li.appendChild(span);
-    li.appendChild(delBtn);
-    list.appendChild(li);
-  });
+    note.appendChild(deleteBtn);
+    note.appendChild(textarea);
+    stickyWall.appendChild(note);
 }
 
-addBtn.addEventListener('click', () => {
-  const text = input.value.trim();
-  if (!text) return;
-
-  const todos = getTodos();
-  todos.push({ text, done: false });
-  saveTodos(todos);
-  input.value = '';
-  renderTodos();
+addNoteButton.addEventListener('click', () => {
+    const id = Date.now().toString();
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    createNoteElement(id, '', color);
+    saveNotes();
 });
 
-input.addEventListener('keydown', e => {
-  if (e.key === 'Enter') addBtn.click();
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  renderTodos();
-});
+loadNotes();
