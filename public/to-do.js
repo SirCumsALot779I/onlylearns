@@ -1,9 +1,19 @@
-const stickyWall = document.getElementById('stickyWall');
+function toggleMenu() {
+    document.getElementById('dropdown').classList.toggle('visible');
+}
+
 const addNoteButton = document.getElementById('addNoteButton');
+const stickyWall = document.getElementById('stickyWall');
 
-const colors = ['#fff9c4', '#bbdefb', '#ffcdd2', '#ffe0b2', '#c3fbd8'];
-
-let draggedNote = null;
+const colorOptions = [
+    { value: "#fff9c4", class: "color-option-fff9c4" },
+    { value: "#bbdefb", class: "color-option-bbdefb" },
+    { value: "#ffcdd2", class: "color-option-ffcdd2" },
+    { value: "#ffe0b2", class: "color-option-ffe0b2" },
+    { value: "#f5f5f5", class: "color-option-f5f5f5" },
+    { value: "#e0e0e0", class: "color-option-e0e0e0" },
+    { value: "#9e9e9e", class: "color-option-9e9e9e" }
+];
 
 function saveNotes() {
     const notes = [];
@@ -11,98 +21,10 @@ function saveNotes() {
         notes.push({
             id: note.dataset.id,
             text: note.querySelector('textarea').value,
-            color: note.querySelector('.color-picker').value
+            color: note.style.backgroundColor
         });
     });
     localStorage.setItem('stickyNotes', JSON.stringify(notes));
-}
-
-function createNoteElement(id, text, color) {
-    const note = document.createElement('div');
-    note.classList.add('sticky-note');
-    note.dataset.id = id;
-    note.style.backgroundColor = color;
-    note.setAttribute('draggable', 'true');
-
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.addEventListener('input', saveNotes);
-
-    const colorPicker = document.createElement('select');
-    colorPicker.classList.add('color-picker');
-    colors.forEach(c => {
-        const option = document.createElement('option');
-        option.value = c;
-        option.style.backgroundColor = c;
-        option.textContent = c;
-        if (c === color) option.selected = true;
-        colorPicker.appendChild(option);
-    });
-    colorPicker.addEventListener('change', () => {
-        note.style.backgroundColor = colorPicker.value;
-        saveNotes();
-    });
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.textContent = '×';
-    deleteBtn.classList.add('delete-btn');
-    deleteBtn.addEventListener('click', () => {
-        note.remove();
-        saveNotes();
-    });
-
-    note.appendChild(deleteBtn);
-    note.appendChild(textarea);
-    note.appendChild(colorPicker);
-
-    note.addEventListener('dragstart', (e) => {
-        draggedNote = note;
-        note.classList.add('dragging');
-        e.dataTransfer.effectAllowed = 'move';
-    });
-
-    note.addEventListener('dragend', () => {
-        draggedNote = null;
-        note.classList.remove('dragging');
-    });
-
-    note.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        if (draggedNote === note) return;
-        const bounding = note.getBoundingClientRect();
-        const offset = e.clientY - bounding.top;
-        if (offset > bounding.height / 2) {
-            note.style['border-bottom'] = '2px solid #000';
-            note.style['border-top'] = '';
-        } else {
-            note.style['border-top'] = '2px solid #000';
-            note.style['border-bottom'] = '';
-        }
-    });
-
-    note.addEventListener('dragleave', () => {
-        note.style['border-bottom'] = '';
-        note.style['border-top'] = '';
-    });
-
-    note.addEventListener('drop', (e) => {
-        e.preventDefault();
-        if (draggedNote === note) return;
-
-        note.style['border-bottom'] = '';
-        note.style['border-top'] = '';
-
-        const bounding = note.getBoundingClientRect();
-        const offset = e.clientY - bounding.top;
-        if (offset > bounding.height / 2) {
-            stickyWall.insertBefore(draggedNote, note.nextSibling);
-        } else {
-            stickyWall.insertBefore(draggedNote, note);
-        }
-        saveNotes();
-    });
-
-    stickyWall.appendChild(note);
 }
 
 function loadNotes() {
@@ -110,16 +32,52 @@ function loadNotes() {
     savedNotes.forEach(note => createNoteElement(note.id, note.text, note.color));
 }
 
+function createNoteElement(id, text, color) {
+    const note = document.createElement('div');
+    note.className = 'sticky-note';
+    note.dataset.id = id;
+    note.style.backgroundColor = color;
+
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.addEventListener('input', saveNotes);
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'delete-btn';
+    deleteBtn.textContent = '×';
+    deleteBtn.addEventListener('click', () => {
+        note.remove();
+        saveNotes();
+    });
+
+    const colorSelect = document.createElement('select');
+    colorSelect.className = 'color-select';
+    colorOptions.forEach(({ value, class: cls }) => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value;
+        option.className = cls;
+        if (value === color) option.selected = true;
+        colorSelect.appendChild(option);
+    });
+
+    colorSelect.addEventListener('change', () => {
+        note.style.backgroundColor = colorSelect.value;
+        saveNotes();
+    });
+
+    note.appendChild(deleteBtn);
+    note.appendChild(textarea);
+    note.appendChild(colorSelect);
+    stickyWall.appendChild(note);
+}
+
 addNoteButton.addEventListener('click', () => {
     const id = Date.now().toString();
-    const color = colors[Math.floor(Math.random() * colors.length)];
+    const color = colorOptions[Math.floor(Math.random() * colorOptions.length)].value;
     createNoteElement(id, '', color);
     saveNotes();
 });
 
-window.addEventListener('load', loadNotes);
 window.addEventListener('beforeunload', saveNotes);
-
-function toggleMenu() {
-    document.getElementById('dropdown').classList.toggle('visible');
-}
+loadNotes();
