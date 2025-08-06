@@ -1,6 +1,6 @@
 # OnlyLearns: Lerntracking-Plattform
 
-**Projekt-Website**: https://onlylearns.vercel.app/main.html
+**Projekt-Website**: https://onlylearns.vercel.app
 ## Übersicht
 Hierbei handelt es sich um eine unterstüzende Plattform, welche eninem helfen soll, seine Zeiten und Aufgaben zu tracken, analysieren und einen klaren Überblick zu behalten. 
 Wir wollen damit Studenten, wie uns, die Auswahl zwischen etlichen timern, to-do-programmen (wie Microsoft To Do) erleichtern und Zettelwirrwarr auf dem Schreibtisch helfen zu vermeiden.
