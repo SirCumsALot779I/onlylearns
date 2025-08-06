@@ -30,10 +30,11 @@ function createNoteElement(id, text, color) {
     note.className = 'sticky-note';
     note.style.backgroundColor = color;
     note.dataset.id = id;
+    note.style.position = 'relative';
 
     const textarea = document.createElement('textarea');
     textarea.value = text;
-    textarea.addEventListener('input', saveNotes);
+    textarea.addEventListener('input', saveNotes); 
 
     const deleteBtn = document.createElement('button');
     deleteBtn.textContent = '×';
@@ -54,5 +55,7 @@ addNoteButton.addEventListener('click', () => {
     createNoteElement(id, '', color);
     saveNotes();
 });
+
+window.addEventListener('beforeunload', saveNotes);
 
 loadNotes();
