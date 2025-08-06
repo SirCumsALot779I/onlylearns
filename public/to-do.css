@@ -53,56 +53,47 @@ ul li a:hover, #logoutButton:hover {
     background-color: #333;
 }
 
-.dashboard-container {
-    max-width: 1200px;
-    margin: 80px auto;
-    padding: 20px;
+.todo-container {
+    max-width: 90%;
+    margin: 100px auto 50px;
     background-color: #161618;
+    padding: 30px;
     border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
 }
 
-.todo-title {
-    color: #fff;
-    font-size: 2em;
+.todo-container h1 {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 25px;
 }
 
-.sticky-grid {
+.sticky-wall {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    min-height: 200px;
 }
 
 .sticky-note {
-    background-color: #222;
-    border-radius: 10px;
-    padding: 20px;
-    color: #000;
-    font-size: 1em;
     min-height: 150px;
+    width: 200px;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 1em;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    transition: transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     position: relative;
-    width: 250px;
-    user-select: none;
-}
-
-.sticky-note[draggable="true"] {
     cursor: grab;
+    user-select: none;
+    color: black;
+    text-align: center;
 }
 
-.sticky-note:active {
+.sticky-note.dragging {
+    opacity: 0.5;
     cursor: grabbing;
-}
-
-.sticky-note:hover {
-    transform: translateY(-5px);
 }
 
 .sticky-note textarea {
@@ -110,46 +101,47 @@ ul li a:hover, #logoutButton:hover {
     border: none;
     resize: none;
     width: 100%;
-    height: 100px;
+    height: 80px;
     font-size: 1.1em;
-    color: #000;
+    color: black;
     text-align: center;
     font-family: Arial, sans-serif;
     outline: none;
-    margin-bottom: 10px;
+}
+
+.color-picker {
+    margin-top: 10px;
+    width: 100%;
+    cursor: pointer;
 }
 
 .delete-btn {
     position: absolute;
     top: 8px;
-    right: 10px;
+    right: 8px;
     background: none;
     border: none;
-    color: #ff4444;
-    font-size: 1.2em;
+    color: #000;
+    font-size: 1.3em;
     cursor: pointer;
 }
 
-.color-picker {
-    width: 100%;
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    font-size: 1em;
-}
-
-.sticky-note.add-note {
-    background-color: #1e1e1e;
-    color: #fff;
-    font-size: 3em;
-    justify-content: center;
-    align-items: center;
+.add-note {
+    margin-top: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #444;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 2em;
     cursor: pointer;
-    border: 2px dashed #555;
-    width: 250px;
-    height: 150px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    user-select: none;
 }
 
-.sticky-note.add-note:hover {
-    background-color: #333;
+.add-note:hover {
+    background-color: #666;
 }
